@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>leafton login</title>
+    <link rel="stylesheet" href="/static/css/loginPage.css">
+    <meta charset="UTF-8">
+</head>
+<body>
+<script th:inline="javascript">
+    //로그인 시도 후 실패 시 날라오는 메세지
+    var message = [[${message}]];
+    if(message!=null){
+        alert(message);
+    }
+</script>
+<div class="wrap">
+    <div class="form-wrap">
+        <div class="button-wrap" >
+            <div id="btn"></div>
+            <button type="button" class="togglebtn">LOGIN</button>
+            <button type="button" class="togglebtn" th:href="@{/member/register}">REGISTER</button>
+        </div>
+        <div class="logo">
+            <h3 style="text-align: center">Leafton</h3>
+        </div>
+        <form id="login" action="/member/login" th:object="${MemberDTO}" method="post" class="input-group">
+            <input type="text" name="email" class="input-field" placeholder="Email" required>
+            <input type="password" name="password" class="input-field" placeholder="Enter Password" required>
+            <input type="checkbox" class="checkbox"><span>Remember Password</span>
+            <button type="submit" class="submit">Login</button>
+        </form>
+        <form id="register" action="" class="input-group">
+            <input type="text" class="input-field" placeholder="User name or Email" required>
+            <input type="email" class="input-field" placeholder="Your Email" required>
+            <input type="password" class="input-field" placeholder="Enter Password" required>
+            <input type="checkbox" class="checkbox"><span>Terms and conditions</span>
+            <button class="submit">REGISTER</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

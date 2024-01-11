@@ -1,0 +1,23 @@
+#contentp{
+    width: 550px;
+    height: 463px;
+    padding-left: 50px;
+}
+
+#mainImages {
+  margin-bottom: 10px;
+}
+
+#mainI{
+  width: 100%;
+  
+}
+
+#subImages{
+  padding-left: 3px;
+}
+
+.subI{
+  width: 32%;
+  margin-left: 2px;
+}

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="/fragments/header"></th:block>
+<!-- start: breadcrumbs -->
+
+
+<head>
+  <link rel="stylesheet" href="../../static/css/reviewr.css" />
+  <link rel="stylesheet" href="../../static/css/productview.css" />
+  <script src="../static/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+  <script>
+    function changefun(){
+      var mainImageElement = document.querySelector("#mainI");
+      var subImageElements = document.querySelectorAll(".subI");
+
+// 요소 존재 여부를 체크하는 함수
+      function elementExists(element) {
+        return element !== null;
+      }
+
+// 이벤트 핸들러 함수
+      function changePic() {
+        var subImageAttribute = this.getAttribute("src");
+        if (elementExists(mainImageElement)) {
+          mainImageElement.setAttribute("src", subImageAttribute);
+        }
+      }
+
+// 이벤트 핸들러 함수를 등록
+      for (var i = 0; i < subImageElements.length; i++) {
+        subImageElements[i].addEventListener("click", changePic);
+      }
+    }
+  </script>
+
+</head>
+
+<body onload = "changefun()">
+<section class="row breadcrumbs max-inner">
+  <div class="columns col-12">
+    <ul class="breadcrumb-list">
+      <li><a href="../main/index.html">Home</a></li>
+      <li>Product page</li>
+    </ul>
+  </div>
+</section>
+<!-- end: breadcrumbs -->
+
+
+
+<!-- start: main content -->
+<section class="main-content">
+  <div class="row max-inner">
+
+    <div id="contentp" style="display:inline-block">
+      <div id ="mainImages">
+        <img id="mainI" src="/static/images/pro1.jpg">
+      </div>
+      <div id="subImages">
+        <img class="subI" src="/static/images/pro1.jpg">
+        <img class="subI" src="/static/images/pro2.jpg">
+        <img class="subI" src="/static/images/pro4.jpg">
+      </div>
+    </div>
+
+    <div class="columns col-6 product-info float-right">
+      <span class="product-meta" th:text="'ID : ' + ${productDetail.productId}"></span>
+      <span style="color: black" class="product-price" th:text="${productDetail.name}"></span>
+      <br />
+      <span style="color: #282828" class="product-price" th:if="${productDetail.salePercentage == null }" th:text="'₩' + ${#numbers.formatInteger(productDetail.price, 1, 'COMMA')}"></span>
+      <span class="product-price" th:unless="${productDetail.salePercentage == null}">
+        <s th:text="'₩ ' + ${#numbers.formatInteger(productDetail.price, 1, 'COMMA')}"></s>
+        <span style="color: fuchsia;" th:text="${productDetail.salePercentage} + '%'"></span>
+        <br />
+         <span th:with="discountedPrice=${productDetail.price * (1 - productDetail.salePercentage / 100.0)}"
+               style="color: red;" th:text="'₩ ' + ${#numbers.formatInteger(discountedPrice.intValue(), 0, 'COMMA')}">
+         </span>
+      </span>
+      <div class="row product-desc">
+        <p th:text="${productDetail.content}">
+        </p>
+      </div>
+
+
+      <!-- start: product options form -->
+
+
+        <div class="row product-options">
+
+          <div class="columns col-4 sort-options">
+            <span class="label-text" th:text="'SIZE : ' + ${productDetail.size}"></span>
+          </div>
+
+          <div class="columns col-4 sort-options">
+            <span class="label-text">Color:</span>
+          </div>
+
+          <div class="columns col-4 sort-options">
+            <span class="label-text">Type:</span>
+            <label for="material-select" class="select-label">
+              <select class="styled-drop-down" id="material-select" name="material-select">
+                <option selected="selected">Slim</option>
+                <option>Lorem Ipsum</option>
+                <option>Lorem Ipsum</option>
+                <option>Lorem Ipsum</option>
+                <option>Lorem Ipsum</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+      <form th:if="${session.memberDTO!=null}"  th:action="@{/pay/cart/{memberId}/{productId}(memberId=${session.memberDTO.getMemberId()}, productId=${productDetail.productId})}" method="post">
+        <div class="row product-options">
+          <div class="columns col-6">
+            <label for="product-quantity" class="product-quantity">
+              <span class="label-text">개수:</span>
+              <!-- <input type="text" value="1" id="product-quantity" /> -->
+              <input type="number" name="count" value="1" id="product-quantity" min="0" oninput="updateTotalPrice()"/>
+            </label>
+          </div>
+          <div>
+            <label for="product-quantity" class="product-quantity">
+              <h1 class="label-text" id="total-price" th:text="'총 가격 : ' + '0' + '원'"></h1>
+            </label>
+          </div>
+          <div class="columns col-6">
+            <button type="submit" class="submit">
+              <i class="fa fa-shopping-cart"></i> Add to cart
+            </button>
+          </div>
+        </div>
+      </form>
+      <form th:unless="${session.memberDTO!=null}"  th:action="@{/pay/cart/{memberId}/{productId}(memberId='guest', productId=${productDetail.productId})}" method="post">
+        <div class="row product-options">
+          <div class="columns col-6">
+            <label for="product-quantity" class="product-quantity">
+              <span class="label-text">개수:</span>
+              <!-- <input type="text" value="1" id="product-quantity" /> -->
+              <input type="number" name="count" value="1" id="product-quantity" min="0" oninput="updateTotalPrice()"/>
+            </label>
+          </div>
+          <div>
+            <label for="product-quantity" class="product-quantity">
+              <h1 class="label-text" id="total-price" th:text="'총 가격 : ' + '0' + '원'"></h1>
+            </label>
+          </div>
+          <div class="columns col-6">
+            <span>로그인이 필요합니다.</span>
+          </div>
+        </div>
+      </form>
+
+      <script th:inline="javascript">
+        /*<![CDATA[*/
+        var unitPrice = /*[[${productDetail.price}]]*/ 'productDetail.price'; // 상품 가격 선언
+        var salePercentage = /*[[${productDetail.salePercentage}]]*/ 'productDetail.salePercentage';
+        unitPrice = salePercentage ? unitPrice * (1 - salePercentage / 100) : unitPrice;
+        function numberWithCommas(x) { // 천 단위마다 콤마를 추가하는 함수
+          return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        function updateTotalPrice() {
+          var quantity = document.getElementById('product-quantity').value; // 증가 개수 선언
+          var totalPrice = unitPrice * quantity; // 총가격 계산 선언
+          document.getElementById('total-price').textContent = '총 가격 : ' + numberWithCommas(totalPrice.toFixed(0)) + '원'; //결과값 출력
+        }
+        /*]]>*/
+      </script>
+      <!-- end: product options form -->
+
+
+    </div>
+
+  </div>
+</section>
+<!-- end: main content -->
+
+<!--start: recommand product-->
+<section class="product-grid">
+
+  <header class="row section-header max-inner">
+    <div class="columns-12 col-centered">
+      <h2>Recommand Products</h2><hr />
+    </div>
+  </header>
+
+  <div class="row max-inner" th:each="product : ${products}">
+
+    <!-- start: grid item -->
+    <div class="columns col-3 grid-item">
+      <div class="grid-item-media"><a th:href="@{/product/product/{productId}(productId=${product.productId})}"><img src="/static/images/pro1.jpg" /></a></div>
+      <div class="grid-item-desc">
+        <h2>
+          <a class="grid-item-link" th:href="@{/product/product/{productId}(productId=${product.productId})}">
+            <span class="grid-item-meta" th:text="${product.productId}"></span><hr />
+            <span class="grid-item-title" th:text="${product.name}"></span>
+            <span style="color: #282828" class="grid-item-price" th:if="${product.salePercentage == null}" th:text="'₩ ' + ${product.price}"></span>
+            <span class="grid-item-price" th:unless="${product.salePercentage == null}">
+              <s th:text="'₩ ' + ${product.price}"></s>
+              <span style="color: fuchsia;" th:text="${product.salePercentage} + '%'"></span>
+              <br />
+              <span th:with="discountedPrice=${product.price * (1 - product.salePercentage / 100.0)}"
+                    style="color: red;" th:text="'₩ ' + ${#numbers.formatDecimal(discountedPrice, 1, 2)}"></span>
+            </span>
+          </a>
+        </h2>
+      </div>
+    </div>
+    <!-- end: grid item -->
+  </div>
+</section>
+<!--end: recommand product-->
+
+<!-- start: review content -->
+<section class="review">
+
+  <div class="mainname">
+    <h2>Products Review</h2><hr />
+  </div>
+  <form th:if="${session.memberDTO!=null}" th:action="@{/product/review/{productId}(productId=${productDetail.productId})}">
+    <div class="reviewInsert">
+      <input type="text" name="reviewContent">
+    </div>
+    <div class="columns col-6">
+      <button type="submit" class="submit">
+        <i class="fa fa-shopping-cart"></i> 입력
+      </button>
+    </div>
+  </form>
+  <ul >
+    <li th:each="review : ${reviews}">
+      <div>
+        <h5 class="rating star4">상품평</h5>
+        <span th:text="${review.registDate}"></span>
+      </div>
+      <h3></h3>
+      <p th:text="${review.content}">
+      </p>
+    </li>
+  </ul>
+  <div class="paging">
+                        <span class="prev">
+                            <a href="#">< 이전</a>
+                        </span>
+    <span class="num">
+                            <a href="#" class="on">1</a>
+                            <a href="#">2</a>
+                            <a href="#">3</a>
+                            <a href="#">4</a>
+                            <a href="#">5</a>
+                            <a href="#">6</a>
+                            <a href="#">7</a>
+                        </span>
+    <span class="next">
+                            <a href="#">다음 ></a>
+                        </span>
+  </div>
+</section>
+<!-- end: review content-->
+
+<!-- start: footer -->
+<th:block th:replace="/fragments/footer"></th:block>
+<!-- end: copyright -->
+
+
+
+</body>
+</html>

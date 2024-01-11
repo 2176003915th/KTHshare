@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Indigo - A clean, responsive ecommerce HTML template</title>
+
+    <meta name="description" content="Indigo - A clean, responsive ecommerce HTML template">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+
+    <link rel="stylesheet" href="../../static/css/normalize-and-boilerplate.css" />
+    <link rel="stylesheet" href="../../static/css/font-awesome.css" />
+    <link rel="stylesheet" href="../../staic/css/flexslider.css" />
+    <link rel="stylesheet" href="../../static/css/style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <link rel="stylesheet" href="../../static/css/common.css">
+   <style>
+    #product > .order > form {}
+
+#product > .order > form > table {
+    width: 100%;
+    border-top: 2px solid #000;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+#product > .order > form > table tr { border-bottom: 1px solid #d3d3d3 ;}
+
+#product > .order > form > table th {
+    padding: 12px 0;
+    background: #fff;
+    color: #383838;
+    font-size: 0.95em;
+    text-align: center;
+    letter-spacing: -0.1em;
+}
+
+#product > .order > form > table .empty { display: none ;}
+
+#product > .order > form > table td { text-align: center;}
+
+#product > .order > form > table td:last-child {
+    color: #ff006c;
+    font-weight: bold;
+}
+
+#product > .order > form > table tr > td > input {}
+
+#product > .order > form > table td > article {
+    padding: 6px;
+    overflow: hidden;
+}
+
+#product > .order > form > table td > article > a {
+    float: left;
+    display: inline-block;
+}
+
+#product > .order > form > table td > article > a > img { width: 80px;}
+
+#product > .order > form > table td > article > div {
+    float: left;
+    margin-left: 10px;
+}
+
+#product > .order > form > table td > article > div > h2 { text-align: left; }
+
+#product > .order > form > table td > article > div > p {
+    font-size: 12px;
+    text-align: left;
+    color: #777;
+    margin-top: 4px;
+}
+
+#product > .order > form > article {
+    width: 560px;
+    height: auto;
+    margin-top: 16px;
+}
+
+#product > .order > form > .delivery {}
+
+#product > .order > form > .final {
+    float: right;
+    width: 360px;
+    height: 412px;
+    padding: 20px;
+    margin-top: 12px;
+    background: #fff;
+    border: 1px solid #d3d3d3;
+    box-sizing: border-box;
+}
+
+#product > .order > form > .final > h2 {
+    width: 100%;
+    font-weight: bold;
+    font-size: 16px;
+    border-bottom: 1px solid #111;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    box-sizing: border-box;
+    color: #1e1e1e;
+}
+
+#product > .order > form > .final > table { width: 100%; }
+
+#product > .order > form > .final > table tr:nth-last-child(1) td {
+    font-size: 20px;
+}
+
+#product > .order > form > .final > table tr:nth-last-child(1) td:last-child {
+    color: #ff006c;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#product > .order > form > .final > table td {
+    padding: 10px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+#product > .order > form > .final > table td:last-child { text-align: right; }
+
+#product > .order > form > .final > input[type=submit] {
+    width: 100%;
+    height: 56px;
+    font-size: 26px;
+    border-width: 1px;
+    border-color: #d81818;
+    border-bottom-color: #9e1212;
+    background: #ed2f2f;
+    background-image: -webkit-linear-gradient(#ed2f2f, #dd0e0e);
+    color: #fff;
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+
+#product > .order > form > article > h1 {
+    font-weight: bold;
+    font-size: 14px;
+    padding: 6px 0;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #111;
+}
+
+#product > .order > form > article > div { padding: 6px; box-sizing: border-box; }
+
+#product > .order > form > .delivery > table { margin-top: 10px; }
+
+#product > .order > form > .delivery > table tr > td:nth-child(1) { padding: 6px; }
+
+#product > .order > form > .delivery > table input[type=button] { 
+    padding: 4px 6px;
+    border: 1px solid #ccc;
+    background-color: #f0f4f9;
+    border-color: #acc0e0;
+    color: #3371c9;
+    outline: none;
+}
+
+#product > .order > form input {
+    color: #555;
+    padding: 2px 0;
+    border: 1px solid #999;
+    box-sizing: border-box;
+}
+
+#product > .order > form > .delivery > table input[name=addr1] { width: 400px; }
+#product > .order > form > .delivery > table input[name=addr2] { width: 400px; }
+
+#product > .order > form > .discount > div { overflow: hidden; }
+#product > .order > form > .discount > div > p { float: left; margin-top: 16px; margin-bottom: 0px;}
+#product > .order > form > .discount > div > label { float: right; margin: 16px 0px; }
+#product > .order > form > .discount > div > label > input[type=text] {
+    display: inline-block;
+    outline: none;
+}
+#product > .order > form > .discount > div > span {
+    display: block;            
+    color: #888;
+    float: left;
+    font: 12px;
+}
+#product > .order > form > .discount > div > label > input[type=button] {
+    padding: 4px 6px;
+    border: 1px solid #ccc;
+    background-color: #f0f4f9;
+    border-color: #acc0e0;
+    color: #3371c9;
+    outline: none;
+}
+#product > .order > form > .payment > div { margin-bottom: 10px; }
+#product > .order > form > .payment > div > span {
+    display: inline-block;
+    color: #3a85c8;
+    margin: 6px 0;
+}
+#product > .order > form > .payment > div label { margin-right: 16px; }
+#product > .order > form > .payment > div input {
+    vertical-align: middle;
+    margin-right: 4px;
+}
+#product > .order > form > .alert {
+    width: 560px;
+    background-color: #f7f7f7;
+    padding: 6px;
+    padding-left: 20px;
+    color: #999;
+    box-sizing: border-box;
+}
+#product > .order > form > .alert > ul { list-style: inherit; }
+#product > .order > form > .alert > ul > li { line-height: 20px; }
+#product > .order > form > .alert > ul > li > span { position: relative; left: -6px; }
+   </style>
+   
+   
+    <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+  </head>
+  <body>
+
+
+    <!-- start: header -->
+    <header class="header">
+      <div class="row max-inner">
+          
+        <div class="columns col-2">
+          <a href="../main/index.html" title="Indigo" class="logo">Indigo</a>
+        </div>
+
+        <div class="columns col-6">
+          <a href="#" class="toggle-nav">
+            <i class="fa fa-bars"></i> Menu
+          </a>
+          <nav class="main-nav">
+            <ul>
+              <li><a href="../product/shop.html">ALL</a></li>
+              <li><a href="../product/shop.html">SALE</a></li>
+              <li><a href="../product/shop.html">EVENT</a></li>
+              <li><a href="../product/shop.html">BRAND</a></li>              
+            </ul>
+          </nav>
+        </div>
+
+        <div class="columns col-4">
+          <ul class="header-controls">
+            <li class="header-search">
+              <a href="#" class="reveal-search">
+                <i class="fa fa-search"></i> Search
+              </a>
+              <div class="search-wrapper">
+                <form class="search-form">
+                    <input placeholder="Search..." type="text">
+                </form>                
+              </div>
+            </li>
+            <li class="header-cart">
+              <a href="cart1.html" title="view cart">
+                <span class="fa fa-shopping-cart"></span>
+                <span class="cart-count">3 Products,</span>
+                <span class="cart-amount">$780.00</span>
+              </a>                
+            </li>
+            <li class="header-actions">
+              <a href="#" title="Log out"><span class="fa fa-lock"></span> Log out</a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+    <!-- end: header -->
+
+    <!-- start: breadcrumbs -->
+    <section class="row breadcrumbs max-inner">
+      <div class="columns col-12">
+        <ul class="breadcrumb-list">
+          <li><a href="../main/index.html">Home</a></li>
+          <li>Cart</li>
+        </ul>
+      </div>
+    </section>
+    <!-- end: breadcrumbs -->
+
+
+    <main id="product">
+      <!-- <aside>
+          <ul class="category" style="list-style: none;">
+              <li>
+                  <i class="fa fa-bars" aria-hidden="true"></i>카테고리
+                  <li>
+                    <a href="#">
+                        <i class="fas fa-home" aria-hidden="true"></i>ALL
+                        </i>
+                    </a>
+                    <ol>
+                        <li>
+                            <a href="#">가구/DIY</a>
+                        </li>
+                        <li>
+                            <a href="#">침구·커튼</a>
+                        </li>
+                        <li>
+                            <a href="#">생활용품</a>
+                        </li>
+                        <li>
+                            <a href="#">사무용품</a>
+                        </li>
+                    </ol>
+                </li>
+              </li>
+                  <li>
+                  <a href="#">
+                    <i class="fa fa-percent" aria-hidden="true"></i>SALE
+                      </i>
+                  </a>
+                  <ol>
+                      <li>
+                          <a href="#">남성의류</a>
+                      </li>
+                      <li>
+                          <a href="#">여성의류</a>
+                      </li>
+                      <li>
+                          <a href="#">잡화</a>
+                      </li>
+                      <li>
+                          <a href="#">뷰티</a>
+                      </li>
+                  </ol>
+              </li>
+              <li>
+                  <a href="#">
+                      <i class="fa fa-star-o" aria-hidden="true"></i>EVENT
+                      </i>
+                  </a>
+                  <ol>
+                      <li>
+                          <a href="#">노트북/PC</a>
+                      </li>
+                      <li>
+                          <a href="#">가전</a>
+                      </li>
+                      <li>
+                          <a href="#">휴대폰</a>
+                      </li>
+                      <li>
+                          <a href="#">기타</a>
+                      </li>
+                  </ol>
+              </li>
+              <li>
+                  <a href="#">
+                      <i class="fas fa-search" aria-hidden="true"></i>BRAND
+                      </i>
+                  </a>
+                  <ol>
+                      <li>
+                          <a href="#">신선식품</a>
+                      </li>
+                      <li>
+                          <a href="#">가공식품</a>
+                      </li>
+                      <li>
+                          <a href="#">건강식품</a>
+                      </li>
+                      <li>
+                          <a href="#">생필품</a>
+                      </li>
+                  </ol>
+              </li>
+              
+          </ul>
+      </aside> -->
+      <section class="order">
+          <nav>
+            <h1>장바구니</h1>
+            <p>
+                HOME > 
+                
+                <strong>CART</strong>
+            </p>
+          </nav>
+         <form action="#">
+              <table border="0">
+                  <tr>
+                      <th>상품명</th>
+                      <th>총수량</th>
+                      <th>판매가</th>
+                      <th>배송비</th>
+                      <th>소계</th>
+                  </tr>
+                  <tr class="empty">
+                      <td colspan="7">장바구니에 상품이 없습니다.</td>
+                  </tr>
+                  <tr>
+                      <td><article>
+                          <a href="#">
+                              <img src="	https://via.placeholder.com/80x80" alt="1">
+                          </a>
+                          <div>
+                              <h2><a href="#">상품명</a></h2>
+                              <p>상품설명</p>
+                          </div>
+                      </article></td>
+                      <td>1</td>
+                      <td>27,000</td>
+                      <td>무료배송</td>
+                      <td>27,000</td>
+                  </tr>
+                  <tr>
+                      <td><article>
+                          <a href="#">
+                              <img src="	https://via.placeholder.com/80x80" alt="1">
+                          </a>
+                          <div>
+                              <h2><a href="#">상품명</a></h2>
+                              <p>상품설명</p>
+                          </div>
+                      </article></td>
+                      <td>1</td>
+                      <td>27,000</td>
+                      <td>무료배송</td>
+                      <td>27,000</td>
+                  </tr>
+                  <tr>
+                      <td><article>
+                          <a href="#">
+                              <img src="	https://via.placeholder.com/80x80" alt="1">
+                          </a>
+                          <div>
+                              <h2><a href="#">상품명</a></h2>
+                              <p>상품설명</p>
+                          </div>
+                      </article></td>
+                      <td>1</td>
+                      <td>27,000</td>
+                      <td>무료배송</td>
+                      <td>27,000</td>
+                  </tr>
+              </table>
+              <div class="final">
+                  <h2>최종결제 정보</h2>
+                  <table>
+                      <tr>
+                          <td>총</td>
+                          <td>3 건</td>
+                      </tr>
+                      <tr>
+                          <td>상품금액</td>
+                          <td>27,000</td>
+                      </tr>
+                      <tr>
+                          <td>할인금액</td>
+                          <td>-1,000</td>
+                      </tr>
+                      <tr>
+                          <td>배송비</td>
+                          <td>0</td>
+                      </tr>
+                      <tr>
+                          <td>포인트 할인</td>
+                          <td>-1,000</td>
+                      </tr>
+                      <tr>
+                          <td>전체주문금액</td>
+                          <td>25,000</td>
+                      </tr>
+                  </table>
+                  <form action="pay/buy.html" method="post"> <!-- submit 버튼을 눌렀을떄 정보들을 가지고 buy.html로 이동하려면 웹 서버가 필요 -->
+                  <input type="submit" value="결제하기" >
+                  </form>
+              </div>
+              
+         </form>
+      </section>
+  </main>
+ <br>
+ <br>
+     
+
+
+   <!-- start: footer -->
+   <footer class="footer">
+    <div class="row max-inner">
+      
+      <div class="columns col-2">
+        <h3>Address</h3>
+        <p>
+          INDIGO LLC<br />
+          <br />
+          946 Park Ave<br />
+          New York, NY 10021<br />
+          <br />
+          <a href="#">office@indigo.com</a><br />
+          (445) 932 459 934<br />           
+        </p>
+      </div>
+
+      <div class="columns col-2">
+        <h3>Customer Service</h3>
+        <ul>
+          <li><a href="#">About us</a></li>
+          <li><a href="#">Money back guarantee</a></li>
+          <li><a href="#">Help center</a></li>
+          <li><a href="#">Delivery</a></li>
+          <li><a href="#">Payment</a></li>
+        </ul>
+      </div>
+
+      <div class="columns col-2">
+        <h3>Account</h3>
+        <ul>
+          <li><a href="#">Login</a></li>
+          <li><a href="#">Register</a></li>
+          <li><a href="#">My Account</a></li>
+          <li><a href="#">Logout</a></li>
+        </ul>
+      </div>
+
+      <div class="columns col-6">
+        <h3>Follow us</h3>
+        <div class="row">
+          <form class="newsletter-form">
+            <div class="columns col-8">
+              <input placeholder="Enter your Email ..." type="text">
+            </div>
+            <div class="columns col-4">
+              <input type="submit" value="Subscribe" class="submit">
+            </div>
+          </form>              
+        </div>
+        <div class="row">
+          <div class="columns col-12 social-links">
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-google-plus"></i></a>
+            <a href="#"><i class="fa fa-pinterest"></i></a>
+          </div>            
+        </div>
+      </div>
+
+    </div>
+  </footer>
+  <!-- end: footer -->
+
+
+  <!-- start: copyright -->
+  <section class="footer-copyright">
+    <div class="row max-inner">
+      <div class="columns col-7 col-centered">
+        <p>Copyright 2014 Indigo. All rights reserved.</p>
+      </div>
+    </div>
+  </section>
+ 
+</body>
+</html>

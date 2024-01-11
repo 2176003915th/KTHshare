@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="/fragments/header"></th:block>
+<!-- start: breadcrumbs -->
+<!-- end: header -->
+
+<!-- start: breadcrumbs -->
+<section class="row breadcrumbs max-inner">
+  <div class="columns col-12">
+    <ul class="breadcrumb-list">
+      <li><a href="/main/index.html">Home</a></li>
+      <li>Product results</li>
+    </ul>
+  </div>
+</section>
+<!-- end: breadcrumbs -->
+
+
+<!-- start: sort + product nav -->
+<section class="filter-sort">
+  <div class="row max-inner">
+
+    <div class="columns col-2 sort-options">
+      <span>Size:</span>
+      <form>
+        <label for="size-select" class="select-label">
+          <select class="styled-drop-down"  id="size-select" name="size-select">
+            <option selected="selected">XS</option>
+            <option>S</option>
+            <option>M</option>
+            <option>L</option>
+            <option>XL</option>
+          </select>
+        </label>
+      </form>
+    </div>
+
+    <div class="columns col-2 sort-options">
+      <span>Material:</span>
+      <form>
+        <label for="material-select" class="select-label">
+          <select class="styled-drop-down" id="material-select" name="material-select">
+            <option selected="selected">Lorem Ipsum</option>
+            <option>Lorem Ipsum</option>
+            <option>Lorem Ipsum</option>
+            <option>Lorem Ipsum</option>
+            <option>Lorem Ipsum</option>
+          </select>
+        </label>
+      </form>
+    </div>
+
+    <div class="columns col-2 sort-options">
+      <span>Color:</span>
+      <form>
+        <label for="color-select" class="select-label">
+          <select class="styled-drop-down" id="color-select" name="color-select">
+            <option selected="selected">All</option>
+            <option>Red</option>
+            <option>Green</option>
+            <option>Yellow</option>
+            <option>Orange</option>
+          </select>
+        </label>
+      </form>
+    </div>
+
+
+
+    <div class="columns col-6 products-search">
+
+      <form class="search-form">
+        <input placeholder="Search..." type="text">
+      </form>
+
+    </div>
+
+
+  </div>
+</section>
+<!-- end: sort + product nav -->
+
+
+
+<!-- start: product grid -->
+<section class="product-grid shop-grid">
+
+  <div class="row max-inner sortable-grid">
+
+    <!-- start: grid item -->
+    <div class="columns col-3 grid-item" th:each="product : ${products}">
+      <div class="grid-item-media"><a th:href="@{/product/product/{productId}(productId=${product.productId})}"><img src="../../static/images/grid-item-image-1.jpg" /></a></div>
+      <div class="grid-item-desc">
+        <h2>
+          <a class="grid-item-link" th:href="@{/product/product/{productId}(productId=${product.productId})}">
+            <span class="grid-item-meta" th:text="${product.productId}"></span><hr />
+            <span style="color: black" class="product-name" th:text="${product.name}"></span>
+            <span style="color: #282828" class="grid-item-price" th:if="${product.salePercentage == null}" th:text="'₩ ' + ${#numbers.formatInteger(product.price, 1, 'COMMA')}"></span>
+            <span class="grid-item-price" th:unless="${product.salePercentage == null}">
+              <s th:text="'₩ ' + ${#numbers.formatInteger(product.price, 1, 'COMMA')}"></s>
+              <span style="color: fuchsia;" th:text="${product.salePercentage} + '%'"></span>
+              <br />
+              <span th:with="discountedPrice=${product.price * (1 - product.salePercentage / 100.0)}"
+                    style="color: red;" th:text="'₩ ' + ${#numbers.formatInteger(discountedPrice.intValue(), 0, 'COMMA')}"></span>
+            </span>
+          </a>
+        </h2>
+      </div>
+    </div>
+    <!-- end: grid item -->
+
+    <!-- end: grid item -->
+
+  </div>
+</section>
+<!-- end: product grid -->
+
+
+
+<!-- start: bottom pagination -->
+<section class="product-pagination">
+  <div class="row max-inner">
+    <div class="columns col-12">
+      <ul class="paging-list">
+        <li><a href="#"><i class="fa fa-caret-left"></i></a></li>
+        <li><a href="#">1</a></li>
+        <li><a href="#" class="current-prod-page">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#"><i class="fa fa-caret-right"></i></a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- end: bottom pagination -->
+
+
+
+<!-- start: footer -->
+<th:block th:replace="/fragments/footer"></th:block>
+</body>
+</html> 

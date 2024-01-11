@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<th:block th:if="${session.memberDTO}!=null">
+    <h1 th:text="${session.memberDTO.getEmail()}"></h1>
+</th:block>
+</body>
+</html>

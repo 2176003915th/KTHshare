@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--head 공통 부분과 상단 카테고리를 포함하는 fragment-->
+<th:block th:fragment="headerFragment">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Leafton</title>
+
+    <meta name="description" content="Leafton - 가구 쇼핑몰">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+
+    <link rel="stylesheet" href="/static/css/normalize-and-boilerplate.css" />
+    <link rel="stylesheet" href="/static/css/font-awesome.css" />
+    <link rel="stylesheet" href="/static/css/flexslider.css" />
+    <link rel="stylesheet" href="/static/css/style.css"/>
+  </head>
+  <body>
+    <header class="header">
+      <div class="row max-inner">
+        <!--메인 Logo-->
+        <div class="columns col-2">
+          <a href="/main/index" title="메인으로 이동" class="mainLogo">Leafton</a>
+        </div>
+        <!--메인 Logo 끝-->
+        <!--페이지 이동 탭-->
+        <div class="columns col-6">
+          <a href="#" class="toggle-nav">
+            <i class="fa fa-bars"></i> Menu
+          </a>
+          <nav class="main-nav">
+            <ul>
+              <li><a href="/product/product">All</a></li>
+              <li><a href="/event/index">Sale</a></li>
+              <li><a href="/event/index">Event</a></li>
+              <li><a href="/product/shop">Brand</a></li>
+            </ul>
+          </nav>
+        </div>
+        <!--페이지 이동 탭 끝-->
+        <!--버튼/검색 메뉴-->
+        <div class="columns col-4">
+          <ul class="header-controls">
+            <!--검색 창-->
+            <li class="header-search">
+              <div class="search-wrapper">
+                <form class="search-form">
+                  <input type="text" placeholder="Search...">
+                </form>
+              </div>
+            </li>
+            <!--검색 창 끝-->
+            <!--cart 이동 버튼-->
+            <li class="header-cart" th:if="${session.memberDTO!=null}">
+              <a href="/pay/cart" title="view cart">
+                <span class="fa fa-shopping-cart"></span>
+                <span class="cart-count">cart</span>
+              </a>
+            </li>
+            <!--cart 이동 버튼 끝-->
+            <!--로그인/로그아웃 버튼-->
+            <li class="header-actions" th:if="${session.memberDTO!=null}">
+              <a href="/member/logout" title="Login"><span class="fa fa-lock"></span> Log out</a>
+            </li>
+            <li class="header-actions" th:if="${session.memberDTO==null}">
+              <a href="/member/login" title="Login"><span class="fa fa-lock"></span> Login</a>
+            </li>
+            <!--로그인/로그아웃 버튼 끝-->
+          </ul>
+        </div>
+        <!--버튼/검색 메뉴 끝-->
+      </div>
+    </header>
+  </body>
+</th:block>
+</html>

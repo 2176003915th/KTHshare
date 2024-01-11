@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="/fragments/header :: headerFragment"></th:block>
+<head>
+  <script src="../../static/js/main.js"></script>
+  <script>
+    function changeLoc(str){        
+        if(str=="jongno3ga") {
+            document.getElementById("currentStore").innerHTML="현재 매장: 종로3가점";
+        }
+        if(str=="seoulStation"){
+            document.getElementById("currentStore").innerHTML="현재 매장: 서울역점";
+        }
+        if(str=="yeonshinnae"){
+            document.getElementById("currentStore").innerHTML="현재 매장: 연신내점";
+        }
+        if(str=="namyangju"){
+            document.getElementById("currentStore").innerHTML="현재 매장: 남양주점";
+        }
+    }
+  </script>
+</head>
+<body>
+  <!-- 매장 지도 -->
+    <div class="row max-inner">
+        <div class="'columns col-2">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3159.756333408385!2d127.05224997644952!3d37.631419072021714!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357cbbe5f3843891%3A0x2a334389e7cd7a44!2z7J24642V64yA7ZWZ6rWQ!5e0!3m2!1sko!2skr!4v1690183105087!5m2!1sko!2skr" 
+                width="100%" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" name="storeMap"></iframe>
+        </div>
+        <div class="'columns col-2">
+            <h3 id="currentStore">현재 매장: 인덕대 본점</h3><br>
+            <h3>다른 매장 선택</h3><br>
+            <a href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3159.756333408385!2d127.05224997644952!3d37.631419072021714!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357cbbe5f3843891%3A0x2a334389e7cd7a44!2z7J24642V64yA7ZWZ6rWQ!5e0!3m2!1sko!2skr!4v1690183105087!5m2!1sko!2skr" target="storeMap" onclick="changeLoc('indukUniv')">인덕대 본점</a>
+            &nbsp;&nbsp;<a href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1581.1749153503501!2d126.9910848389482!3d37.57037924300944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca2e0a7d955b9%3A0x4fd5204be436ac0f!2z7ISc7Jq47Yq567OE7IucIOyiheuhnOq1rCDsooXroZwz6rCA!5e0!3m2!1sko!2skr!4v1690192961381!5m2!1sko!2skr" target="storeMap" onclick="changeLoc('jongno3ga')">종로3가점</a>
+            &nbsp;&nbsp;<a href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12651.850218086283!2d126.95326258715819!3d37.555946000000006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca266e3947003%3A0xe7be97c172b7af6a!2z7ISc7Jq47Jet!5e0!3m2!1sko!2skr!4v1690192023909!5m2!1sko!2skr" target="storeMap" onclick="changeLoc('seoulStation')">서울역점</a>
+            &nbsp;&nbsp;<a href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3160.2902154380026!2d126.91875977644904!3d37.61886067202515!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357c9786051c747f%3A0x16acc0f506fee97b!2z7ISc7Jq47Yq567OE7IucIOyXsOyLoOuCtOyXreyVng!5e0!3m2!1sko!2skr!4v1690193012141!5m2!1sko!2skr" target="storeMap" onclick="changeLoc('yeonshinnae')">연신내점</a>
+            &nbsp;&nbsp;<a href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3159.602769155787!2d127.21373047644985!3d37.63503067202089!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357cb5de0d8ff585%3A0x35646b7d845fa580!2z64Ko7JaR7KO87IucIOuCqOyWkeyjvOyLnOyyreyVng!5e0!3m2!1sko!2skr!4v1690193055476!5m2!1sko!2skr" target="storeMap" onclick="changeLoc('namyangju')">남양주점</a>           
+        </div>        
+    </div>    
+  <!-- 매장 지도 끝 --> 
+  <!-- start: footer -->
+  <footer class="footer">
+    <div class="row max-inner">
+      
+      <div class="columns col-2">
+        <h3>Address</h3>
+        <p>
+          INDUK UNIV.<br/>
+          <br />
+          초안산로<br />
+          SEOUL, nowon<br />
+          <br />
+          <a href="#">induk.ac.kr</a><br />
+          (02) 950 7000<br />           
+        </p>
+      </div>
+
+      <div class="columns col-2">
+        <h3>Customer Service</h3>
+        <ul>
+          <li><a href="#">환불/배송 정책</a></li>
+          <li><a href="#">고객 센터</a></li>
+          <li><a href="#">매장 찾기</a></li>
+        </ul>
+      </div>
+
+      <div class="columns col-2">
+        <h3>Account</h3>
+        <ul>
+          <li><a href="../member/login.html">로그인</a></li>
+          <li><a href="../member/register.html">회원가입</a></li>
+          <li><a href="../member/info.html">내 정보</a></li>
+        </ul>
+      </div>
+
+      <div class="columns col-6">
+        <h3>Follow us</h3>            
+        <div class="row">
+          <div class="columns col-12 social-links">
+            <a href="http://www.facebook.com"><i class="fa fa-facebook"></i></a>
+            <a href="http://www.twitter.com"><i class="fa fa-twitter"></i></a>
+            <a href="http://www.pinterest.co.kr"><i class="fa fa-pinterest"></i></a>
+          </div>            
+        </div>
+      </div>
+
+    </div>
+  </footer>
+  <!-- end: footer -->
+
+
+  <!-- start: copyright -->
+  <section class="footer-copyright">
+    <div class="row max-inner">
+      <div class="columns col-7 col-centered">
+        <p>Copyright 2023 Leafton. All rights reserved.</p>
+      </div>
+    </div>
+  </section>
+  <!-- end: copyright -->
+</body>
+</html>
