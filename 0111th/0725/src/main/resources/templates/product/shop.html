@@ -3,7 +3,8 @@
 <th:block th:replace="/fragments/header"></th:block>
 <!-- start: breadcrumbs -->
 <!-- end: header -->
-
+<link rel="stylesheet" href="../../static/css/ratingView.css" />
+<link rel="stylesheet" href="../../static/css/dropdown.css" />
 <!-- start: breadcrumbs -->
 <section class="row breadcrumbs max-inner">
   <div class="columns col-12">
@@ -20,61 +21,35 @@
 <section class="filter-sort">
   <div class="row max-inner">
 
-    <div class="columns col-2 sort-options">
-      <span>Size:</span>
-      <form>
-        <label for="size-select" class="select-label">
-          <select class="styled-drop-down"  id="size-select" name="size-select">
-            <option selected="selected">XS</option>
-            <option>S</option>
-            <option>M</option>
-            <option>L</option>
-            <option>XL</option>
-          </select>
-        </label>
-      </form>
-    </div>
-
-    <div class="columns col-2 sort-options">
-      <span>Material:</span>
-      <form>
-        <label for="material-select" class="select-label">
-          <select class="styled-drop-down" id="material-select" name="material-select">
-            <option selected="selected">Lorem Ipsum</option>
-            <option>Lorem Ipsum</option>
-            <option>Lorem Ipsum</option>
-            <option>Lorem Ipsum</option>
-            <option>Lorem Ipsum</option>
-          </select>
-        </label>
-      </form>
-    </div>
-
-    <div class="columns col-2 sort-options">
-      <span>Color:</span>
-      <form>
-        <label for="color-select" class="select-label">
-          <select class="styled-drop-down" id="color-select" name="color-select">
-            <option selected="selected">All</option>
-            <option>Red</option>
-            <option>Green</option>
-            <option>Yellow</option>
-            <option>Orange</option>
-          </select>
-        </label>
-      </form>
+    <div class="dropdown">
+      <button class="dropbtn">
+        <span class="dropbtn_icon" th:if="${mainCategoryName == null}"> 카테고리</span>
+        <span class="dropbtn_icon" th:unless="${mainCategoryName == null}" th:text="${mainCategoryName.name}"></span>
+      </button>
+      <div class="dropdown-content">
+        <ul class="main-category" th:each="mainCategory : ${mainCategories}">
+          <li><a th:href="@{/product/shop/{mainCategoryId}(mainCategoryId=${mainCategory.mainCategoryId})}" th:text="${mainCategory.name}"></a></li>
+        </ul>
+      </div>
     </div>
 
 
-
-    <div class="columns col-6 products-search">
-
-      <form class="search-form">
-        <input placeholder="Search..." type="text">
-      </form>
-
+    <div th:if="${subCategorys == null}" class="dropdown">
+      <button class="dropbtn" type="disabled">
+        <span class="dropbtn_icon"></span>
+        메인 카테고리를 선택해주세요.
+      </button>
     </div>
-
+    <div th:unless="${subCategories == null}" class="dropdown">
+      <button class="dropbtn">
+        <span class="dropbtn_icon" th:text="${mainCategoryName.name} + ' 카테고리'"></span>
+      </button>
+      <div class="dropdown-content">
+        <ul class="main-category" th:each="subCategory : ${subCategorys}">
+          <li><a th:href="@{/product/shop/{subCategoryId}(subCategoryId=${subCategory.subCategoryId})}" th:text="${subCategory.name}"></a></li>
+        </ul>
+      </div>
+    </div>
 
   </div>
 </section>
@@ -94,15 +69,15 @@
         <h2>
           <a class="grid-item-link" th:href="@{/product/product/{productId}(productId=${product.productId})}">
             <span class="grid-item-meta" th:text="${product.productId}"></span><hr />
-            <span style="color: black" class="product-name" th:text="${product.name}"></span>
+              <span style="color: black" class="product-name" th:text="${product.name}"></span>
             <span style="color: #282828" class="grid-item-price" th:if="${product.salePercentage == null}" th:text="'₩ ' + ${#numbers.formatInteger(product.price, 1, 'COMMA')}"></span>
             <span class="grid-item-price" th:unless="${product.salePercentage == null}">
               <s th:text="'₩ ' + ${#numbers.formatInteger(product.price, 1, 'COMMA')}"></s>
               <span style="color: fuchsia;" th:text="${product.salePercentage} + '%'"></span>
-              <br />
               <span th:with="discountedPrice=${product.price * (1 - product.salePercentage / 100.0)}"
                     style="color: red;" th:text="'₩ ' + ${#numbers.formatInteger(discountedPrice.intValue(), 0, 'COMMA')}"></span>
             </span>
+
           </a>
         </h2>
       </div>

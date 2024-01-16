@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -17,13 +18,14 @@ public class ReviewDTO {
     private MemberDTO memberDTO;
     private int rating;
     private String content;
-    private LocalDateTime registDate;
+    private LocalDate registDate;
 
     public static ReviewDTO toReviewDTO(Review review) {
         ReviewDTO reviewDTO = new ReviewDTO();
 
         reviewDTO.setReviewId(review.getReviewId());
         reviewDTO.setProductDTO(ProductDTO.toProductDTO(review.getProduct())); //참조부분 직접 바로 메서드 사용하여 호출
+        reviewDTO.setMemberDTO(MemberDTO.toMemberDTO(review.getMemberId()));
         reviewDTO.setRating(review.getRating());
         reviewDTO.setContent(review.getContent());
         reviewDTO.setRegistDate(review.getRegistDate());

@@ -1,0 +1,7 @@
+.rateView{background:
+        url(https://aldo814.github.io/jobcloud/html/images/user/star_bg02.png)
+        no-repeat;width: 121px;height: 20px;position: relative;}
+.rateView span{position: absolute;background:
+        url(https://aldo814.github.io/jobcloud/html/images/user/star02.png);
+    width: auto;height: 20px;}
+/*출처: https://eunyoe.tistory.com/235 [eunyo의 it이야기:티스토리]*/

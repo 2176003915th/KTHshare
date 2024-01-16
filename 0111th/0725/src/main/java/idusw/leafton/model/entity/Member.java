@@ -15,7 +15,7 @@ public class Member {
     @Column(name = "memberId")
     private Long memberId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "styleId" , referencedColumnName = "styleId")
     private Style style;
 
