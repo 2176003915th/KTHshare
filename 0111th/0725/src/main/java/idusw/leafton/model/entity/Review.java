@@ -25,7 +25,7 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "memberId")
-    private Member memberId;
+    private Member member;
 
     @Column
     private int rating;
@@ -41,7 +41,7 @@ public class Review {
 
         review.setReviewId(reviewDTO.getReviewId());
         review.setProduct(Product.toProductEntity(reviewDTO.getProductDTO())); //참조부분 직접 바로 메서드 사용하여 호출
-        review.setMemberId(Member.toMemberEntity(reviewDTO.getMemberDTO()));
+        review.setMember(Member.toMemberEntity(reviewDTO.getMemberDTO()));
         review.setRating(reviewDTO.getRating());
         review.setContent(reviewDTO.getContent());
         review.setRegistDate(reviewDTO.getRegistDate());

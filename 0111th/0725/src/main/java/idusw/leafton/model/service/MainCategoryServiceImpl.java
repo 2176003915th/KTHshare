@@ -28,12 +28,12 @@ public class MainCategoryServiceImpl implements MainCategoryService{
    }
 
    @Override
-   public MainCategoryDTO getMainCategoryName(Long mainCategoryId) {
+   public MainCategoryDTO getMainCategoryDetail(Long mainCategoryId) {
        Optional<MainCategory> opMainCategory = mainCategoryRepository.findById(mainCategoryId);
        MainCategoryDTO mainCategoryDTO = new MainCategoryDTO();
        if (opMainCategory.isPresent()) {
            MainCategory mainCategory = opMainCategory.get();
-           mainCategoryDTO.setName(mainCategory.getName());
+           mainCategoryDTO = MainCategoryDTO.toMainCategoryDTO(mainCategory);
            // findById로 받아온 결과값들을 DTO에 저장함
 
            return mainCategoryDTO;

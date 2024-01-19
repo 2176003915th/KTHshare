@@ -71,18 +71,32 @@
     <div class="columns col-6 product-info float-right">
       <span class="product-meta" th:text="'ID : ' + ${productDetail.productId}"></span>
       <span style="color: black" class="product-price" th:text="${productDetail.name}"></span>
-      <div style="display: flex;">
+
+      <!-- 평점 별 평균 표시 시작-->
+      <div th:if="${ratingAvg == null}" style="display: flex;">
+        <div class="rateView">
+          <span style="width: 0%">
+          </span>
+        </div>
+        <div class="rateText">
+          <span class="rateText" style="color: black;" text="(0/5)">
+          </span>
+        </div>
+      </div>
+      <div th:unless="${ratingAvg == null}" style="display: flex;">
        <div class="rateView">
           <span th:with="ratingAvgView=${ratingAvg * 10}"
                 th:style="'width:' + ${ratingAvgView} + '%'">
           </span>
         </div>
         <div class="rateText">
-          <span class="rateText" style="color: black;" th:with="alterFive=${ratingAvg / 2.0}"
-                th:text="'(' + ${alterFive} + ')'">
+          <span class="rateText" style="color: black;" th:with="alterFive=${#numbers.formatDecimal(ratingAvg / 2.0 , 3 , 5 )}"
+                th:text="' (' + ${#numbers.formatDecimal(alterFive, 1, 1)} + '/5)'">
           </span>
         </div>
       </div>
+      <!-- 평점 별 평균 표시 끝-->
+
       <span style="color: #282828" class="product-price" th:if="${productDetail.salePercentage == null }" th:text="'₩' + ${#numbers.formatInteger(productDetail.price, 1, 'COMMA')}"></span>
       <span class="product-price" th:unless="${productDetail.salePercentage == null}">
         <s th:text="'₩ ' + ${#numbers.formatInteger(productDetail.price, 1, 'COMMA')}"></s>
@@ -234,7 +248,7 @@
   <div class="mainname">
     <h2>Products Review</h2><hr />
   </div>
-  <form th:if="${session.memberDTO!=null}" th:action="@{/product/review/{memberId}/{productId}(memberId=${session.memberDTO.getMemberId()} ,productId=${productDetail.productId})}">
+  <form th:if="${session.memberDTO!=null}" method="post" action="/product/review">
     <div class="reviewInsert">
       <fieldset class="rate">
         <input type="radio" id="rating10" name="rating" value="10"><label for="rating10" title="5점"></label>
@@ -248,6 +262,8 @@
         <input type="radio" id="rating2" name="rating" value="2"><label for="rating2" title="1점"></label>
         <input type="radio" id="rating1" name="rating" value="1"><label class="half" for="rating1" title="0.5점"></label>
       </fieldset>
+      <input type="hidden" name="productId" th:value="${productDetail.productId}">
+      <input type="hidden" name="memberId" th:value="${session.memberDTO.getMemberId()}">
       <input type="text" name="reviewContent">
     </div>
     <div class="columns col-6">

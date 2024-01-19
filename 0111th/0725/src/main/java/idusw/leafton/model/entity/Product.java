@@ -19,6 +19,9 @@ public class Product {
     @JoinColumn (name = "mainCategoryId") //fk지정
     private MainCategory mainCategory;
     @ManyToOne
+    @JoinColumn (name = "subCategoryId") //fk지정
+    private SubCategory subCategory;
+    @ManyToOne
     @JoinColumn (name = "styledId") //fk 지정
     private Style style;
     @ManyToOne
@@ -27,9 +30,6 @@ public class Product {
     @ManyToOne
     @JoinColumn (name = "mainMaterialId")//fk 지정
     private MainMaterial mainMaterial;
-    @ManyToOne
-    @JoinColumn (name = "subMaterialId")//fk 지정
-    private SubMaterial subMaterial;
     @Column
     private String content;
     @Column
@@ -67,7 +67,9 @@ public class Product {
         Product product = new Product();
         product.setProductId(productDTO.getProductId());
         product.setMainCategory(MainCategory.toMainCategoryEntity(productDTO.getMainCategoryDTO()));
+        product.setSubCategory(SubCategory.toSubCategoryEntity(productDTO.getSubCategoryDTO()));
         product.setMainMaterial(MainMaterial.toMainMaterialEntity(productDTO.getMainMaterialDTO()));
+        product.setEvent(Event.toEventEntity(productDTO.getEventDTO()));
         product.setStyle(Style.toStyleEntity(productDTO.getStyleDTO()));
         product.setName(productDTO.getName());
         product.setColor(productDTO.getColor());

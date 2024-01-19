@@ -21,10 +21,10 @@ public class ProductDTO {
 
     private Long productId;
     private MainCategoryDTO mainCategoryDTO;
+    private SubCategoryDTO subCategoryDTO;
     private StyleDTO styleDTO;
     private EventDTO eventDTO;
     private MainMaterialDTO mainMaterialDTO;
-    private SubMaterialDTO subMaterialDTO;
     private String content;
     private String maker;
     private String name;
@@ -46,10 +46,10 @@ public class ProductDTO {
 
         productDTO.setProductId(product.getProductId());
         productDTO.setMainCategoryDTO(MainCategoryDTO.toMainCategoryDTO(product.getMainCategory()));
+        productDTO.setSubCategoryDTO(SubCategoryDTO.toSubCategoryDTO(product.getSubCategory()));
         productDTO.setStyleDTO(StyleDTO.toStyleDTO(product.getStyle()));
         productDTO.setEventDTO(EventDTO.toEventDTO(product.getEvent()));
         productDTO.setMainMaterialDTO(MainMaterialDTO.toMainMaterialDTO(product.getMainMaterial()));
-        productDTO.setSubMaterialDTO(SubMaterialDTO.toSubMaterialDTO(product.getSubMaterial()));
         productDTO.setContent(product.getContent());
         productDTO.setMaker(product.getMaker());
         productDTO.setName(product.getName());

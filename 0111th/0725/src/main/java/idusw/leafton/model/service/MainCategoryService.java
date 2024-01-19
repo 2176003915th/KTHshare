@@ -8,5 +8,5 @@ import java.util.List;
 public interface MainCategoryService {
     List<MainCategoryDTO> viewAllMainCategory();
     MainCategoryDTO getMainCategoryById(Long mainCategoryId);
-    MainCategoryDTO getMainCategoryName(Long mainCategoryId);
+    MainCategoryDTO getMainCategoryDetail(Long mainCategoryId);
 }

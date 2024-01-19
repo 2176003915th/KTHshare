@@ -33,22 +33,10 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public ReviewDTO insertReview(ProductDTO productid, MemberDTO memberid, String reviewContent, Integer rating) {
-        Review review = new Review(); //받은 DTO에서 entity로 변환
-        review.setProduct(Product.toProductEntity(productid)); //dto메서드 바로사용
-        review.setMemberId(Member.toMemberEntity(memberid));
-        review.setContent(reviewContent);
-        review.setRating(rating);
-        review.setRegistDate(LocalDate.now());
-        Review savedReview = reviewRepository.save(review); //변환된 결과값 저장
-
-        ReviewDTO savedReviewDTO = new ReviewDTO(); // 다시 변환된 결과를 DTO로 변환함
-        savedReviewDTO.setProductDTO(savedReviewDTO.getProductDTO());
-        savedReviewDTO.setMemberDTO(savedReviewDTO.getMemberDTO());
-        savedReviewDTO.setContent(savedReview.getContent());
-        savedReviewDTO.setRating(savedReview.getRating());
-        savedReviewDTO.setRegistDate(LocalDate.now());
-        return savedReviewDTO;
+    public ReviewDTO insertReview(ReviewDTO reviewDTO) {
+        Review review = Review.toReviewEntity(reviewDTO); // entity에 넣기위하여 변경
+        Review result = reviewRepository.save(review); // 레파지토리에서 save(insert)한 결과
+        return ReviewDTO.toReviewDTO(result); //결과를 dto에 저장
     }
     @Override
     public double getAvgRating(Long productId) {

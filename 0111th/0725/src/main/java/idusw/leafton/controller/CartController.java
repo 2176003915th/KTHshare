@@ -68,7 +68,7 @@ public class CartController {
     public String addCartItem(@PathVariable("memberId") Long memberId, @PathVariable("productId") Long productId, int count) {
 
         MemberDTO member = memberService.getMemberById(memberId);
-        ProductDTO product = productService.getProductDTOId(productId);
+        ProductDTO product = productService.getProductById(productId);
 
         cartService.addCart(member, product, count);
 

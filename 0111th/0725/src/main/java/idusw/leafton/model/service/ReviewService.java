@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface ReviewService {
     List<ReviewDTO> viewAllReviews(ProductDTO productid);
-    ReviewDTO insertReview(ProductDTO productid, MemberDTO memberid, String reviewContent , Integer rating);
+    ReviewDTO insertReview(ReviewDTO reviewDTO);
     double getAvgRating(Long productId);
 }

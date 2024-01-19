@@ -1,8 +1,12 @@
 package idusw.leafton.model.service;
 
 import idusw.leafton.model.DTO.MainCategoryDTO;
+import idusw.leafton.model.DTO.MainMaterialDTO;
 import idusw.leafton.model.DTO.ProductDTO;
+import idusw.leafton.model.DTO.SubCategoryDTO;
 import idusw.leafton.model.entity.MainCategory;
+import idusw.leafton.model.entity.MainMaterial;
+import idusw.leafton.model.entity.SubCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,14 +34,58 @@ public  class ProductServiceImpl implements ProductService { //ProductService를
         return productDTOList;
     }
     @Override
-    public List<ProductDTO> viewProductsByMainCategory(MainCategoryDTO mainCategoryid) {
-        List<Product> productList = productRepository.findAllByMainCategory(MainCategory.toMainCategoryEntity(mainCategoryid));
+    public List<ProductDTO> viewProductsByMainCategory(MainCategoryDTO mainCategoryDTO) {
+        List<Product> productList = productRepository.findAllByMainCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO));
         List<ProductDTO> productDTOList = new ArrayList<>();
         for(Product product: productList) {
             productDTOList.add(ProductDTO.toProductDTO(product)); //productDTO 객체안에 DTO 데이터 넣음
         }
         return productDTOList;
     }
+    @Override
+    public List<ProductDTO> viewProductsBySubCategory(MainCategoryDTO mainCategoryDTO,SubCategoryDTO subCategoryDTO) {
+        List<Product> productList = productRepository.findAllByMainCategoryAndSubCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO)
+                                                                            ,SubCategory.toSubCategoryEntity(subCategoryDTO));
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for(Product product: productList) {
+            productDTOList.add(ProductDTO.toProductDTO(product)); //productDTO 객체안에 DTO 데이터 넣음
+        }
+        return productDTOList;
+    }
+    @Override
+    public List<ProductDTO> viewProductsByMainMaterial(MainMaterialDTO mainMaterialDTO){
+        List<Product> productList = productRepository.findAllByMainMaterial(MainMaterial.toMainMaterialEntity(mainMaterialDTO));
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for(Product product: productList) {
+            productDTOList.add(ProductDTO.toProductDTO(product)); //productDTO 객체안에 DTO 데이터 넣음
+        }
+        return productDTOList;
+    }
+
+    @Override
+    public List<ProductDTO> viewProductsByMcAndMm(MainCategoryDTO mainCategoryDTO, MainMaterialDTO mainMaterialDTO){
+        List<Product> productList = productRepository.findAllByMainCategoryAndMainMaterial(MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                                                                                        MainMaterial.toMainMaterialEntity(mainMaterialDTO));
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for(Product product: productList) {
+            productDTOList.add(ProductDTO.toProductDTO(product)); //productDTO 객체안에 DTO 데이터 넣음
+        }
+        return productDTOList;
+    }
+
+    @Override
+    public List<ProductDTO> viewProductsByMcAndScAndMm(MainCategoryDTO mainCategoryDTO, SubCategoryDTO subCategoryDTO, MainMaterialDTO mainMaterialDTO){
+        List<Product> productList = productRepository.findAllByMainCategoryAndSubCategoryAndMainMaterial(MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                                                                                                        SubCategory.toSubCategoryEntity(subCategoryDTO),
+                                                                                                        MainMaterial.toMainMaterialEntity(mainMaterialDTO));
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for(Product product: productList) {
+            productDTOList.add(ProductDTO.toProductDTO(product)); //productDTO 객체안에 DTO 데이터 넣음
+        }
+        return productDTOList;
+    }
+
+
 
     @Override
     public ProductDTO viewDetailProduct(Long productId) {
@@ -61,7 +109,7 @@ public  class ProductServiceImpl implements ProductService { //ProductService를
     }
 
     @Override
-    public ProductDTO getProductDTOId(Long productId) {
+    public ProductDTO getProductById(Long productId) {
         Optional<Product> product = productRepository.findById(productId);
         if(product.isPresent()) {
             return ProductDTO.toProductDTO(product.get());

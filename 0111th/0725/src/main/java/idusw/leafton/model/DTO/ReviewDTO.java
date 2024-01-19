@@ -25,7 +25,7 @@ public class ReviewDTO {
 
         reviewDTO.setReviewId(review.getReviewId());
         reviewDTO.setProductDTO(ProductDTO.toProductDTO(review.getProduct())); //참조부분 직접 바로 메서드 사용하여 호출
-        reviewDTO.setMemberDTO(MemberDTO.toMemberDTO(review.getMemberId()));
+        reviewDTO.setMemberDTO(MemberDTO.toMemberDTO(review.getMember()));
         reviewDTO.setRating(review.getRating());
         reviewDTO.setContent(review.getContent());
         reviewDTO.setRegistDate(review.getRegistDate());
