@@ -26,6 +26,7 @@ public class ProductDTO {
     private EventDTO eventDTO;
     private MainMaterialDTO mainMaterialDTO;
     private String content;
+    private Double rating;
     private String maker;
     private String name;
     private String color;
@@ -53,6 +54,7 @@ public class ProductDTO {
         productDTO.setContent(product.getContent());
         productDTO.setMaker(product.getMaker());
         productDTO.setName(product.getName());
+        productDTO.setRating(product.getRating());
         productDTO.setColor(product.getColor());
         productDTO.setSize(product.getSize());
         productDTO.setPrice(product.getPrice());

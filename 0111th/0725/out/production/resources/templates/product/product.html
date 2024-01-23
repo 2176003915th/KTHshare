@@ -89,6 +89,7 @@
                 th:style="'width:' + ${ratingAvgView} + '%'">
           </span>
         </div>
+        &nbsp
         <div class="rateText">
           <span class="rateText" style="color: black;" th:with="alterFive=${#numbers.formatDecimal(ratingAvg / 2.0 , 3 , 5 )}"
                 th:text="' (' + ${#numbers.formatDecimal(alterFive, 1, 1)} + '/5)'">
