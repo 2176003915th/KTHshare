@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="/fragments/header"></th:block>
 <!-- start: breadcrumbs -->
-<link rel="stylesheet" href="/static/css/ratingView.css" />
+<link rel="stylesheet" href="/static/css/ratingList.css" />
 <link rel="stylesheet" href="/static/css/dropdown.css" />
 <!-- end: header -->
 
@@ -143,25 +143,29 @@
 
     <!-- start: grid item -->
     <div class="columns col-3 grid-item" th:each="product : ${products}">
-      <div class="grid-item-media"><a th:href="@{/product/product/{productId}(productId=${product.productId})}"><img src="../../static/images/grid-item-image-1.jpg" /></a></div>
+      <div class="grid-item-media"><a th:href="@{/product/product/{productId}(productId=${product.productId})}"><img src="../../static/images/이벤트6.jpg" /></a></div>
       <div class="grid-item-desc">
         <h2>
           <a class="grid-item-link" th:href="@{/product/product/{productId}(productId=${product.productId})}">
-            <span class="grid-item-meta" th:text="${product.productId}"></span><hr />
+            <span class="grid-item-meta" th:text="${product.maker}"></span><hr />
             <span style="color: black" class="product-name" th:text="${product.name}"></span>
-            <div style="display: flex;">
-              <div class="rateView" style="text-align: center;">
-                <span th:with="ratingAvgView=${product.rating * 10}"
-                      th:style="'width:' + ${ratingAvgView} + '%'">
-                </span>
-              </div>
-               &nbsp
-              <div class="rateText">
-                  <span class="rateText" style="color: black;" th:with="alterFive=${#numbers.formatDecimal(product.rating / 2.0 , 3 , 5 )}"
-                        th:text="${#numbers.formatDecimal(alterFive, 1, 1)} + '/5'">
+            <span class="product-rating">
+            <span class="product-rate">
+              <div class="rating-list" style="display: flex;">
+                <div class="rateView" style="text-align: center;">
+                  <span th:with="ratingAvgView=${product.rating * 10}"
+                        th:style="'width:' + ${ratingAvgView} + '%'">
                   </span>
+                </div>
+                 &nbsp
+                <div class="rateText">
+                    <span class="rateText" style="color: black;" th:with="alterFive=${#numbers.formatDecimal(product.rating / 2.0 , 3 , 5 )}"
+                          th:text="${#numbers.formatDecimal(alterFive, 1, 1)} + '/5'">
+                    </span>
+                </div>
               </div>
-            </div>
+              </span>
+            </span>
             <span style="color: #282828" class="grid-item-price" th:if="${product.salePercentage == null}" th:text="'₩ ' + ${#numbers.formatInteger(product.price, 1, 'COMMA')}"></span>
             <span class="grid-item-price" th:unless="${product.salePercentage == null}">
               <s th:text="'₩ ' + ${#numbers.formatInteger(product.price, 1, 'COMMA')}"></s>

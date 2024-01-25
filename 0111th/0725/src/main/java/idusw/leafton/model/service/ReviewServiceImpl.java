@@ -17,15 +17,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService{
     private final ReviewRepository reviewRepository;
-    @Override
-    public List<ReviewDTO> viewAllReviews(ProductDTO productDTO) {
-        List<Review> reviewList = reviewRepository.findAllByProduct(Product.toProductEntity(productDTO)); //엔티티형인 ProductDTO가아닌 Product형으로 바꺼야하기때문에 패러미터수정
-        List<ReviewDTO> reviewDTOList = new ArrayList<>();
-        for(Review review: reviewList) {
-            reviewDTOList.add(ReviewDTO.toReviewDTO(review));  //dto리스트에 reviwe entity 리스트 추가
-        }
-        return reviewDTOList;
-    }
+//    @Override
+//    public List<ReviewDTO> viewAllReviews(ProductDTO productDTO) {
+//        List<Review> reviewList = reviewRepository.findAllByProduct(Product.toProductEntity(productDTO)); //엔티티형인 ProductDTO가아닌 Product형으로 바꺼야하기때문에 패러미터수정
+//        List<ReviewDTO> reviewDTOList = new ArrayList<>();
+//        for(Review review: reviewList) {
+//            reviewDTOList.add(ReviewDTO.toReviewDTO(review));  //dto리스트에 reviwe entity 리스트 추가
+//        }
+//        return reviewDTOList;
+//    }
 
     @Override
     public ReviewDTO insertReview(ReviewDTO reviewDTO) {

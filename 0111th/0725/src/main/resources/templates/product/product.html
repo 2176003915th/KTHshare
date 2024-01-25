@@ -10,9 +10,10 @@
   <link rel="stylesheet" href="../../static/css/rating.css" />
   <link rel="stylesheet" href="../../static/css/ratingView.css" />
   <link rel="stylesheet" href="../../static/css/qpc.css" />
+  <link rel="stylesheet" href="../../static/css/ratingList.css" />
 
 
-  <script src="../static/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+  <script src="../..//static/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
   <script>
     function changefun(){
       var mainImageElement = document.querySelector("#mainI");
@@ -59,19 +60,20 @@
 
     <div id="contentp" style="display:inline-block">
       <div id ="mainImages">
-        <img id="mainI" src="/static/images/pro1.jpg">
+        <img id="mainI" src="../../static/images/이벤트6.jpg">
       </div>
       <div id="subImages">
-        <img class="subI" src="/static/images/pro1.jpg">
-        <img class="subI" src="/static/images/pro2.jpg">
-        <img class="subI" src="/static/images/pro4.jpg">
+        <a href="#"><img class="subI" src="../../static/images/이벤트6.jpg"></a>
+        <a href="#"><img class="subI" src="../../static/images/이벤트4.png"></a>
+        <a href="#"><img class="subI" src="../../static/images/이벤트5.png"></a>
       </div>
     </div>
 
     <div class="columns col-6 product-info float-right">
-      <span class="product-meta" th:text="'ID : ' + ${productDetail.productId}"></span>
+      <span class="product-meta" th:text="${productDetail.maker}"></span>
       <span style="color: black" class="product-price" th:text="${productDetail.name}"></span>
 
+      <!-- 평점 별 평균 표시 시작-->
       <!-- 평점 별 평균 표시 시작-->
       <div th:if="${ratingAvg == null}" style="display: flex;">
         <div class="rateView">
@@ -123,20 +125,11 @@
           </div>
 
           <div class="columns col-4 sort-options">
-            <span class="label-text">Color:</span>
+            <span class="label-text" th:text="'Color : ' + ${productDetail.color}"></span>
           </div>
 
           <div class="columns col-4 sort-options">
-            <span class="label-text">Type:</span>
-            <label for="material-select" class="select-label">
-              <select class="styled-drop-down" id="material-select" name="material-select">
-                <option selected="selected">Slim</option>
-                <option>Lorem Ipsum</option>
-                <option>Lorem Ipsum</option>
-                <option>Lorem Ipsum</option>
-                <option>Lorem Ipsum</option>
-              </select>
-            </label>
+            <span class="label-text" th:text="'Maker : ' + ${productDetail.maker}"></span>
           </div>
         </div>
 
@@ -216,24 +209,41 @@
     </div>
   </header>
 
-  <div class="row max-inner" th:each="product : ${products}">
+  <div class="row max-inner sortable-grid">
 
     <!-- start: grid item -->
-    <div class="columns col-3 grid-item">
-      <div class="grid-item-media"><a th:href="@{/product/product/{productId}(productId=${product.productId})}"><img src="/static/images/pro1.jpg" /></a></div>
+    <div class="columns col-3 grid-item" th:each="product : ${products}">
+      <div class="grid-item-media"><a th:href="@{/product/product/{productId}(productId=${product.productId})}"><img src="../../static/images/이벤트6.jpg" /></a></div>
       <div class="grid-item-desc">
         <h2>
           <a class="grid-item-link" th:href="@{/product/product/{productId}(productId=${product.productId})}">
-            <span class="grid-item-meta" th:text="${product.productId}"></span><hr />
-            <span class="grid-item-title" th:text="${product.name}"></span>
-            <span style="color: #282828" class="grid-item-price" th:if="${product.salePercentage == null}" th:text="'₩ ' + ${product.price}"></span>
-            <span class="grid-item-price" th:unless="${product.salePercentage == null}">
-              <s th:text="'₩ ' + ${product.price}"></s>
-              <span style="color: fuchsia;" th:text="${product.salePercentage} + '%'"></span>
-              <br />
-              <span th:with="discountedPrice=${product.price * (1 - product.salePercentage / 100.0)}"
-                    style="color: red;" th:text="'₩ ' + ${#numbers.formatDecimal(discountedPrice, 1, 2)}"></span>
+            <span class="grid-item-meta" th:text="${product.maker}"></span><hr />
+            <span style="color: black" class="product-name" th:text="${product.name}"></span>
+            <span class="product-rating">
+            <span class="product-rate">
+              <div class="rating-list" style="display: flex;">
+                <div class="rateView" style="text-align: center;">
+                  <span th:with="ratingAvgView=${product.rating * 10}"
+                        th:style="'width:' + ${ratingAvgView} + '%'">
+                  </span>
+                </div>
+                 &nbsp
+                <div class="rateText">
+                    <span class="rateText" style="color: black;" th:with="alterFive=${#numbers.formatDecimal(product.rating / 2.0 , 3 , 5 )}"
+                          th:text="${#numbers.formatDecimal(alterFive, 1, 1)} + '/5'">
+                    </span>
+                </div>
+              </div>
+              </span>
             </span>
+            <span style="color: #282828" class="grid-item-price" th:if="${product.salePercentage == null}" th:text="'₩ ' + ${#numbers.formatInteger(product.price, 1, 'COMMA')}"></span>
+            <span class="grid-item-price" th:unless="${product.salePercentage == null}">
+              <s th:text="'₩ ' + ${#numbers.formatInteger(product.price, 1, 'COMMA')}"></s>
+              <span style="color: fuchsia;" th:text="${product.salePercentage} + '%'"></span>
+              <span th:with="discountedPrice=${product.price * (1 - product.salePercentage / 100.0)}"
+                    style="color: red;" th:text="'₩ ' + ${#numbers.formatInteger(discountedPrice.intValue(), 0, 'COMMA')}"></span>
+            </span>
+
           </a>
         </h2>
       </div>
@@ -274,7 +284,7 @@
     </div>
   </form>
   <ul >
-    <li th:each="review : ${reviews}">
+    <li th:each="review : ${reviewPageList}">
       <div>
         <div class="rateView">
           <span th:if="${review.rating == 1}" style="width: 10%"></span>
@@ -297,23 +307,19 @@
       </p>
     </li>
   </ul>
-  <div class="paging">
-                        <span class="prev">
-                            <a href="#">< 이전</a>
-                        </span>
-    <span class="num">
-                            <a href="#" class="on">1</a>
-                            <a href="#">2</a>
-                            <a href="#">3</a>
-                            <a href="#">4</a>
-                            <a href="#">5</a>
-                            <a href="#">6</a>
-                            <a href="#">7</a>
-                        </span>
-    <span class="next">
-                            <a href="#">다음 ></a>
-                        </span>
-  </div>
+  <section class="product-pagination">
+    <div class="row max-inner" style="justify-content: center; align-items: center;">
+      <div class="columns col-12">
+        <ul class="paging-list">
+          <li><a href="#"><i class="fa fa-caret-left"></i></a></li>
+          <li><a th:href="@{/product/product/{productId}(productId=${productDetail.productId}, p=1)}"class="current-prod-page">1</a></li>
+          <li><a th:href="@{/product/product/{productId}(productId=${productDetail.productId}, p=2)}">2</a></li>
+          <li><a th:href="@{/product/product/{productId}(productId=${productDetail.productId}, p=3)}">3</a></li>
+          <li><a href="#"><i class="fa fa-caret-right"></i></a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
 </section>
 
 <!-- end: review content-->

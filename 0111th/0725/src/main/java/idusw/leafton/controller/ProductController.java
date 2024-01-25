@@ -1,23 +1,16 @@
 package idusw.leafton.controller;
 
-import ch.qos.logback.core.model.Model;
 import idusw.leafton.model.DTO.*;
-import idusw.leafton.model.entity.MainCategory;
-import idusw.leafton.model.entity.MainMaterial;
-import idusw.leafton.model.entity.Product;
-import idusw.leafton.model.entity.SubCategory;
 import idusw.leafton.model.service.*;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
 
 
-import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping(value = "/product")
@@ -31,22 +24,30 @@ public class ProductController {
     private final MainCategoryService mainCategoryService;
     private final SubCategoryService subCategoryService;
     private final MainMaterialService mainMaterialService;
-
+    private final PostService postService;
     String viewName = null;
     ProductDTO productDTO = null;
     MainCategoryDTO mainCategoryDTO = null;
     SubCategoryDTO subCategoryDTO = null;
     MainMaterialDTO mainMaterialDTO = null;
+
     @GetMapping (value="/product/{productId}") //상품 상세 페이지
-    public String goProduct(@PathVariable Long productId, HttpServletRequest request) {
+    public String goProduct(@PathVariable Long productId,
+                            @RequestParam(required = false, defaultValue = "0", value = "p") int pageNo,
+                            @RequestParam(required = false, defaultValue = "registDate", value = "criteria") String criteria,
+                            Pageable pageable, HttpServletRequest request) {
         productDTO = productService.getProductById(productId);
         mainCategoryDTO = productDTO.getMainCategoryDTO(); //추천상품 위해 메인카테고리
         ProductDTO productDetail = productService.viewDetailProduct(productId); //웹에 전달하기위해 객체생성 serviceimpl은 정보를 변한하기위해 사용됨
         List<ProductDTO> products = productService.viewProductsByMainCategory(mainCategoryDTO); //추천상품
-        List<ReviewDTO> review = reviewService.viewAllReviews(productDTO); //상품 리뷰 조회
+        System.out.println(pageNo);
+        pageNo = (pageNo == 0) ? 0 : (pageNo - 1);
+        Page<ReviewDTO> reviewPageList = postService.getReviewPageList(pageable, pageNo, criteria, productDTO);
+        //List<ReviewDTO> review = reviewService.viewAllReviews(productDTO); //상품 리뷰 조회
         Double ratingAvg = reviewService.getAvgRating(productId); //별점 평균 조회
         request.setAttribute("products", products);
-        request.setAttribute("reviews", review);
+        request.setAttribute("reviewPageList", reviewPageList);
+        //request.setAttribute("reviews", review);
         request.setAttribute("productDetail", productDetail);
         request.setAttribute("ratingAvg", ratingAvg);
         return "product/product";

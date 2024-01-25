@@ -8,7 +8,7 @@ import idusw.leafton.model.entity.Product;
 import java.util.List;
 
 public interface ReviewService {
-    List<ReviewDTO> viewAllReviews(ProductDTO productDTO);
+//    List<ReviewDTO> viewAllReviews(ProductDTO productDTO);
     ReviewDTO insertReview(ReviewDTO reviewDTO);
     Double getAvgRating(Long productId);
 }

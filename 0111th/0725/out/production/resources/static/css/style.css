@@ -776,6 +776,7 @@ Product Grid
         color: #9d9c9c;
         display: block;
         font-family: "novecento_sans_widemedium";
+        padding-top: 5px;
         z-index: 1; }
         .product-grid .grid-item .grid-item-desc h2 span.grid-item-meta {
           background: #fff;
@@ -1131,6 +1132,7 @@ product page
     font-family: "novecento_sans_widedemibold";
     text-transform: uppercase; }
   .main-content .product-info .product-price {
+    padding-top: 5px;
     color: #9d9c9c;
     font-family: "novecento_sans_widebook";
     font-size: 30px; }

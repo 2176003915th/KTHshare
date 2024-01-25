@@ -4,6 +4,8 @@ import idusw.leafton.model.DTO.ProductDTO;
 import idusw.leafton.model.DTO.ReviewDTO;
 import idusw.leafton.model.entity.Product;
 import idusw.leafton.model.entity.Review;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -17,7 +19,8 @@ import java.util.Optional;
 @EnableJpaRepositories
 public interface ReviewRepository extends JpaRepository<Review, Long>{
 
-    List<Review> findAllByProduct(Product product); //엔티티이기에 PrudctDTO productid 는 되지않음
+    Page<Review> findAllByProduct(Product product, Pageable pageable);
+    //List<Review> findAllByProduct(Product product); //엔티티이기에 PrudctDTO productid 는 되지않음
 
     @Query("SELECT AVG(r.rating) FROM Review r where r.product.productId = :Id") //리뷰테이블 product필드안 (product테이블) productId
     Optional<Double> getAverageRatingByProduct(@Param("Id") Long productId); //쿼리문의 productId와 매개변수를 맞추기위해 @Param 사용
