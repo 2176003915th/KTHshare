@@ -22,10 +22,11 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
 
     List<Product> findAll();
     Optional<Product> findById(Long productId);
+    List<Product> findAllByMainCategory(MainCategory mainCategory);
     List<Product> findAllByMainCategory(MainCategory mainCategory, Sort name);
-    List<Product> findAllByMainCategoryAndSubCategory(MainCategory mainCategory,SubCategory subCategory, Sort name);
-    List<Product> findAllByMainMaterial(MainMaterial mainMaterial, Sort name);
-    List<Product> findAllByMainCategoryAndMainMaterial(MainCategory mainCategory, MainMaterial mainMaterial, Sort name);
-    List<Product> findAllByMainCategoryAndSubCategoryAndMainMaterial(MainCategory mainCategory, SubCategory subCategory,MainMaterial mainMaterial, Sort name);
+    List<Product> findAllByMainCategoryAndSubCategory(MainCategory mainCategory,SubCategory subCategory);
+    List<Product> findAllByMainMaterial(MainMaterial mainMaterial);
+    List<Product> findAllByMainCategoryAndMainMaterial(MainCategory mainCategory, MainMaterial mainMaterial);
+    List<Product> findAllByMainCategoryAndSubCategoryAndMainMaterial(MainCategory mainCategory, SubCategory subCategory,MainMaterial mainMaterial);
 
 }

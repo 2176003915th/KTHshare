@@ -40,7 +40,6 @@ public class ProductController {
         mainCategoryDTO = productDTO.getMainCategoryDTO(); //추천상품 위해 메인카테고리
         ProductDTO productDetail = productService.viewDetailProduct(productId); //웹에 전달하기위해 객체생성 serviceimpl은 정보를 변한하기위해 사용됨
         List<ProductDTO> products = productService.viewProductsByMainCategory(mainCategoryDTO); //추천상품
-        System.out.println(pageNo);
         pageNo = (pageNo == 0) ? 0 : (pageNo - 1);
         Page<ReviewDTO> reviewPageList = postService.getReviewPageList(pageable, pageNo, criteria, productDTO);
         //List<ReviewDTO> review = reviewService.viewAllReviews(productDTO); //상품 리뷰 조회
@@ -59,10 +58,10 @@ public class ProductController {
             List<MainCategoryDTO> mainCategories = mainCategoryService.viewAllMainCategory(); //메인카테고리 조회
             List<MainMaterialDTO> mainMaterials = mainMaterialService.viewAllMainMaterial(); //메인 재료 조회
            if(arName == null){
-                List<ProductDTO> products = productService.viewAllProducts();
+                List<ProductDTO> products = productService.viewProducts(arName);
                 request.setAttribute("products", products);
             } else if(arName != null) {
-                List<ProductDTO> products = productService.viewProductsOrderBy(arName);
+                List<ProductDTO> products = productService.viewProducts(arName);
                 request.setAttribute("products", products);
                    switch (arName){
                        case "name": viewName = "이름 순";
@@ -98,10 +97,10 @@ public class ProductController {
         request.setAttribute("mainCategories", mainCategories);
         request.setAttribute("mainMaterials", mainMaterials);
         if (arName == null) {
-            List<ProductDTO> products = productService.viewProductsByMainCategory(mainCategoryDTO); //메인카테고리별 상품조회
+            List<ProductDTO> products = productService.viewProductsByMainCategory(mainCategoryDTO, arName); //메인카테고리별 상품조회
             request.setAttribute("products", products);
         } else if(arName !=null){
-            List<ProductDTO> products = productService.viewProductsByMainCategoryByOrderBy(mainCategoryDTO, arName);
+            List<ProductDTO> products = productService.viewProductsByMainCategory(mainCategoryDTO, arName);
             request.setAttribute("products", products);
             switch (arName){
                 case "name": viewName = "이름 순";
@@ -135,10 +134,10 @@ public class ProductController {
         request.setAttribute("mainCategories", mainCategories);
         request.setAttribute("mainMaterials", mainMaterials);
         if (arName == null) {
-            List<ProductDTO> products = productService.viewProductsBySubCategory(mainCategoryDTO, subCategoryDTO); //서브카테고리별 상품조회
+            List<ProductDTO> products = productService.viewProductsBySubCategory(mainCategoryDTO, subCategoryDTO, arName); //서브카테고리별 상품조회
             request.setAttribute("products", products);
         } else if(arName !=null){
-            List<ProductDTO> products = productService.viewProductsBySubCategoryOrderBy(mainCategoryDTO, subCategoryDTO, arName);
+            List<ProductDTO> products = productService.viewProductsBySubCategory(mainCategoryDTO, subCategoryDTO, arName);
             request.setAttribute("products", products);
             switch (arName){
                 case "name": viewName = "이름 순";
@@ -167,10 +166,10 @@ public class ProductController {
         request.setAttribute("mainMaterials", mainMaterials);
         request.setAttribute("mainCategories",mainCategories);
         if (arName == null) {
-            List<ProductDTO> products = productService.viewProductsByMainMaterial(mainMaterialDTO); //메인재료 상품 검색
+            List<ProductDTO> products = productService.viewProductsByMainMaterial(mainMaterialDTO, arName); //메인재료 상품 검색
             request.setAttribute("products", products);
-        } else if(arName !=null){
-            List<ProductDTO> products = productService.viewProductsByMainMaterialOrderBy(mainMaterialDTO, arName);
+        } else if(arName != null){
+            List<ProductDTO> products = productService.viewProductsByMainMaterial(mainMaterialDTO, arName);
             request.setAttribute("products", products);
             switch (arName){
                 case "name": viewName = "이름 순";
@@ -204,10 +203,10 @@ public class ProductController {
         request.setAttribute("mainCategoryDetail", mainCategoryDetail);
         request.setAttribute("mainMaterialDetail", mainMaterialDetail);
         if (arName == null) {
-            List<ProductDTO> products = productService.viewProductsByMcAndMm(mainCategoryDTO, mainMaterialDTO); //메인카테고리, 메인재료 상품조회
+            List<ProductDTO> products = productService.viewProductsByMcAndMm(mainCategoryDTO, mainMaterialDTO, arName); //메인카테고리, 메인재료 상품조회
             request.setAttribute("products", products);
-        } else if(arName !=null){
-            List<ProductDTO> products = productService.viewProductsByMcAndMmOrderBy(mainCategoryDTO, mainMaterialDTO,arName);
+        } else if(arName != null){
+            List<ProductDTO> products = productService.viewProductsByMcAndMm(mainCategoryDTO, mainMaterialDTO, arName);
             request.setAttribute("products", products);
             switch (arName){
                 case "name": viewName = "이름 순";
@@ -246,10 +245,10 @@ public class ProductController {
         request.setAttribute("mainCategoryDetail", mainCategoryDetail);
         request.setAttribute("mainMaterialDetail", mainMaterialDetail);
         if (arName == null) {
-            List<ProductDTO> products = productService.viewProductsByMcAndScAndMm(mainCategoryDTO,subCategoryDTO,mainMaterialDTO); //메인카테고리-서브카테고리,메인재료 상품조회
+            List<ProductDTO> products = productService.viewProductsByMcAndScAndMm(mainCategoryDTO,subCategoryDTO,mainMaterialDTO,arName); //메인카테고리-서브카테고리,메인재료 상품조회
             request.setAttribute("products", products);
-        } else if(arName !=null){
-            List<ProductDTO> products = productService.viewProductsByMcAndScAndMmOrderBy(mainCategoryDTO,subCategoryDTO,mainMaterialDTO,arName);
+        } else if(arName != null){
+            List<ProductDTO> products = productService.viewProductsByMcAndScAndMm(mainCategoryDTO,subCategoryDTO,mainMaterialDTO,arName);
             request.setAttribute("products", products);
             switch (arName){
                 case "name": viewName = "이름 순";

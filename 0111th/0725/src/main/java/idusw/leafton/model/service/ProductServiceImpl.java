@@ -21,140 +21,31 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
 
     private final ProductRepository productRepository; //객체의 상태를 저장하고, 해당 상태를 클래스 내의 여러 메서드에서 공유하거나 조작하기 위해 필드 선언
     private final ReviewRepository reviewRepository;
-    @Override
-    public List<ProductDTO> viewAllProducts() { // 그래서 재정의함
-
-        List<Product> productList = productRepository.findAll();
-        List<ProductDTO> productDTOList = new ArrayList<>(); //productDTO로 ArrayList 객체만듬
-        for(Product product: productList) {
-            Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
-            product.setRating(opAvgRating.orElse(0.0)); //평균평점을 구한것을 product테이블 rating 컬럼에 set함
-        }
-        productRepository.saveAll(productList); //다시 저장
-
-        for(Product product: productList) {
-            productDTOList.add(ProductDTO.toProductDTO(product)); //productDTO 객체안에 DTO 데이터 넣음
-        }
-        return productDTOList;
-    }
-    @Override
-    public List<ProductDTO> viewProductsByMainCategory(MainCategoryDTO mainCategoryDTO) {
-        List<Product> productList = productRepository.findAllByMainCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO));
-        List<ProductDTO> productDTOList = new ArrayList<>();
-        for(Product product: productList) {
-            Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
-            product.setRating(opAvgRating.orElse(0.0)); //평균평점을 구한것을 product테이블 rating 컬럼에 set함
-        }
-        productRepository.saveAll(productList); //다시 저장
-
-        for(Product product: productList) {
-            productDTOList.add(ProductDTO.toProductDTO(product)); //productDTO 객체안에 DTO 데이터 넣음
-        }
-        return productDTOList;
-    }
-    @Override
-    public List<ProductDTO> viewProductsBySubCategory(MainCategoryDTO mainCategoryDTO,SubCategoryDTO subCategoryDTO) {
-        List<Product> productList = productRepository.findAllByMainCategoryAndSubCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO)
-                                                                            ,SubCategory.toSubCategoryEntity(subCategoryDTO));
-        List<ProductDTO> productDTOList = new ArrayList<>();
-        for(Product product: productList) {
-            Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
-            product.setRating(opAvgRating.orElse(0.0)); //평균평점을 구한것을 product테이블 rating 컬럼에 set함
-        }
-        productRepository.saveAll(productList); //다시 저장
-        for(Product product: productList) {
-            productDTOList.add(ProductDTO.toProductDTO(product)); //productDTO 객체안에 DTO 데이터 넣음
-        }
-        return productDTOList;
-    }
-    @Override
-    public List<ProductDTO> viewProductsByMainMaterial(MainMaterialDTO mainMaterialDTO){
-        List<Product> productList = productRepository.findAllByMainMaterial(MainMaterial.toMainMaterialEntity(mainMaterialDTO));
-        List<ProductDTO> productDTOList = new ArrayList<>();
-        for(Product product: productList) {
-            Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
-            product.setRating(opAvgRating.orElse(0.0)); //평균평점을 구한것을 product테이블 rating 컬럼에 set함
-        }
-        productRepository.saveAll(productList); //다시 저장
-        for(Product product: productList) {
-            productDTOList.add(ProductDTO.toProductDTO(product)); //productDTO 객체안에 DTO 데이터 넣음
-        }
-        return productDTOList;
-    }
 
     @Override
-    public List<ProductDTO> viewProductsByMcAndMm(MainCategoryDTO mainCategoryDTO, MainMaterialDTO mainMaterialDTO){
-        List<Product> productList = productRepository.findAllByMainCategoryAndMainMaterial(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                                                                                        MainMaterial.toMainMaterialEntity(mainMaterialDTO));
-        List<ProductDTO> productDTOList = new ArrayList<>();
-        for(Product product: productList) {
-            Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
-            product.setRating(opAvgRating.orElse(0.0)); //평균평점을 구한것을 product테이블 rating 컬럼에 set함
-        }
-        productRepository.saveAll(productList); //다시 저장
-        for(Product product: productList) {
-            productDTOList.add(ProductDTO.toProductDTO(product)); //productDTO 객체안에 DTO 데이터 넣음
-        }
-        return productDTOList;
-    }
-
-    @Override
-    public List<ProductDTO> viewProductsByMcAndScAndMm(MainCategoryDTO mainCategoryDTO, SubCategoryDTO subCategoryDTO, MainMaterialDTO mainMaterialDTO){
-        List<Product> productList = productRepository.findAllByMainCategoryAndSubCategoryAndMainMaterial(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                                                                                                        SubCategory.toSubCategoryEntity(subCategoryDTO),
-                                                                                                        MainMaterial.toMainMaterialEntity(mainMaterialDTO));
-        List<ProductDTO> productDTOList = new ArrayList<>();
-        for(Product product: productList) {
-            Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
-            product.setRating(opAvgRating.orElse(0.0)); //평균평점을 구한것을 product테이블 rating 컬럼에 set함
-        }
-        productRepository.saveAll(productList); //다시 저장
-        for(Product product: productList) {
-            productDTOList.add(ProductDTO.toProductDTO(product)); //productDTO 객체안에 DTO 데이터 넣음
-        }
-        return productDTOList;
-    }
-
-    @Override
-    public List<ProductDTO> viewProductsOrderBy(String arName){
-         List<Product> productList = null;
-         switch (arName){
-            case "name": productList = productRepository.findAllByOrderByNameAsc();
-                break;
-            case "new": productList = productRepository.findAllByOrderByRegistDateAsc();
-                break;
-            case "rating": productList = productRepository.findAllByOrderByRatingDesc();
-                break;
-            case "aprice": productList = productRepository.findAllByOrderByPriceAsc();
-                break;
-            case "dprice": productList = productRepository.findAllByOrderByPriceDesc();
-        };
-        List<ProductDTO> productDTOList = new ArrayList<>();
-        for(Product product: productList) {
-            Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
-            product.setRating(opAvgRating.orElse(0.0)); //평균평점을 구한것을 product테이블 rating 컬럼에 set함
-        }
-        productRepository.saveAll(productList); //다시 저장
-        for(Product product: productList) {
-            productDTOList.add(ProductDTO.toProductDTO(product)); //productDTO 객체안에 DTO 데이터 넣음
-        }
-        return productDTOList;
-    }
-
-    @Override
-    public List<ProductDTO> viewProductsByMainCategoryByOrderBy(MainCategoryDTO mainCategoryDTO, String arName){
+    public List<ProductDTO> viewProducts(String arName){
         List<Product> productList = null;
-        switch (arName){
-            case "name": productList = productRepository.findAllByMainCategoryOrderByNameAsc(MainCategory.toMainCategoryEntity(mainCategoryDTO));
-                break;
-            case "new": productList = productRepository.findAllByMainCategoryOrderByRegistDateAsc(MainCategory.toMainCategoryEntity(mainCategoryDTO));
-                break;
-            case "rating": productList = productRepository.findAllByMainCategoryOrderByRatingDesc(MainCategory.toMainCategoryEntity(mainCategoryDTO));
-                break;
-            case "aprice": productList = productRepository.findAllByMainCategoryOrderByPriceAsc(MainCategory.toMainCategoryEntity(mainCategoryDTO));
-                break;
-            case "dprice": productList = productRepository.findAllByMainCategoryOrderByPriceDesc(MainCategory.toMainCategoryEntity(mainCategoryDTO));
-        };
+        if (arName == null) {
+            productList = productRepository.findAll();
+        } else {
+            switch (arName) {
+                case "name":
+                    productList = productRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
+                    break;
+                case "new":
+                    productList = productRepository.findAll(Sort.by(Sort.Direction.ASC, "registDate"));
+                    break;
+                case "rating":
+                    productList = productRepository.findAll(Sort.by(Sort.Direction.DESC, "rating"));
+                    break;
+                case "aprice":
+                    productList = productRepository.findAll(Sort.by(Sort.Direction.ASC, "price"));
+                    break;
+                case "dprice":
+                    productList = productRepository.findAll(Sort.by(Sort.Direction.DESC, "price"));
+            };
+        }
+
         List<ProductDTO> productDTOList = new ArrayList<>();
         for(Product product: productList) {
             Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
@@ -168,24 +59,8 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
     }
 
     @Override
-    public List<ProductDTO>  viewProductsBySubCategoryOrderBy(MainCategoryDTO mainCategoryDTO,SubCategoryDTO subCategoryDTO,String arName){
-        List<Product> productList = null;
-        switch (arName){
-            case "name": productList = productRepository.findAllByMainCategoryAndSubCategoryOrderByNameAsc(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                    SubCategory.toSubCategoryEntity(subCategoryDTO));
-                break;
-            case "new": productList = productRepository.findAllByMainCategoryAndSubCategoryOrderByRegistDateAsc(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                    SubCategory.toSubCategoryEntity(subCategoryDTO));
-                break;
-            case "rating": productList = productRepository.findAllByMainCategoryAndSubCategoryOrderByRatingDesc(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                    SubCategory.toSubCategoryEntity(subCategoryDTO));
-                break;
-            case "aprice": productList = productRepository.findAllByMainCategoryAndSubCategoryOrderByPriceAsc(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                    SubCategory.toSubCategoryEntity(subCategoryDTO));
-                break;
-            case "dprice": productList = productRepository.findAllByMainCategoryAndSubCategoryOrderByPriceDesc(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                    SubCategory.toSubCategoryEntity(subCategoryDTO));
-        };
+    public List<ProductDTO> viewProductsByMainCategory(MainCategoryDTO mainCategoryDTO){
+        List<Product> productList = productRepository.findAllByMainCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO), Sort.by(Sort.Direction.ASC, "name"));
         List<ProductDTO> productDTOList = new ArrayList<>();
         for(Product product: productList) {
             Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
@@ -199,19 +74,28 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
     }
 
     @Override
-    public List<ProductDTO> viewProductsByMainMaterialOrderBy(MainMaterialDTO mainMaterialDTO, String arName){
+    public List<ProductDTO> viewProductsByMainCategory(MainCategoryDTO mainCategoryDTO, String arName){
         List<Product> productList = null;
-        switch (arName){
-            case "name": productList = productRepository.findAllByMainMaterialOrderByNameAsc(MainMaterial.toMainMaterialEntity(mainMaterialDTO));
-                break;
-            case "new": productList = productRepository.findAllByMainMaterialOrderByRegistDateAsc(MainMaterial.toMainMaterialEntity(mainMaterialDTO));
-                break;
-            case "rating": productList = productRepository.findAllByMainMaterialOrderByRatingDesc(MainMaterial.toMainMaterialEntity(mainMaterialDTO));
-                break;
-            case "aprice": productList = productRepository.findAllByMainMaterialOrderByPriceAsc(MainMaterial.toMainMaterialEntity(mainMaterialDTO));
-                break;
-            case "dprice": productList = productRepository.findAllByMainMaterialOrderByPriceDesc(MainMaterial.toMainMaterialEntity(mainMaterialDTO));
-        };
+        if (arName == null) {
+            productList = productRepository.findAllByMainCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO), Sort.by(Sort.Direction.ASC, "name"));
+        } else {
+            switch (arName) {
+                case "name":
+                    productList = productRepository.findAllByMainCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO), Sort.by(Sort.Direction.ASC, "name"));
+                    break;
+                case "new":
+                    productList = productRepository.findAllByMainCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO), Sort.by(Sort.Direction.ASC, "registDate"));
+                    break;
+                case "rating":
+                    productList = productRepository.findAllByMainCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO), Sort.by(Sort.Direction.DESC, "rating"));
+                    break;
+                case "aprice":
+                    productList = productRepository.findAllByMainCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO), Sort.by(Sort.Direction.ASC, "price"));
+                    break;
+                case "dprice":
+                    productList = productRepository.findAllByMainCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO), Sort.by(Sort.Direction.DESC, "price"));
+            };
+        }
         List<ProductDTO> productDTOList = new ArrayList<>();
         for(Product product: productList) {
             Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
@@ -225,24 +109,35 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
     }
 
     @Override
-    public List<ProductDTO> viewProductsByMcAndMmOrderBy(MainCategoryDTO mainCategoryDTO, MainMaterialDTO mainMaterialDTO, String arName){
+    public List<ProductDTO>  viewProductsBySubCategory(MainCategoryDTO mainCategoryDTO,SubCategoryDTO subCategoryDTO,String arName){
         List<Product> productList = null;
-        switch (arName){
-            case "name": productList = productRepository.findAllByMainCategoryAndMainMaterialOrderByNameAsc(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                    MainMaterial.toMainMaterialEntity(mainMaterialDTO));
-                break;
-            case "new": productList = productRepository.findAllByMainCategoryAndMainMaterialOrderByRegistDateAsc(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                    MainMaterial.toMainMaterialEntity(mainMaterialDTO));
-                break;
-            case "rating": productList = productRepository.findAllByMainCategoryAndMainMaterialOrderByRatingDesc(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                    MainMaterial.toMainMaterialEntity(mainMaterialDTO));
-                break;
-            case "aprice": productList = productRepository.findAllByMainCategoryAndMainMaterialOrderByPriceAsc(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                    MainMaterial.toMainMaterialEntity(mainMaterialDTO));
-                break;
-            case "dprice": productList = productRepository.findAllByMainCategoryAndMainMaterialOrderByPriceDesc(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                    MainMaterial.toMainMaterialEntity(mainMaterialDTO));
-        };
+        if (arName == null) {
+            productList = productRepository.findAllByMainCategoryAndSubCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO)
+                    ,SubCategory.toSubCategoryEntity(subCategoryDTO)
+                    ,Sort.by(Sort.Direction.ASC, "name"));
+        } else {
+            switch (arName) {
+                case "name":
+                    productList = productRepository.findAllByMainCategoryAndSubCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), Sort.by(Sort.Direction.ASC, "name"));
+                    break;
+                case "new":
+                    productList = productRepository.findAllByMainCategoryAndSubCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), Sort.by(Sort.Direction.ASC, "registDate"));
+                    break;
+                case "rating":
+                    productList = productRepository.findAllByMainCategoryAndSubCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), Sort.by(Sort.Direction.DESC, "rating"));
+                    break;
+                case "aprice":
+                    productList = productRepository.findAllByMainCategoryAndSubCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), Sort.by(Sort.Direction.ASC, "price"));
+                    break;
+                case "dprice":
+                    productList = productRepository.findAllByMainCategoryAndSubCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), Sort.by(Sort.Direction.DESC, "price"));
+            };
+        }
         List<ProductDTO> productDTOList = new ArrayList<>();
         for(Product product: productList) {
             Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
@@ -256,24 +151,112 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
     }
 
     @Override
-    public List<ProductDTO> viewProductsByMcAndScAndMmOrderBy(MainCategoryDTO mainCategoryDTO, SubCategoryDTO subCategoryDTO, MainMaterialDTO mainMaterialDTO, String arName){
+    public List<ProductDTO> viewProductsByMainMaterial(MainMaterialDTO mainMaterialDTO, String arName){
         List<Product> productList = null;
-        switch (arName){
-            case "name": productList = productRepository.findAllByMainCategoryAndSubCategoryAndMainMaterialOrderByNameAsc(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                    SubCategory.toSubCategoryEntity(subCategoryDTO),MainMaterial.toMainMaterialEntity(mainMaterialDTO));
-                break;
-            case "new": productList = productRepository.findAllByMainCategoryAndSubCategoryAndMainMaterialOrderByRegistDateAsc(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                    SubCategory.toSubCategoryEntity(subCategoryDTO),MainMaterial.toMainMaterialEntity(mainMaterialDTO));
-                break;
-            case "rating": productList = productRepository.findAllByMainCategoryAndSubCategoryAndMainMaterialOrderByRatingDesc(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                    SubCategory.toSubCategoryEntity(subCategoryDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO));
-                break;
-            case "aprice": productList = productRepository.findAllByMainCategoryAndSubCategoryAndMainMaterialOrderByPriceAsc(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                    SubCategory.toSubCategoryEntity(subCategoryDTO),MainMaterial.toMainMaterialEntity(mainMaterialDTO));
-                break;
-            case "dprice": productList = productRepository.findAllByMainCategoryAndSubCategoryAndMainMaterialOrderByPriceDesc(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                    SubCategory.toSubCategoryEntity(subCategoryDTO),MainMaterial.toMainMaterialEntity(mainMaterialDTO));
-        };
+        if (arName == null) {
+            productList = productRepository.findAllByMainMaterial(MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "name"));
+        } else {
+            switch (arName) {
+                case "name":
+                    productList = productRepository.findAllByMainMaterial(MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "name"));
+                    break;
+                case "new":
+                    productList = productRepository.findAllByMainMaterial(MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "registDate"));
+                    break;
+                case "rating":
+                    productList = productRepository.findAllByMainMaterial(MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.DESC, "rating"));
+                    break;
+                case "aprice":
+                    productList = productRepository.findAllByMainMaterial(MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "price"));
+                    break;
+                case "dprice":
+                    productList = productRepository.findAllByMainMaterial(MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.DESC, "price"));
+            };
+        }
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for(Product product: productList) {
+            Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
+            product.setRating(opAvgRating.orElse(0.0)); //평균평점을 구한것을 product테이블 rating 컬럼에 set함
+        }
+        productRepository.saveAll(productList); //다시 저장
+        for(Product product: productList) {
+            productDTOList.add(ProductDTO.toProductDTO(product)); //productDTO 객체안에 DTO 데이터 넣음
+        }
+        return productDTOList;
+    }
+
+    @Override
+    public List<ProductDTO> viewProductsByMcAndMm(MainCategoryDTO mainCategoryDTO, MainMaterialDTO mainMaterialDTO, String arName){
+        List<Product> productList = null;
+        if (arName == null) {
+            productList = productRepository.findAllByMainCategoryAndMainMaterial(MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                    MainMaterial.toMainMaterialEntity(mainMaterialDTO),Sort.by(Sort.Direction.ASC, "name"));
+        } else {
+            switch (arName) {
+                case "name":
+                    productList = productRepository.findAllByMainCategoryAndMainMaterial(MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "name"));
+                    break;
+                case "new":
+                    productList = productRepository.findAllByMainCategoryAndMainMaterial(MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "registDate"));
+                    break;
+                case "rating":
+                    productList = productRepository.findAllByMainCategoryAndMainMaterial(MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.DESC, "rating"));
+                    break;
+                case "aprice":
+                    productList = productRepository.findAllByMainCategoryAndMainMaterial(MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "price"));
+                    break;
+                case "dprice":
+                    productList = productRepository.findAllByMainCategoryAndMainMaterial(MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.DESC, "price"));
+            };
+        }
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for(Product product: productList) {
+            Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
+            product.setRating(opAvgRating.orElse(0.0)); //평균평점을 구한것을 product테이블 rating 컬럼에 set함
+        }
+        productRepository.saveAll(productList); //다시 저장
+        for(Product product: productList) {
+            productDTOList.add(ProductDTO.toProductDTO(product)); //productDTO 객체안에 DTO 데이터 넣음
+        }
+        return productDTOList;
+    }
+
+    @Override
+    public List<ProductDTO> viewProductsByMcAndScAndMm(MainCategoryDTO mainCategoryDTO, SubCategoryDTO subCategoryDTO, MainMaterialDTO mainMaterialDTO, String arName){
+        List<Product> productList = null;
+        if (arName == null) {
+            productList = productRepository.findAllByMainCategoryAndSubCategoryAndMainMaterial(MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                    SubCategory.toSubCategoryEntity(subCategoryDTO),
+                    MainMaterial.toMainMaterialEntity(mainMaterialDTO),
+                    Sort.by(Sort.Direction.ASC, "name"));
+        } else {
+            switch (arName) {
+                case "name":
+                    productList = productRepository.findAllByMainCategoryAndSubCategoryAndMainMaterial(MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "name"));
+                    break;
+                case "new":
+                    productList = productRepository.findAllByMainCategoryAndSubCategoryAndMainMaterial(MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "registDate"));
+                    break;
+                case "rating":
+                    productList = productRepository.findAllByMainCategoryAndSubCategoryAndMainMaterial(MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.DESC, "rating"));
+                    break;
+                case "aprice":
+                    productList = productRepository.findAllByMainCategoryAndSubCategoryAndMainMaterial(MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "price"));
+                    break;
+                case "dprice":
+                    productList = productRepository.findAllByMainCategoryAndSubCategoryAndMainMaterial(MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.DESC, "price"));
+            };
+        }
         List<ProductDTO> productDTOList = new ArrayList<>();
         for(Product product: productList) {
             Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
