@@ -108,6 +108,15 @@ public class ProductController {
         else if (mainCategoryId == null && subCategoryId == null && mainMaterialId == null && eventId != null){ // 이벤트만 조회
             goEvent(eventId, mainCategoryId, subCategoryId, mainMaterialId,arName, request);
         }
+        else if (mainCategoryId != null && subCategoryId == null && mainMaterialId == null && eventId != null){ // 이벤트 - 메인카
+            goEvent(eventId, mainCategoryId, subCategoryId, mainMaterialId,arName, request);
+        }
+        else if (mainCategoryId != null && subCategoryId != null && mainMaterialId == null && eventId != null){ // 이벤트 - 메인카 - 서브카
+            goEvent(eventId, mainCategoryId, subCategoryId, mainMaterialId,arName, request);
+        }
+        else if (mainCategoryId != null && subCategoryId != null && mainMaterialId != null && eventId != null){ // 이벤트 - 메인카 - 서브카 - 메인재료
+            goEvent(eventId, mainCategoryId, subCategoryId, mainMaterialId,arName, request);
+        }
 
         return "product/shop";
     }
@@ -127,7 +136,7 @@ public class ProductController {
         };
         request.setAttribute("viewName", viewName);
     }
-    public String goMainCategory(Long mainCategoryId, String arName, HttpServletRequest request) {
+    public void goMainCategory(Long mainCategoryId, String arName, HttpServletRequest request) {
         mainCategoryDTO = mainCategoryService.getMainCategoryById(mainCategoryId); //Long -> MainCategoryDTO
         List<SubCategoryDTO> subCategories = subCategoryService.getSubCategoryByMainCategoryId(mainCategoryDTO); //서브카테고리 조회
         List<MainMaterialDTO> mainMaterials = mainMaterialService.viewAllMainMaterial(); //메인 재료 조회
@@ -143,22 +152,10 @@ public class ProductController {
         } else if(arName !=null){
             List<ProductDTO> products = productService.viewProductsByMainCategory(mainCategoryDTO, arName);
             request.setAttribute("products", products);
-            switch (arName){
-                case "name": viewName = "이름 순";
-                    break;
-                case "new": viewName = "출시 순";
-                    break;
-                case "rating": viewName = "평점 순";
-                    break;
-                case "aprice": viewName = "가격: 가격 낮은 순";
-                    break;
-                case "dprice": viewName = "가격: 가격 높은 순";
-            };
-            request.setAttribute("viewName", viewName);
+            arrangeC(arName, request);
         }
-        return "product/shop";
     }
-    public String goSubCategory(Long mainCategoryId, Long subCategoryId, String arName, HttpServletRequest request) {
+    public void goSubCategory(Long mainCategoryId, Long subCategoryId, String arName, HttpServletRequest request) {
         subCategoryDTO = subCategoryService.getSubCategoryById(subCategoryId); //Long -> SubCategoryDTO
         mainCategoryDTO = mainCategoryService.getMainCategoryById(mainCategoryId); //Long -> MainCategoryDTO
         List<SubCategoryDTO> subCategories = subCategoryService.getSubCategoryByMainCategoryId(mainCategoryDTO); //서브카테고리 조회
@@ -177,22 +174,10 @@ public class ProductController {
         } else if(arName !=null){
             List<ProductDTO> products = productService.viewProductsBySubCategory(mainCategoryDTO, subCategoryDTO, arName);
             request.setAttribute("products", products);
-            switch (arName){
-                case "name": viewName = "이름 순";
-                    break;
-                case "new": viewName = "출시 순";
-                    break;
-                case "rating": viewName = "평점 순";
-                    break;
-                case "aprice": viewName = "가격: 가격 낮은 순";
-                    break;
-                case "dprice": viewName = "가격: 가격 높은 순";
-            };
-            request.setAttribute("viewName", viewName);
+            arrangeC(arName, request);
         }
-        return "product/shop";
     }
-    public String goMainMaterial(Long mainMaterialId, Long mainCategoryId, Long subCategoryId,String arName,HttpServletRequest request) {
+    public void goMainMaterial(Long mainMaterialId, Long mainCategoryId, Long subCategoryId,String arName,HttpServletRequest request) {
         mainMaterialDTO = mainMaterialService.getMainMaterialById(mainMaterialId); //Long -> MainMaterialDTO
         List<MainMaterialDTO> mainMaterials = mainMaterialService.viewAllMainMaterial(); //메인재료 선택후에도 메인 재료 선택하기 위함
         List<MainCategoryDTO> mainCategories = mainCategoryService.viewAllMainCategory(); //메인카테고리 선택후에도 메인 카테고리 선택하기 위함
@@ -245,11 +230,8 @@ public class ProductController {
         request.setAttribute("mainMaterialDetail",mainMaterialDetail);
         request.setAttribute("mainMaterials", mainMaterials);
         request.setAttribute("mainCategories",mainCategories);
-
-        return "product/shop";
     }
-
-    public String goEvent(Long eventId, Long mainCategoryId, Long subCategoryId, Long mainMaterialId, String arName, HttpServletRequest request){
+    public void goEvent(Long eventId, Long mainCategoryId, Long subCategoryId, Long mainMaterialId, String arName, HttpServletRequest request){
         List<MainCategoryDTO> mainCategories = mainCategoryService.viewAllMainCategory(); //메인카테고리 메뉴 조회
         List<MainMaterialDTO> mainMaterials = mainMaterialService.viewAllMainMaterial(); //메인 재료 메뉴 조회
         eventDTO = eventService.getEventById(eventId);
@@ -354,9 +336,9 @@ public class ProductController {
             request.setAttribute("mainMaterialDetail",mainMaterialDetail);
         }
 
+        request.setAttribute("eventDTO", eventDTO); //이벤트페이지라는것을 확인하기위함
         request.setAttribute("mainCategories", mainCategories);
         request.setAttribute("mainMaterials", mainMaterials);
-        return "product/shop";
     }
 
 
