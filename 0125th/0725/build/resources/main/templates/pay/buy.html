@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
+
+<th:block th:replace="/fragments/header"></th:block>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <link rel="stylesheet" href="../../static/css/common.css">
+    <link rel="stylesheet" href="../../static/css/buy.css">
+    <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+</head>
+<body>
+
+<!-- start: breadcrumbs -->
+<section class="row breadcrumbs max-inner">
+    <div class="columns col-12">
+        <ul class="breadcrumb-list">
+            <li><a href="../main/index.html">Home</a></li>
+            <li>Cart</li>
+            <li>Buy</li>
+        </ul>
+    </div>
+</section>
+<!-- end: breadcrumbs -->
+
+
+<main id="product">
+    <section class="order">
+        <nav>
+            <h1>주문결제</h1>
+            <p>
+                HOME >
+                <span>CART</span>
+                >
+                <strong>BUY</strong>
+            </p>
+        </nav>
+        <form th:action="@{/pay/order/{memberId}(memberId=${session.memberDTO.getMemberId()})}" method="post">
+
+            <!-- 배송정보 -->
+            <article class="delivery">
+                <h1>배송정보</h1>
+                <table>
+                    <tr>
+                        <td>이름</td>
+                        <td><input type="text" name="orderer" th:value="${session.memberDTO.getName}" style="width:133px;" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>휴대폰</td>
+                        <td>
+                            <input type="text" name="phone" style="width:133px; display:inline-block;">
+                            <span style="display:inline;">- 미포함 입력</span>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>우편번호</td>
+                        <td>
+                            <input type="text" name="zipcode" style="width:133px; display:inline-block;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>배송주소</td>
+                        <td>
+                            <input type="text" name="address">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>고객 요청사항</td>
+                        <td><input type="text" name="customerRequest"></td>
+                    </tr>
+                </table>
+            </article>
+            <!-- 결제 -->
+            <div class="final">
+                <h2>최종결제 정보</h2>
+                <table>
+                    <tr>
+                        <td>전체주문금액</td>
+                        <td th:text="'₩' + ${#numbers.formatInteger(totalPrice, 0, 'COMMA')}"></td>
+                    </tr>
+                </table>
+                <input type="submit" value="결제하기">
+                <h3>10만원 이상 주문시 배송비 무료!</h3>
+            </div>
+            <!-- 할인정보 -->
+            <article class="discount">
+                <h1>할인정보</h1>
+                <div>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>상품명</th>
+                            <th>진행중인 이벤트</th>
+                            <th>가격</th>
+                        </tr>
+                        </thead>
+                        <tbody th:each="entry : ${productEvents}">
+                        <tr>
+                            <td class="product-name" th:text="${entry.key.name}"></td>
+                            <td class="event" th:text="${entry.value}"></td>
+                            <td class="product-price" th:if="${entry.value != '이벤트 없음'}">
+                                <span th:with="discountedPrice=${entry.key.getPrice() * (1 - entry.key.getSalePercentage()/100.0)}">
+                                    <s th:text="'₩' + ${#numbers.formatInteger(entry.key.getPrice(), 0, 'COMMA')}"></s>
+                                    <span th:text="'₩' + ${#numbers.formatInteger(discountedPrice.intValue(), 0, 'COMMA')}"></span>
+                                </span>
+                            </td>
+                            <td th:if="${entry.value == '이벤트 없음'}">
+                                <span th:text="'₩' + ${#numbers.formatInteger(entry.key.getPrice(), 0, 'COMMA')}"></span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+            <!-- 결제방법 -->
+            <article class="payment">
+                <h1>결제방법</h1>
+                <div>
+                    <span>신용카드</span>
+                    <p>
+                        <label>
+                            <input type="radio" name="paymentMethod" value="1">신용카드 결제
+                        </label>
+                        <label>
+                            <input type="radio" name="paymentMethod" value="2">체크카드 결제
+                        </label>
+                    </p>
+                </div>
+                <div>
+                    <span>계좌이체</span>
+                    <p>
+                        <label>
+                            <input type="radio" name="paymentMethod" value="3">실시간 계좌이체
+                        </label>
+                        <label>
+                            <input type="radio" name="paymentMethod" value="4">무통장 입금
+                        </label>
+                    </p>
+                </div>
+                <div>
+                    <span>기타</span>
+                    <p>
+                        <label>
+                            <input type="radio" name="paymentMethod" value="5">휴대폰 결제
+                        </label>
+                        <label>
+                            <input type="radio" name="paymentMethod" value="6">카카오페이
+                            <img src="../../static/images/ico_kakaopay.gif" alt="카카오페이">
+                        </label>
+                    </p>
+                </div>
+            </article>
+            <!-- 경고 -->
+            <article class="alert">
+                <ul>
+                    <li><span>Leafton의 모든 판매자는 안전거래를 위해 구매금액, 결제수단에 상관없이 모든거래에 대하여 케이마켓 유한책임회사의 구매안전서비스(에스크로)를 제공하고 있습니다.
+                          </span></li>
+                    <li><span>Leafton 유한책임회사의 전자금융거래법에 의해 결제대금예치업 등록번호는 02-006-00008 입니다.
+                          </span></li>
+                    <li><span>등록여부는 금융감독원 홈페이지(www.fss.or.kr)의 업무자료>인허가업무안내>전자금융업등록현황에서 확인하실수 있습니다.
+                          </span></li>
+                </ul>
+            </article>
+
+        </form>
+    </section>
+</main>
+
+<br>
+<br>
+
+<th:block th:replace="/fragments/footer"></th:block>
+</body>
+</html>

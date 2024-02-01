@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Leafton</title>
+  <!--ddddd-->
+
+  <meta name="description" content="Leafton - 가구 쇼핑몰">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+
+  <link rel="stylesheet" href="../static/css/normalize-and-boilerplate.css" />
+  <link rel="stylesheet" href="../static/css/font-awesome.css" />
+  <link rel="stylesheet" href="../static/css/flexslider.css" />
+  <link rel="stylesheet" href="../static/css/style.css"/>
+</head>
+<body>
+  <!--페이지 하단 공통 부분 fragment-->
+  <th:block th:fragment="footerFragment">
+    <!-- start: footer -->
+    <footer class="footer">
+      <div class="row max-inner">
+        <!--회사 정보 탭-->
+        <div class="columns col-2">
+          <h3>Address</h3>
+          <p>
+            INDUK UNIV.<br/>
+            <br />
+            초안산로<br />
+            SEOUL, nowon<br />
+            <br />
+            <a href="#">induk.ac.kr</a><br />
+            (02) 950 7000<br />
+          </p>
+        </div>
+        <!--회사 정보 탭 끝-->
+        <!--고객 서비스 관련 탭-->
+        <div class="columns col-2">
+          <h3>Customer Service</h3>
+          <ul>
+            <li><a href="#">환불/배송 정책</a></li>
+            <li><a href="#">고객 센터</a></li>
+            <li><a href="/main/location">매장 찾기</a></li>
+          </ul>
+        </div>
+        <!--고객 서비스 관련 탭 끝-->
+        <!--계정 관련 탭-->
+        <div class="columns col-2">
+          <h3>Account</h3>
+          <ul>
+            <li th:if="${session.memberDTO!=null}"><a href="/member/login">로그아웃</a></li>
+            <li th:if="${session.memberDTO==null}"><a href="/member/logout">로그인</a></li>
+            <li th:if="${session.memberDTO==null}"><a href="/member/register">회원가입</a></li>
+            <li th:if="${session.memberDTO!=null}"><a href="/member/info">내 정보</a></li>
+          </ul>
+        </div>
+        <!--계정 관련 탭 끝-->
+        <div class="columns col-6">
+          <h3>Follow us</h3>
+          <div class="row">
+            <div class="columns col-12 social-links">
+              <a href="http://www.facebook.com"><i class="fa fa-facebook"></i></a>
+              <a href="http://www.twitter.com"><i class="fa fa-twitter"></i></a>
+              <a href="http://www.pinterest.co.kr"><i class="fa fa-pinterest"></i></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </footer>
+    <!-- end: footer -->
+
+
+    <!-- start: copyright -->
+    <section class="footer-copyright">
+      <div class="row max-inner">
+        <div class="columns col-7 col-centered">
+          <p>Copyright 2023 Leafton. All rights reserved.</p>
+        </div>
+      </div>
+    </section>
+    <!-- end: copyright -->
+  </th:block>
+</body>
+</html>

@@ -1,0 +1,58 @@
+.delete-btn {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    margin-bottom: 10px;
+    border-radius: 3px;
+}
+
+.delete-btn:hover {
+    background-color: darkgreen;
+    color: white;
+}
+
+.comment-btn {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 3px;
+}
+
+.comment-btn:hover {
+    background-color: darkgreen;
+    color: white;
+}
+
+.cart-btn{
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    margin-bottom: 10px;
+    border-radius: 3px;
+}
+.cart-btn:hover {
+    background-color: darkgreen;
+    color: white;
+}
