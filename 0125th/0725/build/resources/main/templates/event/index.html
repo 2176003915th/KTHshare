@@ -13,7 +13,7 @@
   </div>
   <div class="container">
     <div class="left">
-      <img class="thumb-image" th:src="${eventList.get(0).thumbImage}" th:onclick="|location.href='@{/product/shop/event?eventId='+${eventList.get(0).eventId}+'}'|"/>
+      <img class="thumb-image" th:src="${eventList.get(0).thumbImage}" th:onclick="|location.href='@{/product/shop?eventId='+${eventList.get(0).eventId}+'}'|"/>
     </div>
     <div class="right">
       <img class="thumb-image" th:src="${eventList.get(1).thumbImage}" th:onclick="|location.href='@{/product/shop?eventId='+${eventList.get(1).eventId}+'}'|"/>

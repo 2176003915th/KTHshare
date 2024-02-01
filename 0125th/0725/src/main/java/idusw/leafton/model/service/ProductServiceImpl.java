@@ -285,7 +285,7 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
                     productList = productRepository.findAllByEvent(Event.toEventEntity(eventDTO), Sort.by(Sort.Direction.DESC, "rating"));
                     break;
                 case "aprice":
-                    productList = productRepository.findAllByEvent(Event.toEventEntity(eventDTO),, Sort.by(Sort.Direction.ASC, "price"));
+                    productList = productRepository.findAllByEvent(Event.toEventEntity(eventDTO), Sort.by(Sort.Direction.ASC, "price"));
                     break;
                 case "dprice":
                     productList = productRepository.findAllByEvent(Event.toEventEntity(eventDTO), Sort.by(Sort.Direction.DESC, "price"));
@@ -303,6 +303,205 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
         }
         return productDTOList;
     }
+
+    @Override
+    public List<ProductDTO> viewProductsByEventAndMainCategory(EventDTO eventDTO, MainCategoryDTO mainCategoryDTO, String arName){
+        List<Product> productList = null;
+        if (arName == null) {
+            productList = productRepository.findAllByEventAndMainCategory(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                    Sort.by(Sort.Direction.ASC, "name"));
+        } else {
+            switch (arName) {
+                case "name":
+                    productList = productRepository.findAllByEventAndMainCategory(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            Sort.by(Sort.Direction.ASC, "name"));
+                    break;
+                case "new":
+                    productList = productRepository.findAllByEventAndMainCategory(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            Sort.by(Sort.Direction.ASC,"registDate"));
+                    break;
+                case "rating":
+                    productList = productRepository.findAllByEventAndMainCategory(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            Sort.by(Sort.Direction.DESC, "rating"));
+                    break;
+                case "aprice":
+                    productList = productRepository.findAllByEventAndMainCategory(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            Sort.by(Sort.Direction.ASC, "price"));
+                    break;
+                case "dprice":
+                    productList = productRepository.findAllByEventAndMainCategory(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            Sort.by(Sort.Direction.DESC, "price"));
+            };
+        }
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for(Product product: productList) {
+            Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
+            product.setRating(opAvgRating.orElse(0.0)); //평균평점을 구한것을 product테이블 rating 컬럼에 set함
+        }
+        productRepository.saveAll(productList); //다시 저장
+
+        for(Product product: productList) {
+            productDTOList.add(ProductDTO.toProductDTO(product)); //productDTO 객체안에 DTO 데이터 넣음
+        }
+        return productDTOList;
+    }
+
+    @Override
+    public List<ProductDTO> viewProductsByEventAndMcAndSc(EventDTO eventDTO, MainCategoryDTO mainCategoryDTO, SubCategoryDTO subCategoryDTO, String arName){
+        List<Product> productList = null;
+        if (arName == null) {
+            productList = productRepository.findAllByEventAndMainCategoryAndSubCategory(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                   SubCategory.toSubCategoryEntity(subCategoryDTO), Sort.by(Sort.Direction.ASC, "name"));
+        } else {
+            switch (arName) {
+                case "name":
+                    productList = productRepository.findAllByEventAndMainCategoryAndSubCategory(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), Sort.by(Sort.Direction.ASC, "name"));
+                    break;
+                case "new":
+                    productList = productRepository.findAllByEventAndMainCategoryAndSubCategory(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), Sort.by(Sort.Direction.ASC,"registDate"));
+                    break;
+                case "rating":
+                    productList = productRepository.findAllByEventAndMainCategoryAndSubCategory(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), Sort.by(Sort.Direction.DESC, "rating"));
+                    break;
+                case "aprice":
+                    productList = productRepository.findAllByEventAndMainCategoryAndSubCategory(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), Sort.by(Sort.Direction.ASC, "price"));
+                    break;
+                case "dprice":
+                    productList = productRepository.findAllByEventAndMainCategoryAndSubCategory(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), Sort.by(Sort.Direction.DESC, "price"));
+            };
+        }
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for(Product product: productList) {
+            Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
+            product.setRating(opAvgRating.orElse(0.0)); //평균평점을 구한것을 product테이블 rating 컬럼에 set함
+        }
+        productRepository.saveAll(productList); //다시 저장
+
+        for(Product product: productList) {
+            productDTOList.add(ProductDTO.toProductDTO(product)); //productDTO 객체안에 DTO 데이터 넣음
+        }
+        return productDTOList;
+    }
+
+    @Override
+    public List<ProductDTO> viewProductsByEventAndMainMaterial(EventDTO eventDTO, MainMaterialDTO mainMaterialDTO, String arName){
+        List<Product> productList = null;
+        if (arName == null) {
+            productList = productRepository.findAllByEventAndMainMaterial(Event.toEventEntity(eventDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO),
+                    Sort.by(Sort.Direction.ASC, "name"));
+        } else {
+            switch (arName) {
+                case "name":
+                    productList = productRepository.findAllByEventAndMainMaterial(Event.toEventEntity(eventDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO),  Sort.by(Sort.Direction.ASC, "name"));
+                    break;
+                case "new":
+                    productList = productRepository.findAllByEventAndMainMaterial(Event.toEventEntity(eventDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO),  Sort.by(Sort.Direction.ASC,"registDate"));
+                    break;
+                case "rating":
+                    productList = productRepository.findAllByEventAndMainMaterial(Event.toEventEntity(eventDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO),  Sort.by(Sort.Direction.DESC, "rating"));
+                    break;
+                case "aprice":
+                    productList = productRepository.findAllByEventAndMainMaterial(Event.toEventEntity(eventDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO),  Sort.by(Sort.Direction.ASC, "price"));
+                    break;
+                case "dprice":
+                    productList = productRepository.findAllByEventAndMainMaterial(Event.toEventEntity(eventDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO),  Sort.by(Sort.Direction.DESC, "price"));
+            };
+        }
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for(Product product: productList) {
+            Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
+            product.setRating(opAvgRating.orElse(0.0)); //평균평점을 구한것을 product테이블 rating 컬럼에 set함
+        }
+        productRepository.saveAll(productList); //다시 저장
+
+        for(Product product: productList) {
+            productDTOList.add(ProductDTO.toProductDTO(product)); //productDTO 객체안에 DTO 데이터 넣음
+        }
+        return productDTOList;
+    }
+    @Override
+    public List<ProductDTO> viewProductsByEventAndMcAndMm(EventDTO eventDTO, MainCategoryDTO mainCategoryDTO, MainMaterialDTO mainMaterialDTO, String arName){
+        List<Product> productList = null;
+        if (arName == null) {
+            productList = productRepository.findAllByEventAndMainCategoryAndMainMaterial(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),MainMaterial.toMainMaterialEntity(mainMaterialDTO),
+                    Sort.by(Sort.Direction.ASC, "name"));
+        } else {
+            switch (arName) {
+                case "name":
+                    productList = productRepository.findAllByEventAndMainCategoryAndMainMaterial(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),MainMaterial.toMainMaterialEntity(mainMaterialDTO),  Sort.by(Sort.Direction.ASC, "name"));
+                    break;
+                case "new":
+                    productList = productRepository.findAllByEventAndMainCategoryAndMainMaterial(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),MainMaterial.toMainMaterialEntity(mainMaterialDTO),  Sort.by(Sort.Direction.ASC,"registDate"));
+                    break;
+                case "rating":
+                    productList = productRepository.findAllByEventAndMainCategoryAndMainMaterial(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),MainMaterial.toMainMaterialEntity(mainMaterialDTO),  Sort.by(Sort.Direction.DESC, "rating"));
+                    break;
+                case "aprice":
+                    productList = productRepository.findAllByEventAndMainCategoryAndMainMaterial(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),MainMaterial.toMainMaterialEntity(mainMaterialDTO),  Sort.by(Sort.Direction.ASC, "price"));
+                    break;
+                case "dprice":
+                    productList = productRepository.findAllByEventAndMainCategoryAndMainMaterial(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),MainMaterial.toMainMaterialEntity(mainMaterialDTO),  Sort.by(Sort.Direction.DESC, "price"));
+            };
+        }
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for(Product product: productList) {
+            Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
+            product.setRating(opAvgRating.orElse(0.0)); //평균평점을 구한것을 product테이블 rating 컬럼에 set함
+        }
+        productRepository.saveAll(productList); //다시 저장
+
+        for(Product product: productList) {
+            productDTOList.add(ProductDTO.toProductDTO(product)); //productDTO 객체안에 DTO 데이터 넣음
+        }
+        return productDTOList;
+    }
+    @Override
+    public List<ProductDTO> viewProductsByEventAndMcAndScAndMm(EventDTO eventDTO, MainCategoryDTO mainCategoryDTO, SubCategoryDTO subCategoryDTO, MainMaterialDTO mainMaterialDTO, String arName) {
+        List<Product> productList = null;
+        if (arName == null) {
+            productList = productRepository.findAllByEventAndMainCategoryAndSubCategoryAndMainMaterial(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                    SubCategory.toSubCategoryEntity(subCategoryDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "name"));
+        } else {
+            switch (arName) {
+                case "name":
+                    productList = productRepository.findAllByEventAndMainCategoryAndSubCategoryAndMainMaterial(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "name"));
+                    break;
+                case "new":
+                    productList = productRepository.findAllByEventAndMainCategoryAndSubCategoryAndMainMaterial(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "registDate"));
+                    break;
+                case "rating":
+                    productList = productRepository.findAllByEventAndMainCategoryAndSubCategoryAndMainMaterial(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.DESC, "rating"));
+                    break;
+                case "aprice":
+                    productList = productRepository.findAllByEventAndMainCategoryAndSubCategoryAndMainMaterial(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "price"));
+                    break;
+                case "dprice":
+                    productList = productRepository.findAllByEventAndMainCategoryAndSubCategoryAndMainMaterial(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.DESC, "price"));
+            };
+        }
+            List<ProductDTO> productDTOList = new ArrayList<>();
+            for(Product product: productList) {
+                Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
+                product.setRating(opAvgRating.orElse(0.0)); //평균평점을 구한것을 product테이블 rating 컬럼에 set함
+            }
+            productRepository.saveAll(productList); //다시 저장
+
+            for(Product product: productList) {
+                productDTOList.add(ProductDTO.toProductDTO(product)); //productDTO 객체안에 DTO 데이터 넣음
+            }
+            return productDTOList;
+    }
+
 
     @Override
     public ProductDTO viewDetailProduct(Long productId) {

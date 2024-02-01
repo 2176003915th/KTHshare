@@ -757,6 +757,7 @@ Product Grid
         -o-transform: scale(1.1, 1.1);
         transform: scale(1.1, 1.1); }
   .product-grid .grid-item .grid-item-desc {
+    height: 165px;
     padding: 20px 0; }
     .product-grid .grid-item .grid-item-desc h2 {
       color: #6d6d6d;
