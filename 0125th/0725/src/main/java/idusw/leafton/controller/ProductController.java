@@ -2,6 +2,7 @@ package idusw.leafton.controller;
 
 import idusw.leafton.model.DTO.*;
 import idusw.leafton.model.entity.Event;
+import idusw.leafton.model.entity.MainMaterial;
 import idusw.leafton.model.service.*;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -74,9 +75,10 @@ public class ProductController {
                          @RequestParam(value = "mainMaterialId", required = false) Long mainMaterialId,
                          @RequestParam(value = "eventId", required = false) Long eventId,
                          HttpServletRequest request){
+        mainCategoryList(request); //메인카테고리 메뉴 조회
+        materialList(request);//메인 재료 메뉴 조회
         if (mainCategoryId == null && subCategoryId == null && mainMaterialId == null && eventId == null){ // 기본 조회
-            List<MainCategoryDTO> mainCategories = mainCategoryService.viewAllMainCategory(); //메인카테고리 메뉴 조회
-            List<MainMaterialDTO> mainMaterials = mainMaterialService.viewAllMainMaterial(); //메인 재료 메뉴 조회
+
             if(arName == null){
                 List<ProductDTO> products = productService.viewProducts(arName);
                 request.setAttribute("products", products);
@@ -85,9 +87,7 @@ public class ProductController {
                 request.setAttribute("products", products);
                 arrangeC(arName, request);
             }
-            request.setAttribute("mainCategories", mainCategories);
-            request.setAttribute("mainMaterials", mainMaterials);
-            return "product/shop";
+
 
         }
         else if (mainCategoryId != null && subCategoryId == null && mainMaterialId == null && eventId == null){ //메인카테고리만 조회
@@ -136,20 +136,41 @@ public class ProductController {
         };
         request.setAttribute("viewName", viewName);
     }
+    void mainCategoryList(HttpServletRequest request){
+        List<MainCategoryDTO> mainCategories = mainCategoryService.viewAllMainCategory();
+        request.setAttribute("mainCategories",mainCategories);
+    }
+    void mainCategoryDetail(Long mainCategoryId, HttpServletRequest request){
+        MainCategoryDTO mainCategoryDetail = mainCategoryService.getMainCategoryDetail(mainCategoryId);
+        request.setAttribute("mainCategoryDetail",mainCategoryDetail);
+    }
+    void subCategoryList(MainCategoryDTO mainCategoryDTO, HttpServletRequest request){
+        List<SubCategoryDTO> subCategories = subCategoryService.getSubCategoryByMainCategoryId(mainCategoryDTO);
+        request.setAttribute("subCategories",subCategories);
+    }
+    void subCategoryDetail(Long subCategoryId, HttpServletRequest request){
+        SubCategoryDTO subCategoryDetail = subCategoryService.getSubCategoryDetail(subCategoryId);
+        request.setAttribute("subCategoryDetail",subCategoryDetail);
+    }
+    void materialList(HttpServletRequest request){
+        List<MainMaterialDTO> mainMaterials = mainMaterialService.viewAllMainMaterial();
+        request.setAttribute("mainMaterials",mainMaterials);
+    }
+    void materialDetail(Long mainMaterialId, HttpServletRequest request){
+        MainMaterialDTO mainMaterialDetail = mainMaterialService.getMainMaterialDetail(mainMaterialId);
+        request.setAttribute("mainMaterialDetail",mainMaterialDetail);
+    }
+
+
     public void goMainCategory(Long mainCategoryId, String arName, HttpServletRequest request) {
         mainCategoryDTO = mainCategoryService.getMainCategoryById(mainCategoryId); //Long -> MainCategoryDTO
-        List<SubCategoryDTO> subCategories = subCategoryService.getSubCategoryByMainCategoryId(mainCategoryDTO); //서브카테고리 조회
-        List<MainMaterialDTO> mainMaterials = mainMaterialService.viewAllMainMaterial(); //메인 재료 조회
-        List<MainCategoryDTO> mainCategories = mainCategoryService.viewAllMainCategory(); //메인카테고리 선택후에도 기존에 메인카테고리 선택하기 위함
-        MainCategoryDTO mainCategoryDetail = mainCategoryService.getMainCategoryDetail(mainCategoryId); //메인카테고리 선택하면 메인카테고리메뉴에 해당이름 적용 또는 서브제목
-        request.setAttribute("subCategories", subCategories);
-        request.setAttribute("mainCategoryDetail", mainCategoryDetail);
-        request.setAttribute("mainCategories", mainCategories);
-        request.setAttribute("mainMaterials", mainMaterials);
+        mainCategoryDetail(mainCategoryId, request);
+        subCategoryList(mainCategoryDTO, request);
         if (arName == null) {
             List<ProductDTO> products = productService.viewProductsByMainCategory(mainCategoryDTO, arName); //메인카테고리별 상품조회
             request.setAttribute("products", products);
-        } else if(arName !=null){
+        }
+        else if(arName !=null){
             List<ProductDTO> products = productService.viewProductsByMainCategory(mainCategoryDTO, arName);
             request.setAttribute("products", products);
             arrangeC(arName, request);
@@ -158,16 +179,9 @@ public class ProductController {
     public void goSubCategory(Long mainCategoryId, Long subCategoryId, String arName, HttpServletRequest request) {
         subCategoryDTO = subCategoryService.getSubCategoryById(subCategoryId); //Long -> SubCategoryDTO
         mainCategoryDTO = mainCategoryService.getMainCategoryById(mainCategoryId); //Long -> MainCategoryDTO
-        List<SubCategoryDTO> subCategories = subCategoryService.getSubCategoryByMainCategoryId(mainCategoryDTO); //서브카테고리 조회
-        List<MainCategoryDTO> mainCategories = mainCategoryService.viewAllMainCategory(); //서브카테고리 선택후에도 기존에 메인카테고리 선택하기 위함
-        List<MainMaterialDTO> mainMaterials = mainMaterialService.viewAllMainMaterial(); //메인 재료 조회
-        SubCategoryDTO subCategoryDetail = subCategoryService.getSubCategoryDetail(subCategoryId); //서브카테고리 선택하면 서브카테고리메뉴에 선택한 서브카테고리이름 적용
-        MainCategoryDTO mainCategoryDetail = mainCategoryService.getMainCategoryDetail(mainCategoryId); //서브카테고리 선택후에도 기존에 선택한 메인카테고리 메뉴를 메인카테고리메뉴에 선택한해당메인카테고리이름 적
-        request.setAttribute("subCategories", subCategories);
-        request.setAttribute("mainCategoryDetail", mainCategoryDetail);
-        request.setAttribute("subCategoryDetail",subCategoryDetail);
-        request.setAttribute("mainCategories", mainCategories);
-        request.setAttribute("mainMaterials", mainMaterials);
+        subCategoryList(mainCategoryDTO, request); //서브카테고리 조회
+        subCategoryDetail(subCategoryId, request); //서브카테고리 선택하면 서브카테고리메뉴에 선택한 서브카테고리이름 적용
+        mainCategoryDetail(mainCategoryId, request); //서브카테고리 선택후에도 기존에 선택한 메인카테고리 메뉴를 메인카테고리메뉴에 선택한해당메인카테고리이름 적
         if (arName == null) {
             List<ProductDTO> products = productService.viewProductsBySubCategory(mainCategoryDTO, subCategoryDTO, arName); //서브카테고리별 상품조회
             request.setAttribute("products", products);
@@ -179,10 +193,8 @@ public class ProductController {
     }
     public void goMainMaterial(Long mainMaterialId, Long mainCategoryId, Long subCategoryId,String arName,HttpServletRequest request) {
         mainMaterialDTO = mainMaterialService.getMainMaterialById(mainMaterialId); //Long -> MainMaterialDTO
-        List<MainMaterialDTO> mainMaterials = mainMaterialService.viewAllMainMaterial(); //메인재료 선택후에도 메인 재료 선택하기 위함
-        List<MainCategoryDTO> mainCategories = mainCategoryService.viewAllMainCategory(); //메인카테고리 선택후에도 메인 카테고리 선택하기 위함
-        MainMaterialDTO mainMaterialDetail = mainMaterialService.getMainMaterialDetail(mainMaterialId); //메인재료 선택시 메인재료메뉴에 선택한 이름 유지
-
+        mainCategoryDetail(mainMaterialId, request); //메인재료 선택시 메인재료메뉴에 선택한 이름 유지
+        materialDetail(mainMaterialId, request);
         if(mainCategoryId == null && subCategoryId == null){ //메인 재료만 조회
             if (arName == null) {
                 List<ProductDTO> products = productService.viewProductsByMainMaterial(mainMaterialDTO, arName); //메인재료 상품 검색
@@ -195,8 +207,8 @@ public class ProductController {
         }
         else if (mainCategoryId != null && subCategoryId == null){ // 메인 재료 - 메인 카테고리 조회
             mainCategoryDTO = mainCategoryService.getMainCategoryById(mainCategoryId); //Long -> MainCategoryDTO
-            List<SubCategoryDTO> subCategories = subCategoryService.getSubCategoryByMainCategoryId(mainCategoryDTO); //서브카테고리 조회
-            MainCategoryDTO mainCategoryDetail = mainCategoryService.getMainCategoryDetail(mainCategoryId); //메인재료,메인카테고리 선택시 메인카테고리메뉴에 해당이름 적용
+            subCategoryList(mainCategoryDTO, request); //서브카테고리 조회
+            mainCategoryDetail(mainCategoryId, request); //메인재료,메인카테고리 선택시 메인카테고리메뉴에 해당이름 적용
             if (arName == null) {
                 List<ProductDTO> products = productService.viewProductsByMcAndMm(mainCategoryDTO, mainMaterialDTO, arName); //메인카테고리, 메인재료 상품조회
                 request.setAttribute("products", products);
@@ -205,14 +217,12 @@ public class ProductController {
                 request.setAttribute("products", products);
                 arrangeC(arName, request);
             }
-            request.setAttribute("subCategories", subCategories);
-            request.setAttribute("mainCategoryDetail", mainCategoryDetail);
         }
         else if (mainCategoryId != null && subCategoryId != null){ // 메인 재료 - 메인 카테고리 조회
             mainCategoryDTO = mainCategoryService.getMainCategoryById(mainCategoryId); //Long -> MainCategoryDTO
-            List<SubCategoryDTO> subCategories = subCategoryService.getSubCategoryByMainCategoryId(mainCategoryDTO); //서브카테고리 조회
-            MainCategoryDTO mainCategoryDetail = mainCategoryService.getMainCategoryDetail(mainCategoryId); //메인재료,메인카테고리 선택시 메인카테고리메뉴에 해당이름 적용
-            SubCategoryDTO subCategoryDetail = subCategoryService.getSubCategoryDetail(subCategoryId); //서브카테고리 선택하면 서브카테고리메뉴에 선택한 서브카테고리이름 적용
+            subCategoryList(mainCategoryDTO, request); //서브카테고리 조회
+            mainCategoryDetail(mainCategoryId, request); //메인재료,메인카테고리 선택시 메인카테고리메뉴에 해당이름 적용
+            subCategoryDetail(subCategoryId, request); //서브카테고리 선택하면 서브카테고리메뉴에 선택한 서브카테고리이름 적용
             if (arName == null) {
                 List<ProductDTO> products = productService.viewProductsByMcAndScAndMm(mainCategoryDTO,subCategoryDTO,mainMaterialDTO,arName); //메인카테고리-서브카테고리,메인재료 상품조회
                 request.setAttribute("products", products);
@@ -221,19 +231,10 @@ public class ProductController {
                 request.setAttribute("products", products);
                 arrangeC(arName, request);
             }
-            request.setAttribute("subCategories", subCategories);
-            request.setAttribute("mainCategoryDetail", mainCategoryDetail);
-            request.setAttribute("subCategoryDetail",subCategoryDetail);
-
         }
 
-        request.setAttribute("mainMaterialDetail",mainMaterialDetail);
-        request.setAttribute("mainMaterials", mainMaterials);
-        request.setAttribute("mainCategories",mainCategories);
     }
     public void goEvent(Long eventId, Long mainCategoryId, Long subCategoryId, Long mainMaterialId, String arName, HttpServletRequest request){
-        List<MainCategoryDTO> mainCategories = mainCategoryService.viewAllMainCategory(); //메인카테고리 메뉴 조회
-        List<MainMaterialDTO> mainMaterials = mainMaterialService.viewAllMainMaterial(); //메인 재료 메뉴 조회
         eventDTO = eventService.getEventById(eventId);
         if(mainCategoryId == null  && subCategoryId == null && mainMaterialId == null){ //이벤트 상품 조회
             if(arName == null) {
@@ -247,8 +248,8 @@ public class ProductController {
         }
         else if(mainCategoryId != null && subCategoryId == null && mainMaterialId == null){ //이벤트 - 메인카테고리 조회
             mainCategoryDTO = mainCategoryService.getMainCategoryById(mainCategoryId); //Long -> MainCategoryDTO
-            List<SubCategoryDTO> subCategories = subCategoryService.getSubCategoryByMainCategoryId(mainCategoryDTO); //메인 카테고리 선택했으니 서브 카테고리도 보여줌
-            MainCategoryDTO mainCategoryDetail = mainCategoryService.getMainCategoryDetail(mainCategoryId); //메인카테고리 선택하면 메인카테고리메뉴에 해당이름 적용 또는 서브제목
+            subCategoryList(mainCategoryDTO, request); //메인 카테고리 선택했으니 서브 카테고리도 보여줌
+            mainCategoryDetail(mainCategoryId, request); //메인카테고리 선택하면 메인카테고리메뉴에 해당이름 적용 또는 서브제목
             if (arName == null){
                 List<ProductDTO> products = productService.viewProductsByEventAndMainCategory(eventDTO, mainCategoryDTO ,arName);
                 request.setAttribute("products", products);
@@ -258,15 +259,13 @@ public class ProductController {
                 request.setAttribute("products", products);
                 arrangeC(arName, request);
             }
-            request.setAttribute("subCategories", subCategories);
-            request.setAttribute("mainCategoryDetail", mainCategoryDetail);
         }
         else if(mainCategoryId != null && subCategoryId != null && mainMaterialId == null){ //이벤트 - 메인카 - 서브카
             mainCategoryDTO = mainCategoryService.getMainCategoryById(mainCategoryId); //Long -> MainCategoryDTO
             subCategoryDTO = subCategoryService.getSubCategoryById(subCategoryId); //Long -> SubCategoryDTO
-            List<SubCategoryDTO> subCategories = subCategoryService.getSubCategoryByMainCategoryId(mainCategoryDTO);
-            SubCategoryDTO subCategoryDetail = subCategoryService.getSubCategoryDetail(subCategoryId);
-            MainCategoryDTO mainCategoryDetail = mainCategoryService.getMainCategoryDetail(mainCategoryId); //메인카테고리 선택하면 메인카테고리메뉴에 해당이름 적용 또는 서브제목
+            subCategoryList(mainCategoryDTO, request);
+            subCategoryDetail(subCategoryId, request);
+            mainCategoryDetail(mainCategoryId, request); //메인카테고리 선택하면 메인카테고리메뉴에 해당이름 적용 또는 서브제목
             if (arName == null){
                 List<ProductDTO> products = productService.viewProductsByEventAndMcAndSc(eventDTO, mainCategoryDTO , subCategoryDTO, arName);
                 request.setAttribute("products", products);
@@ -276,14 +275,10 @@ public class ProductController {
                 request.setAttribute("products", products);
                 arrangeC(arName, request);
             }
-
-            request.setAttribute("subCategories", subCategories);
-            request.setAttribute("mainCategoryDetail", mainCategoryDetail);
-            request.setAttribute("subCategoryDetail",subCategoryDetail);
         }
         else if(mainCategoryId == null && subCategoryId == null && mainMaterialId != null){ //이벤트 - 재료 조회
             mainMaterialDTO = mainMaterialService.getMainMaterialById(mainMaterialId); //Long -> MainMaterialDTO
-            MainMaterialDTO mainMaterialDetail = mainMaterialService.getMainMaterialDetail(mainMaterialId);
+            materialDetail(mainMaterialId, request);
             if (arName == null) {
                 List<ProductDTO> products = productService.viewProductsByEventAndMainMaterial(eventDTO, mainMaterialDTO, arName); //메인재료 상품 검색
                 request.setAttribute("products", products);
@@ -292,14 +287,13 @@ public class ProductController {
                 request.setAttribute("products", products);
                 arrangeC(arName, request);
             }
-            request.setAttribute("mainMaterialDetail",mainMaterialDetail);
         }
         else if(mainCategoryId != null && subCategoryId == null && mainMaterialId != null){
             mainCategoryDTO = mainCategoryService.getMainCategoryById(mainCategoryId);
             mainMaterialDTO = mainMaterialService.getMainMaterialById(mainMaterialId); //Long -> MainMaterialDTO
-            List<SubCategoryDTO> subCategories = subCategoryService.getSubCategoryByMainCategoryId(mainCategoryDTO); //메인 카테고리 선택했으니 서브 카테고리도 보여줌
-            MainCategoryDTO mainCategoryDetail = mainCategoryService.getMainCategoryDetail(mainCategoryId); //메인카테고리 선택하면 메인카테고리메뉴에 해당이름 적용 또는 서브제목
-            MainMaterialDTO mainMaterialDetail = mainMaterialService.getMainMaterialDetail(mainMaterialId);
+            subCategoryList(mainCategoryDTO, request); //메인 카테고리 선택했으니 서브 카테고리도 보여줌
+            mainCategoryDetail(mainCategoryId, request); //메인카테고리 선택하면 메인카테고리메뉴에 해당이름 적용 또는 서브제목
+            materialDetail(mainMaterialId, request);
             if (arName == null){
                 List<ProductDTO> products = productService.viewProductsByEventAndMcAndMm(eventDTO, mainCategoryDTO, mainMaterialDTO, arName);
                 request.setAttribute("products", products);
@@ -309,18 +303,15 @@ public class ProductController {
                 request.setAttribute("products", products);
                 arrangeC(arName, request);
             }
-            request.setAttribute("subCategories", subCategories);
-            request.setAttribute("mainCategoryDetail", mainCategoryDetail);
-            request.setAttribute("mainMaterialDetail",mainMaterialDetail);
         }
         else if(mainCategoryId != null && subCategoryId != null && mainMaterialId != null){
             mainCategoryDTO = mainCategoryService.getMainCategoryById(mainCategoryId); //Long -> MainCategoryDTO
             subCategoryDTO = subCategoryService.getSubCategoryById(subCategoryId); //Long -> SubCategoryDTO
             mainMaterialDTO = mainMaterialService.getMainMaterialById(mainMaterialId); //Long -> MainMaterialDTO
-            List<SubCategoryDTO> subCategories = subCategoryService.getSubCategoryByMainCategoryId(mainCategoryDTO);
-            SubCategoryDTO subCategoryDetail = subCategoryService.getSubCategoryDetail(subCategoryId);
-            MainCategoryDTO mainCategoryDetail = mainCategoryService.getMainCategoryDetail(mainCategoryId); //메인카테고리 선택하면 메인카테고리메뉴에 해당이름 적용 또는 서브제목
-            MainMaterialDTO mainMaterialDetail = mainMaterialService.getMainMaterialDetail(mainMaterialId);
+            subCategoryList(mainCategoryDTO, request);
+            subCategoryDetail(subCategoryId, request);
+            mainCategoryDetail(mainCategoryId, request); //메인카테고리 선택하면 메인카테고리메뉴에 해당이름 적용 또는 서브제목
+            materialDetail(mainMaterialId, request);
             if (arName == null){
                 List<ProductDTO> products = productService.viewProductsByEventAndMcAndScAndMm(eventDTO, mainCategoryDTO, subCategoryDTO, mainMaterialDTO, arName);
                 request.setAttribute("products", products);
@@ -330,15 +321,9 @@ public class ProductController {
                 request.setAttribute("products", products);
                 arrangeC(arName, request);
             }
-            request.setAttribute("subCategories", subCategories);
-            request.setAttribute("mainCategoryDetail", mainCategoryDetail);
-            request.setAttribute("subCategoryDetail",subCategoryDetail);
-            request.setAttribute("mainMaterialDetail",mainMaterialDetail);
         }
 
         request.setAttribute("eventDTO", eventDTO); //이벤트페이지라는것을 확인하기위함
-        request.setAttribute("mainCategories", mainCategories);
-        request.setAttribute("mainMaterials", mainMaterials);
     }
 
 
