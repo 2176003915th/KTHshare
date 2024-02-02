@@ -48,6 +48,8 @@ public class Product {
     private Integer price;
     @Column
     private Integer salePercentage;
+    @Formula("price - (price * sale_Percentage / 100)")
+    private BigDecimal calculatedPrice;
     @Column
     private Integer weight;
     @Column

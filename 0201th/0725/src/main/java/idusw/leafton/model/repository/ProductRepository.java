@@ -31,4 +31,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
     List<Product> findAllByEventAndMainMaterial(Event event, MainMaterial mainMaterial, Sort name);
     List<Product> findAllByEventAndMainCategoryAndMainMaterial(Event event, MainCategory mainCategory,MainMaterial mainMaterial, Sort name);
     List<Product> findAllByEventAndMainCategoryAndSubCategoryAndMainMaterial(Event event, MainCategory mainCategory, SubCategory subCategory, MainMaterial mainMaterial,Sort name);
+    List<Product> findAllByProductIdContaining(String keyword);
+
 }

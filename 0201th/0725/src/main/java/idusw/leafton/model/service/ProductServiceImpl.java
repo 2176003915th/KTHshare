@@ -36,10 +36,10 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
                     productList = productRepository.findAll(Sort.by(Sort.Direction.DESC, "rating"));
                     break;
                 case "aprice":
-                    productList = productRepository.findAll(Sort.by(Sort.Direction.ASC, "price"));
+                    productList = productRepository.findAll(Sort.by(Sort.Direction.ASC, "calculatedPrice"));
                     break;
                 case "dprice":
-                    productList = productRepository.findAll(Sort.by(Sort.Direction.DESC, "price"));
+                    productList = productRepository.findAll(Sort.by(Sort.Direction.DESC, "calculatedPrice"));
             };
         }
 
@@ -87,10 +87,10 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
                     productList = productRepository.findAllByMainCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO), Sort.by(Sort.Direction.DESC, "rating"));
                     break;
                 case "aprice":
-                    productList = productRepository.findAllByMainCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO), Sort.by(Sort.Direction.ASC, "price"));
+                    productList = productRepository.findAllByMainCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO), Sort.by(Sort.Direction.ASC, "calculatedPrice"));
                     break;
                 case "dprice":
-                    productList = productRepository.findAllByMainCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO), Sort.by(Sort.Direction.DESC, "price"));
+                    productList = productRepository.findAllByMainCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO), Sort.by(Sort.Direction.DESC, "calculatedPrice"));
             };
         }
         List<ProductDTO> productDTOList = new ArrayList<>();
@@ -128,11 +128,11 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
                     break;
                 case "aprice":
                     productList = productRepository.findAllByMainCategoryAndSubCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                            SubCategory.toSubCategoryEntity(subCategoryDTO), Sort.by(Sort.Direction.ASC, "price"));
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), Sort.by(Sort.Direction.ASC, "calculatedPrice"));
                     break;
                 case "dprice":
                     productList = productRepository.findAllByMainCategoryAndSubCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                            SubCategory.toSubCategoryEntity(subCategoryDTO), Sort.by(Sort.Direction.DESC, "price"));
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), Sort.by(Sort.Direction.DESC, "calculatedPrice"));
             };
         }
         List<ProductDTO> productDTOList = new ArrayList<>();
@@ -164,10 +164,10 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
                     productList = productRepository.findAllByMainMaterial(MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.DESC, "rating"));
                     break;
                 case "aprice":
-                    productList = productRepository.findAllByMainMaterial(MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "price"));
+                    productList = productRepository.findAllByMainMaterial(MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "calculatedPrice"));
                     break;
                 case "dprice":
-                    productList = productRepository.findAllByMainMaterial(MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.DESC, "price"));
+                    productList = productRepository.findAllByMainMaterial(MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.DESC, "calculatedPrice"));
             };
         }
         List<ProductDTO> productDTOList = new ArrayList<>();
@@ -204,11 +204,11 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
                     break;
                 case "aprice":
                     productList = productRepository.findAllByMainCategoryAndMainMaterial(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                            MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "price"));
+                            MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "calculatedPrice"));
                     break;
                 case "dprice":
                     productList = productRepository.findAllByMainCategoryAndMainMaterial(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                            MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.DESC, "price"));
+                            MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.DESC, "calculatedPrice"));
             };
         }
         List<ProductDTO> productDTOList = new ArrayList<>();
@@ -247,11 +247,11 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
                     break;
                 case "aprice":
                     productList = productRepository.findAllByMainCategoryAndSubCategoryAndMainMaterial(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                            SubCategory.toSubCategoryEntity(subCategoryDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "price"));
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "calculatedPrice"));
                     break;
                 case "dprice":
                     productList = productRepository.findAllByMainCategoryAndSubCategoryAndMainMaterial(MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                            SubCategory.toSubCategoryEntity(subCategoryDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.DESC, "price"));
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.DESC, "calculatedPrice"));
             };
         }
         List<ProductDTO> productDTOList = new ArrayList<>();
@@ -285,10 +285,10 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
                     productList = productRepository.findAllByEvent(Event.toEventEntity(eventDTO), Sort.by(Sort.Direction.DESC, "rating"));
                     break;
                 case "aprice":
-                    productList = productRepository.findAllByEvent(Event.toEventEntity(eventDTO), Sort.by(Sort.Direction.ASC, "price"));
+                    productList = productRepository.findAllByEvent(Event.toEventEntity(eventDTO), Sort.by(Sort.Direction.ASC, "calculatedPrice"));
                     break;
                 case "dprice":
-                    productList = productRepository.findAllByEvent(Event.toEventEntity(eventDTO), Sort.by(Sort.Direction.DESC, "price"));
+                    productList = productRepository.findAllByEvent(Event.toEventEntity(eventDTO), Sort.by(Sort.Direction.DESC, "calculatedPrice"));
             };
         }
         List<ProductDTO> productDTOList = new ArrayList<>();
@@ -326,11 +326,11 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
                     break;
                 case "aprice":
                     productList = productRepository.findAllByEventAndMainCategory(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                            Sort.by(Sort.Direction.ASC, "price"));
+                            Sort.by(Sort.Direction.ASC, "calculatedPrice"));
                     break;
                 case "dprice":
                     productList = productRepository.findAllByEventAndMainCategory(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                            Sort.by(Sort.Direction.DESC, "price"));
+                            Sort.by(Sort.Direction.DESC, "calculatedPrice"));
             };
         }
         List<ProductDTO> productDTOList = new ArrayList<>();
@@ -368,11 +368,11 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
                     break;
                 case "aprice":
                     productList = productRepository.findAllByEventAndMainCategoryAndSubCategory(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                            SubCategory.toSubCategoryEntity(subCategoryDTO), Sort.by(Sort.Direction.ASC, "price"));
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), Sort.by(Sort.Direction.ASC, "calculatedPrice"));
                     break;
                 case "dprice":
                     productList = productRepository.findAllByEventAndMainCategoryAndSubCategory(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                            SubCategory.toSubCategoryEntity(subCategoryDTO), Sort.by(Sort.Direction.DESC, "price"));
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), Sort.by(Sort.Direction.DESC, "calculatedPrice"));
             };
         }
         List<ProductDTO> productDTOList = new ArrayList<>();
@@ -406,10 +406,10 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
                     productList = productRepository.findAllByEventAndMainMaterial(Event.toEventEntity(eventDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO),  Sort.by(Sort.Direction.DESC, "rating"));
                     break;
                 case "aprice":
-                    productList = productRepository.findAllByEventAndMainMaterial(Event.toEventEntity(eventDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO),  Sort.by(Sort.Direction.ASC, "price"));
+                    productList = productRepository.findAllByEventAndMainMaterial(Event.toEventEntity(eventDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO),  Sort.by(Sort.Direction.ASC, "calculatedPrice"));
                     break;
                 case "dprice":
-                    productList = productRepository.findAllByEventAndMainMaterial(Event.toEventEntity(eventDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO),  Sort.by(Sort.Direction.DESC, "price"));
+                    productList = productRepository.findAllByEventAndMainMaterial(Event.toEventEntity(eventDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO),  Sort.by(Sort.Direction.DESC, "calculatedPrice"));
             };
         }
         List<ProductDTO> productDTOList = new ArrayList<>();
@@ -442,10 +442,10 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
                     productList = productRepository.findAllByEventAndMainCategoryAndMainMaterial(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),MainMaterial.toMainMaterialEntity(mainMaterialDTO),  Sort.by(Sort.Direction.DESC, "rating"));
                     break;
                 case "aprice":
-                    productList = productRepository.findAllByEventAndMainCategoryAndMainMaterial(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),MainMaterial.toMainMaterialEntity(mainMaterialDTO),  Sort.by(Sort.Direction.ASC, "price"));
+                    productList = productRepository.findAllByEventAndMainCategoryAndMainMaterial(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),MainMaterial.toMainMaterialEntity(mainMaterialDTO),  Sort.by(Sort.Direction.ASC, "calculatedPrice"));
                     break;
                 case "dprice":
-                    productList = productRepository.findAllByEventAndMainCategoryAndMainMaterial(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),MainMaterial.toMainMaterialEntity(mainMaterialDTO),  Sort.by(Sort.Direction.DESC, "price"));
+                    productList = productRepository.findAllByEventAndMainCategoryAndMainMaterial(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),MainMaterial.toMainMaterialEntity(mainMaterialDTO),  Sort.by(Sort.Direction.DESC, "calculatedPrice"));
             };
         }
         List<ProductDTO> productDTOList = new ArrayList<>();
@@ -482,11 +482,11 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
                     break;
                 case "aprice":
                     productList = productRepository.findAllByEventAndMainCategoryAndSubCategoryAndMainMaterial(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                            SubCategory.toSubCategoryEntity(subCategoryDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "price"));
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.ASC, "calculatedPrice"));
                     break;
                 case "dprice":
                     productList = productRepository.findAllByEventAndMainCategoryAndSubCategoryAndMainMaterial(Event.toEventEntity(eventDTO), MainCategory.toMainCategoryEntity(mainCategoryDTO),
-                            SubCategory.toSubCategoryEntity(subCategoryDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.DESC, "price"));
+                            SubCategory.toSubCategoryEntity(subCategoryDTO), MainMaterial.toMainMaterialEntity(mainMaterialDTO), Sort.by(Sort.Direction.DESC, "calculatedPrice"));
             };
         }
         List<ProductDTO> productDTOList = new ArrayList<>();
