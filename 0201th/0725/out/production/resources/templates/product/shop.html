@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="/fragments/header"></th:block>
+<!-- start: breadcrumbs -->
+<link rel="stylesheet" href="/static/css/ratingView.css" />
+<link rel="stylesheet" href="/static/css/dropdown.css" />
+<!-- end: header -->
+
+<!-- start: breadcrumbs -->
+<section class="row breadcrumbs max-inner">
+  <div class="columns col-12">
+    <ul class="breadcrumb-list">
+      <li><a href="/main/index.html">Home</a></li>
+      <li>Product results</li>
+    </ul>
+  </div>
+</section>
+<!-- end: breadcrumbs -->
+
+
+<!-- start: sort + product nav -->
+<section class="filter-sort">
+  <div class="row max-inner">
+
+    <!--메인카테고리 메뉴 시작-->
+    <div class="dropdown">
+      <button class="dropbtn">
+        <span class="dropbtn_icon" th:if="${mainCategoryDetail == null}"> 카테고리</span>
+        <span class="dropbtn_icon" th:unless="${mainCategoryDetail == null}" th:text="${mainCategoryDetail.name}"></span>
+      </button>
+      <div class="dropdown-content">
+        <ul class="main-category" th:each="mainCategory : ${mainCategories}">
+          <li><a th:href="@{/product/shop/mainCategory(mainCategoryId=${mainCategory.mainCategoryId})}" th:text="${mainCategory.name}"></a></li>
+        </ul>
+      </div>
+    </div>
+    <!--메인카테고리 메뉴 끝-->
+    <!--서브카테고리 메뉴 시작-->
+    <div th:if="${subCategories == null}" class="dropdown">
+      <button class="dropbtn" type="disabled">
+        <span class="dropbtn_icon"></span>
+        메인 카테고리를 선택해주세요.
+      </button>
+    </div>
+    <div th:unless="${subCategories == null}" class="dropdown">
+      <button class="dropbtn">
+        <span class="dropbtn_icon" th:if="${subCategoryDetail == null}" th:text="${mainCategoryDetail.name} + '서브 카테고리'"></span>
+        <span class="dropbtn_icon" th:unless="${subCategoryDetail == null}" th:text="${subCategoryDetail.name}"></span>
+      </button>
+      <div class="dropdown-content">
+        <ul class="sub-category" th:each="subCategory : ${subCategories}">
+          <li><a th:href="@{/product/shop/subCategory(mainCategoryId=${subCategory.mainCategoryDTO.mainCategoryId},subCategoryId=${subCategory.subCategoryId})}" th:text="${subCategory.name}"></a></li>
+        </ul>
+      </div>
+    </div>
+    <!--서브카테고리 메뉴 끝-->
+    <!--재료 메뉴 시작-->
+    <div class="dropdown">
+      <button class="dropbtn">
+        <span class="dropbtn_icon" th:if="${mainMaterialDetail == null}"> 재료</span>
+        <span class="dropbtn_icon" th:if="${mainMaterialDetail != null and mainCategoryDetail == null and SubCategoryDetail == null}" th:text="${mainMaterialDetail.name}"></span>
+        <span class="dropbtn_icon" th:if="${mainMaterialDetail != null and mainCategoryDetail != null and SubCategoryDetail == null}" th:text="${mainMaterialDetail.name}"></span>
+        <span class="dropbtn_icon" th:if="${mainMaterialDetail != null and mainCategoryDetail != null and SubCategoryDetail != null}" th:text="${mainMaterialDetail.name}"></span>
+      </button>
+      <div class="dropdown-content">
+        <ul th:if="${mainCategoryDetail == null}" class="main-category" th:each="mainMaterial : ${mainMaterials}">
+          <li><a th:href="@{/product/shop/material(mainMaterialId=${mainMaterial.mainMaterialId})}" th:text="${mainMaterial.name}"></a></li>
+        </ul>
+        <ul th:if="${mainCategoryDetail != null and subCategoryDetail == null}" class="main-category" th:each="mainMaterial : ${mainMaterials}">
+          <li><a th:href="@{/product/shop/mainCategory-material(mainCategoryId=${mainCategoryDetail.mainCategoryId},mainMaterialId=${mainMaterial.mainMaterialId})}" th:text="${mainMaterial.name}"></a></li>
+        </ul>
+        <ul th:if="${mainCategoryDetail != null and subCategoryDetail !=null}" class="main-category" th:each="mainMaterial : ${mainMaterials}">
+          <li><a th:href="@{/product/shop/mainCategory-subCategory-material(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},mainMaterialId=${mainMaterial.mainMaterialId})}" th:text="${mainMaterial.name}"></a></li>
+        </ul>
+      </div>
+    </div>
+    <!--재료 메뉴 끝-->
+
+  </div>
+</section>
+<!-- end: sort + product nav -->
+
+
+
+<!-- start: product grid -->
+<section class="product-grid shop-grid">
+
+  <div class="row max-inner sortable-grid">
+
+    <!-- start: grid item -->
+    <div class="columns col-3 grid-item" th:each="product : ${products}">
+      <div class="grid-item-media"><a th:href="@{/product/product/{productId}(productId=${product.productId})}"><img src="../../static/images/grid-item-image-1.jpg" /></a></div>
+      <div class="grid-item-desc">
+        <h2>
+          <a class="grid-item-link" th:href="@{/product/product/{productId}(productId=${product.productId})}">
+            <span class="grid-item-meta" th:text="${product.productId}"></span><hr />
+              <span style="color: black" class="product-name" th:text="${product.name}"></span>
+            <span style="color: #282828" class="grid-item-price" th:if="${product.salePercentage == null}" th:text="'₩ ' + ${#numbers.formatInteger(product.price, 1, 'COMMA')}"></span>
+            <span class="grid-item-price" th:unless="${product.salePercentage == null}">
+              <s th:text="'₩ ' + ${#numbers.formatInteger(product.price, 1, 'COMMA')}"></s>
+              <span style="color: fuchsia;" th:text="${product.salePercentage} + '%'"></span>
+              <span th:with="discountedPrice=${product.price * (1 - product.salePercentage / 100.0)}"
+                    style="color: red;" th:text="'₩ ' + ${#numbers.formatInteger(discountedPrice.intValue(), 0, 'COMMA')}"></span>
+            </span>
+
+          </a>
+        </h2>
+      </div>
+    </div>
+    <!-- end: grid item -->
+
+    <!-- end: grid item -->
+
+  </div>
+</section>
+<!-- end: product grid -->
+
+
+
+<!-- start: bottom pagination -->
+<section class="product-pagination">
+  <div class="row max-inner">
+    <div class="columns col-12">
+      <ul class="paging-list">
+        <li><a href="#"><i class="fa fa-caret-left"></i></a></li>
+        <li><a href="#">1</a></li>
+        <li><a href="#" class="current-prod-page">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#"><i class="fa fa-caret-right"></i></a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- end: bottom pagination -->
+
+
+
+<!-- start: footer -->
+<th:block th:replace="/fragments/footer"></th:block>
+</body>
+</html> 

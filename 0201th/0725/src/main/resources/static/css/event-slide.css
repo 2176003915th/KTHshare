@@ -1,0 +1,21 @@
+.slide{
+    width:1000px;
+    height:500px;
+    margin:auto;
+    overflow: hidden;
+}
+.slideTab{
+    width:5000px;
+    height:100%;
+}
+.photoFrame{
+    width:1000px;
+    height:100%;
+    float:left;
+}
+.slideTab img{
+    width:1000px;
+    margin-left: 0%;
+    height:500px;
+    object-fit: cover;
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="/fragments/header :: headerFragment"></th:block>
+<head>
+  <link rel="stylesheet" href="/static/css/event-slide.css"/>
+</head>
+<body>
+<!-- 현재 이벤트 슬라이드 -->
+<div class="slide">
+  <div class="slideTab" id="imageTab">
+    <div class="photoFrame">
+      <img src="/static/images/event/main/1.png" onclick="location.href='../product/index.html'">
+    </div>
+    <div class="photoFrame">
+      <img src="/static/images/event/main/2.png" onclick="location.href='../product/index.html'">
+    </div>
+    <div class="photoFrame">
+      <img src="/static/images/event/main/3.png" onclick="location.href='../product/index.html'">
+    </div>
+    <div class="photoFrame">
+      <img src="/static/images/event/main/4.png" onclick="location.href='../product/index.html'">
+    </div>
+    <div class="photoFrame">
+      <img src="/static/images/event/main/5.jpg" onclick="location.href='../product/index.html'">
+    </div>
+  </div>
+</div>
+</section>
+<!-- 현재 이벤트 슬라이드 끝 -->
+<br>
+<!-- 할인 중인 상품 탭 -->
+<section class="product-grid">
+  <header class="row section-header max-inner">
+    <div class="columns-12 col-centered">
+      <h2>New Products</h2><hr/>
+    </div>
+  </header>
+</section>
+<!-- 할인 중인 상품 탭 끝 -->
+<!-- footer -->
+<th:block th:replace="/fragments/footer :: footerFragment"></th:block>
+<!-- footer 끝 -->
+<script src="/static/js/slide.js"></script>
+<script th:inline="javascript">
+  let message = [[${message}]]; //controller에서 날린 request 객체에 담긴 메세지
+
+  if(message!=null){
+    alert(message);
+  }
+</script>
+</body>
+</html>

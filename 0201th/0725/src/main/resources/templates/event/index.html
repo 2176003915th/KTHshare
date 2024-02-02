@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="/fragments/header :: headerFragment"></th:block>
+<head>
+  <link rel="stylesheet" href="../../static/css/eventPage.css">
+</head>
+<body>
+<div class="row max-inner">
+  <!--이번 주의 이벤트 탭-->
+  <div class="top">
+    <span>이번 주의 이벤트</span><br>
+    이벤트를 통해 새롭게 가격이 낮아진 제품들을 확인해보세요.
+  </div>
+  <div class="container">
+    <div class="left">
+      <img class="thumb-image" th:src="${eventList.get(0).thumbImage}" th:onclick="|location.href='@{/product/shop(eventId=${eventList.get(0).eventId})}'|"/>
+    </div>
+    <div class="right">
+      <img class="thumb-image" th:src="${eventList.get(1).thumbImage}" th:onclick="|location.href='@{/product/shop(eventId=${eventList.get(1).eventId})}'|"/>
+    </div>
+  </div>
+  <!--이번 주의 이벤트 탭 끝-->
+  <!--공백-->
+  <div class="blank"></div>
+  <!--공백 끝-->
+  <!--이벤트 소개 탭-->
+  <div class="text-with-image">
+    <div class="image-area">
+      <img class="main-image" th:src="${eventList.get(2).mainImage}" th:onclick="|location.href='@{/product/shop(eventId=${eventList.get(2).eventId})}'|"/>
+    </div>
+    <div class="text-area">
+      <div class="title-area">
+        <span th:text="${eventList.get(2).title}"></span>
+      </div>
+      <div class="content-area">
+        <span th:text="${eventList.get(2).content}"></span><br><br>
+        <button type="button" th:onclick="|location.href='@{/product/shop(eventId=${eventList.get(2).eventId})}'|">자세히 보기</button>
+      </div>
+    </div>
+  </div>
+  <!--이벤트 소개 탭 끝-->
+  <!--공백-->
+  <div class="blank"></div>
+  <!--공백 끝-->
+  <!--이벤트 갤러리 탭-->
+  <div class="gallery">
+    <div class="top">
+      <span>이벤트 둘러보기</span>
+    </div>
+    <div class="bar">
+      <div>
+        <img class="main-image" th:src="${eventList.get(0).subImage}" th:onclick="|location.href='@{/product/shop(eventId=${eventList.get(0).eventId})}'|"/>
+      </div>
+      <div>
+        <img class="main-image" th:src="${eventList.get(1).subImage}" th:onclick="|location.href='@{/product/shop(eventId=${eventList.get(1).eventId})}'|"/>
+      </div>
+    </div>
+    <div class="middle-bar">
+      <img class="main-image" th:src="${eventList.get(2).thumbImage}" th:onclick="|location.href='@{/product/shop(eventId=${eventList.get(2).eventId})}'|"/>
+    </div>
+    <div class="bar">
+      <div>
+        <img class="main-image" th:src="${eventList.get(3).subImage}" th:onclick="|location.href='@{/product/shop(eventId=${eventList.get(3).eventId})}'|"/>
+      </div>
+      <div>
+        <img class="main-image" th:src="${eventList.get(4).subImage}" th:onclick="|location.href='@{/product/shop(eventId=${eventList.get(4).eventId})}'|"/>
+      </div>
+    </div>
+  </div>
+  <!--이벤트 갤러리 탭 끝-->
+  <br><br>
+</div>
+<br>
+<th:block th:replace="/fragments/footer :: footerFragment"></th:block>
+</body>
+</html>
