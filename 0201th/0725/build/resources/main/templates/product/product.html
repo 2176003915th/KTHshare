@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="../../static/css/productPageBtn.css">
   <link rel="stylesheet" href="../../static/css/payForm.css">
   <link rel="stylesheet" href="../../static/css/style.css">
+  <link rel="stylesheet" href="../../static/css/btndisabled.css">
 
   <script src="https://kit.fontawesome.com/c0890a4f25.js" crossorigin="anonymous"></script>
   <script src="../..//static/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
@@ -63,12 +64,12 @@
 
     <div id="contentp" style="display:inline-block">
       <div id ="mainImages">
-        <img id="mainI" src="../../static/images/이벤트6.jpg">
+        <img id="mainI" th:src="${productDetail.mainImage}">
       </div>
       <div id="subImages">
-        <a href="#"><img class="subI" src="../../static/images/이벤트6.jpg"></a>
-        <a href="#"><img class="subI" src="../../static/images/이벤트4.png"></a>
-        <a href="#"><img class="subI" src="../../static/images/이벤트5.png"></a>
+        <a href="#"><img class="subI" th:src="${productDetail.mainImage}"></a>
+        <a href="#"><img class="subI" src="/static/images/product/main/화이트소파.jpg"></a>
+        <a href="#"><img class="subI" src="/static/images/product/main/흑소파.jpg"></a>
       </div>
     </div>
 
@@ -124,15 +125,15 @@
       <div class="row product-options">
 
         <div class="columns col-4 sort-options">
-          <span class="label-text" th:text="'SIZE : ' + ${productDetail.size}"></span>
+          <span class="label-text" th:text="'크기 : ' + ${productDetail.size}"></span>
         </div>
 
         <div class="columns col-4 sort-options">
-          <span class="label-text" th:text="'Color : ' + ${productDetail.color}"></span>
+          <span class="label-text" th:text="'색상 : ' + ${productDetail.color}"></span>
         </div>
 
         <div class="columns col-4 sort-options">
-          <span class="label-text" th:text="'Maker : ' + ${productDetail.maker}"></span>
+          <span class="label-text" th:text="'제조사 : ' + ${productDetail.maker}"></span>
         </div>
       </div>
 
@@ -213,7 +214,7 @@
 
     <!-- start: grid item -->
     <div class="columns col-3 grid-item" th:each="product : ${products}">
-      <div class="grid-item-media"><a th:href="@{/product/product/{productId}(productId=${product.productId})}"><img src="../../static/images/이벤트6.jpg" /></a></div>
+      <div class="grid-item-media"><a th:href="@{/product/product/{productId}(productId=${product.productId})}"><img th:src="${product.mainImage}" /></a></div>
       <div class="grid-item-desc">
         <h2>
           <a class="grid-item-link" th:href="@{/product/product/{productId}(productId=${product.productId})}">
@@ -328,15 +329,21 @@
       </div>
     </li>
   </ul>
-  <section class="product-pagination">
+  <section th:if="${ratingAvg != null}" class="product-pagination">
     <div class="row max-inner" style="justify-content: center; align-items: center;">
       <div class="columns col-12">
         <ul class="paging-list">
-          <li><a href="#"><i class="fa fa-caret-left"></i></a></li>
-          <li><a th:href="@{/product/product/{productId}(productId=${productDetail.productId}, p=1)}"class="current-prod-page">1</a></li>
-          <li><a th:href="@{/product/product/{productId}(productId=${productDetail.productId}, p=2)}">2</a></li>
-          <li><a th:href="@{/product/product/{productId}(productId=${productDetail.productId}, p=3)}">3</a></li>
-          <li><a href="#"><i class="fa fa-caret-right"></i></a></li>
+          <li><a th:href="@{/product/product/{productId}(productId=${productDetail.productId}, p=1)}">처음으로</a></li>
+          <li>
+            <a th:class="${reviewPageList.first} ? 'disabled'" th:href="@{/product/product/{productId}(productId=${productDetail.productId}, p=${reviewPageList.number})}"><i class="fa fa-caret-left"></i></a>
+          </li>
+          <li th:each="page : ${#numbers.sequence(startPage, endPage)}">
+            <a th:href="@{/product/product/{productId}(productId=${productDetail.productId}, p=${page})}" th:class="${page == currentPage ? 'current-prod-page':''}" th:text="${page}"></a>
+          </li>
+          <li>
+            <a th:class="${reviewPageList.last} ? 'disabled'" th:href="@{/product/product/{productId}(productId=${productDetail.productId}, p=${reviewPageList.number + 2})}"><i class="fa fa-caret-right"></i></a>
+          </li>
+          <li><a th:href="@{/product/product/{productId}(productId=${productDetail.productId}, p=${reviewPageList.totalPages})}">마지막으로</a></li>
         </ul>
       </div>
     </div>

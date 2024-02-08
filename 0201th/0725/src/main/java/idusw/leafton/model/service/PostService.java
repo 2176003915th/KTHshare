@@ -6,5 +6,5 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface PostService {
-    Page<ReviewDTO> getReviewPageList(Pageable pageable, int pageNo, String criteria, ProductDTO productDTO);
+    Page<ReviewDTO> getReviewPageList(Pageable reviewPageable, int pageNo, String criteria, ProductDTO productDTO);
 }

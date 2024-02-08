@@ -5,7 +5,7 @@ import idusw.leafton.model.entity.*;
 import idusw.leafton.model.repository.MainCategoryRepository;
 import idusw.leafton.model.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import idusw.leafton.model.repository.ProductRepository;
@@ -56,8 +56,8 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
     }
 
     @Override
-    public List<ProductDTO> viewProductsByMainCategory(MainCategoryDTO mainCategoryDTO){
-        List<Product> productList = productRepository.findAllByMainCategory(MainCategory.toMainCategoryEntity(mainCategoryDTO), Sort.by(Sort.Direction.ASC, "name"));
+    public List<ProductDTO> productDetailByMainCategory(Long mainCategoryId){
+        List<Product> productList = productRepository.findRandomProductsByMainCategory(mainCategoryId);
         List<ProductDTO> productDTOList = new ArrayList<>();
         for(Product product: productList) {
             Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
@@ -502,6 +502,32 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
         return productDTOList;
     }
 
+    @Override
+    public List<ProductDTO> viewProductsByMainCategoryName(String searchValue){
+        List<Product> productList = null;
+        productList = productRepository.findAllByMainCategoryNameContaining(searchValue);
+
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for(Product product: productList) {
+            Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
+            product.setRating(opAvgRating.orElse(0.0)); //평균평점을 구한것을 product테이블 rating 컬럼에 set함
+        }
+        productRepository.saveAll(productList); //다시 저장
+
+        for(Product product: productList) {
+            productDTOList.add(ProductDTO.toProductDTO(product)); //productDTO 객체안에 DTO 데이터 넣음
+        }
+        return productDTOList;
+    }
+
+//    @Override
+//    public Slice<ProductDTO> viewProductsSlice(int pageNo){
+//        Pageable pageable = PageRequest.of(pageNo, 4);
+//        Slice<Product> productSlice = productRepository.findAllBy(pageable);
+//        Slice<ProductDTO> productDTOSlice = productSlice.map(ProductDTO::toProductDTO);
+//        return productDTOSlice;
+//    }
+
 
     @Override
     public ProductDTO viewDetailProduct(Long productId) {
@@ -509,12 +535,7 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
         ProductDTO productDTO = new ProductDTO();
         if (opProduct.isPresent()) {
             Product product = opProduct.get();
-
-            productDTO.setProductId(product.getProductId());
-            productDTO.setName(product.getName());
-            productDTO.setPrice(product.getPrice());
-            productDTO.setContent(product.getContent());
-            productDTO.setSalePercentage(product.getSalePercentage());
+            productDTO = ProductDTO.toProductDTO(product);
             // findById로 받아온 결과값들을 DTO에 저장함
 
             return productDTO;
