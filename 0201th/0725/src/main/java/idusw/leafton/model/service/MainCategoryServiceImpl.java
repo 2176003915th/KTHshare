@@ -38,7 +38,7 @@ public class MainCategoryServiceImpl implements MainCategoryService{
 
            return mainCategoryDTO;
        } else {
-           throw new IllegalArgumentException("해당 ID의 상품이 없습니다. ID: " + mainCategoryDTO.getMainCategoryId());
+           return null;
        }
    }
 

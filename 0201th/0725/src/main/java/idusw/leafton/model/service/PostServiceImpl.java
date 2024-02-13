@@ -20,8 +20,8 @@ public class PostServiceImpl implements PostService{
 
     private final ReviewRepository reviewRepository;
     @Override
-    public Page<ReviewDTO> getReviewPageList(Pageable reviewPageable, int pageNo, String criteria, ProductDTO productDTO){
-        reviewPageable = PageRequest.of(pageNo, 2, Sort.by(Sort.Direction.DESC, criteria)); //페이지하나에 얼마나 할당할건지 저굥ㅇ
+    public Page<ReviewDTO> getReviewPageList(int pageNo, String criteria, ProductDTO productDTO){
+        Pageable reviewPageable = PageRequest.of(pageNo, 2, Sort.by(Sort.Direction.DESC, criteria)); //페이지하나에 얼마나 할당할건지 저굥ㅇ
         Page<Review> reviewPageList = reviewRepository.findAllByProduct(Product.toProductEntity(productDTO), reviewPageable);
         Page<ReviewDTO> reviewDTOPageList = reviewPageList.map(ReviewDTO::toReviewDTO);
         return reviewDTOPageList;

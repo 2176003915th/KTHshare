@@ -248,17 +248,17 @@
   <div class="row max-inner" style="justify-content: center; align-items: center;">
     <div class="columns col-12">
       <ul class="paging-list">
-        <li><a th:href="@{/product/shop(arName=${arPage},mainCategoryId=${mainCategoryDetail.mainCategoryId},p=1)}">처음으로</a></li>
+        <li><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},p=1)}">처음으로</a></li>
         <li>
-          <a th:class="${products.first} ? 'disabled'" th:href="@{/product/shop(arName=${arPage},mainCategoryId=${mainCategoryDetail.mainCategoryId},p=${products.number})}"><i class="fa fa-caret-left"></i></a>
+          <a th:class="${products.first} ? 'disabled'" th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},p=${products.number})}"><i class="fa fa-caret-left"></i></a>
         </li>
         <li th:each="page : ${#numbers.sequence(startPage, endPage)}">
-          <a th:href="@{/product/shop(arName=${arPage},mainCategoryId=${mainCategoryDetail.mainCategoryId},p=${page})}" th:class="${page == currentPage ? 'current-prod-page':''}" th:text="${page}"></a>
+          <a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},p=${page})}" th:class="${page == currentPage ? 'current-prod-page':''}" th:text="${page}"></a>
         </li>
         <li>
-          <a th:class="${products.last} ? 'disabled'" th:href="@{/product/shop(arName=${arPage},mainCategoryId=${mainCategoryDetail.mainCategoryId},p=${products.number + 2})}"><i class="fa fa-caret-right"></i></a>
+          <a th:class="${products.last} ? 'disabled'" th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},p=${products.number + 2})}"><i class="fa fa-caret-right"></i></a>
         </li>
-        <li><a th:href="@{/product/shop(arName=${arPage},mainCategoryId=${mainCategoryDetail.mainCategoryId},p=${products.totalPages})}">마지막으로</a></li>
+        <li><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},p=${products.totalPages})}">마지막으로</a></li>
       </ul>
     </div>
   </div>
@@ -268,17 +268,17 @@
   <div class="row max-inner" style="justify-content: center; align-items: center;">
     <div class="columns col-12">
       <ul class="paging-list">
-        <li><a th:href="@{/product/shop(arName=${arPage},mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},p=1)}">처음으로</a></li>
+        <li><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},p=1)}">처음으로</a></li>
         <li>
-          <a th:class="${products.first} ? 'disabled'" th:href="@{/product/shop(arName=${arPage},mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId}, arName="" p=${products.number})}"><i class="fa fa-caret-left"></i></a>
+          <a th:class="${products.first} ? 'disabled'" th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId}, arName="" p=${products.number})}"><i class="fa fa-caret-left"></i></a>
         </li>
         <li th:each="page : ${#numbers.sequence(startPage, endPage)}">
-          <a th:href="@{/product/shop(arName=${arPage},mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},p=${page})}" th:class="${page == currentPage ? 'current-prod-page':''}" th:text="${page}"></a>
+          <a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},p=${page})}" th:class="${page == currentPage ? 'current-prod-page':''}" th:text="${page}"></a>
         </li>
         <li>
-          <a th:class="${products.last} ? 'disabled'" th:href="@{/product/shop(arName=${arPage},mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},p=${products.number + 2})}"><i class="fa fa-caret-right"></i></a>
+          <a th:class="${products.last} ? 'disabled'" th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},p=${products.number + 2})}"><i class="fa fa-caret-right"></i></a>
         </li>
-        <li><a th:href="@{/product/shop(arName=${arPage},mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},p=${products.totalPages})}">마지막으로</a></li>
+        <li><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},p=${products.totalPages})}">마지막으로</a></li>
       </ul>
     </div>
   </div>
