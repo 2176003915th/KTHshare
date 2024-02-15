@@ -68,6 +68,24 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
     }
 
     @Override
+    public List<ProductDTO> viewAllproduct(){
+        List<Product> productList = productRepository.findRandomProducts();
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for(Product product: productList) {
+            Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함
+            product.setRating(opAvgRating.orElse(0.0)); //평균평점을 구한것을 product테이블 rating 컬럼에 set함
+        }
+        productRepository.saveAll(productList); //다시 저장
+        for(Product product: productList) {
+            productDTOList.add(ProductDTO.toProductDTO(product)); //productDTO 객체안에 DTO 데이터 넣음
+        }
+        return productDTOList;
+    }
+
+
+
+
+    @Override
     public Page<ProductDTO> viewProducts(int pageNo, String arName){
             Page<Product> productList = null;
             Pageable pageable = arrangeService(arName, pageNo);

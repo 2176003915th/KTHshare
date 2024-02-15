@@ -1,21 +1,69 @@
 .slide{
-    width:1000px;
+    width:1170px;
     height:500px;
     margin:auto;
     overflow: hidden;
 }
 .slideTab{
+    will-change: tranform;
     width:5000px;
     height:100%;
 }
 .photoFrame{
-    width:1000px;
+    width:1170px;
     height:100%;
     float:left;
 }
 .slideTab img{
-    width:1000px;
+    width:1170px;
     margin-left: 0%;
     height:500px;
     object-fit: cover;
+    float:left;
+}
+.category-slide{
+    position:relative;
+    width:1170px;
+    height:150px;
+    margin:auto;
+    overflow: hidden;
+}
+.tab-item{
+    width:100px;
+    height:146px;
+    font-size:15px;
+    text-align: center;
+    float:left;
+    margin-left:3rem;
+}
+.tab-item img{
+    width:100px;
+    height:100px;
+}
+.bar-container{
+    top:146px;
+    height: 4px;
+    position: relative;
+    width: 100%;
+    outline: none;
+    border: 0;
+    padding: 0;
+    background-color: #9d9c9c;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+#eventTab{
+    width:5000px;
+}
+#categoryTab{
+    position: absolute;
+}
+#bar{
+    will-change: transform;
+    height:100%;
+    width:300px;
+    cursor: grab;
+    background-color: green;
+    position: absolute;
 }

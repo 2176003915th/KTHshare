@@ -55,8 +55,8 @@ public class ProductController {
         mainCategoryDTO = productDTO.getMainCategoryDTO(); //추천상품 위해 메인카테고리
         mainCategoryId = mainCategoryDTO.getMainCategoryId();
         ProductDTO productDetail = productService.viewDetailProduct(productId); //웹에 전달하기위해 객체생성 serviceimpl은 정보를 변한하기위해 사용됨
-        List<ProductDTO> products = productService.productDetailByMainCategory(mainCategoryId); //추천상품
-
+//        List<ProductDTO> products = productService.productDetailByMainCategory(mainCategoryId); //추천상품
+        List<ProductDTO> products = productService.viewAllproduct();
 
         pageNo = (pageNo == 0) ? 0 : (pageNo - 1);
         Page<ReviewDTO> reviewPageList = postService.getReviewPageList(pageNo, criteria, productDTO);
@@ -95,28 +95,30 @@ public class ProductController {
         pageNo = (pageNo == 0) ? 0 : (pageNo - 1);
 
         if(searchType != null) {
-            Page<ProductDTO> productDTOList = null;
-
+            Page<ProductDTO> products = null;
             //검색 분류에 따른 productList 가져오기
             switch (searchType) {
                 case "category":
-                    productDTOList = productService.searchBySubCategoryName(pageNo, searchValue ,arName);
-                    if(productDTOList.isEmpty()) {
-                        productDTOList = productService.searchByMainCategoryName(pageNo, searchValue, arName);
+                    products = productService.searchBySubCategoryName(pageNo, searchValue ,arName);
+                    if(products.isEmpty()) {
+                        products = productService.searchByMainCategoryName(pageNo, searchValue, arName);
                     }
                     break;
                 case "productName":
-                    productDTOList = productService.searchByProductName(pageNo, searchValue, arName);
+                    products = productService.searchByProductName(pageNo, searchValue, arName);
                     break;
                 case "material":
-                    productDTOList = productService.searchByMainMaterialName(pageNo, searchValue, arName);
+                    products = productService.searchByMainMaterialName(pageNo, searchValue, arName);
                     break;
             }
-            if(productDTOList == null || productDTOList.isEmpty()) {//검색결과가 없을 경우
+            if(products == null || products.isEmpty()) {//검색결과가 없을 경우
                 request.setAttribute("message", "검색 결과가 없습니다");
                 return "/main/index";
             } else {
-                request.setAttribute("products", productDTOList);
+                loadProductPage(products, request);
+                arrangeC(arName, request);
+                request.setAttribute("searchType",searchType);
+                request.setAttribute("searchValue",searchValue);
             }
 
         } else if(eventId != null){
@@ -140,7 +142,7 @@ public class ProductController {
         request.setAttribute("endPage",endPage);
         request.setAttribute("currentPage",currentPage);
     }
-    void arrangeC(String arName, HttpServletRequest request){ //정렬선택 후에 선택한 정렬이름 메뉴표시
+    void arrangeC(String arName, HttpServletRequest request){ //정렬선택 후에 선택한 정렬이름 메뉴표시 와 페이지에서 넘길때 정렬이 선택되었을때 정렬값 넘김
         if (arName == null) {
             arPage = "name";
         }

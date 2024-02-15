@@ -40,6 +40,8 @@
 
 .cart-btn{
     background-color: green;
+    width: 200px;
+    height: 60px;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -53,6 +55,27 @@
     border-radius: 3px;
 }
 .cart-btn:hover {
+    background-color: darkgreen;
+    color: white;
+}
+
+.buy-btn{
+    background-color: green;
+    width: 200px;
+    height: 60px;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    margin-bottom: 10px;
+    border-radius: 3px;
+}
+.buy-btn:hover {
     background-color: darkgreen;
     color: white;
 }

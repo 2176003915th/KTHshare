@@ -15,33 +15,13 @@
   <link rel="stylesheet" href="../../static/css/payForm.css">
   <link rel="stylesheet" href="../../static/css/style.css">
   <link rel="stylesheet" href="../../static/css/btndisabled.css">
+  <link rel="stylesheet" href="../../static/css/product-slide.css"/>
+  <link rel="stylesheet" href="../../static/css/product-count.css">
+
 
   <script src="https://kit.fontawesome.com/c0890a4f25.js" crossorigin="anonymous"></script>
   <script src="../..//static/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
-  <script>
-    function changefun(){
-      var mainImageElement = document.querySelector("#mainI");
-      var subImageElements = document.querySelectorAll(".subI");
 
-// 요소 존재 여부를 체크하는 함수
-      function elementExists(element) {
-        return element !== null;
-      }
-
-// 이벤트 핸들러 함수
-      function changePic() {
-        var subImageAttribute = this.getAttribute("src");
-        if (elementExists(mainImageElement)) {
-          mainImageElement.setAttribute("src", subImageAttribute);
-        }
-      }
-
-// 이벤트 핸들러 함수를 등록
-      for (var i = 0; i < subImageElements.length; i++) {
-        subImageElements[i].addEventListener("click", changePic);
-      }
-    }
-  </script>
 
 </head>
 
@@ -67,9 +47,9 @@
         <img id="mainI" th:src="${productDetail.mainImage}">
       </div>
       <div id="subImages">
-        <a href="#"><img class="subI" th:src="${productDetail.mainImage}"></a>
-        <a href="#"><img class="subI" src="/static/images/product/main/화이트소파.jpg"></a>
-        <a href="#"><img class="subI" src="/static/images/product/main/흑소파.jpg"></a>
+        <a href="javascript:void(0);"><img class="subI" th:src="${productDetail.mainImage}"></a>
+        <a href="javascript:void(0);"><img class="subI" src="/static/images/product/main/화이트소파.jpg"></a>
+        <a href="javascript:void(0);"><img class="subI" src="/static/images/product/main/흑소파.jpg"></a>
       </div>
     </div>
 
@@ -139,16 +119,27 @@
 
       <script th:inline="javascript">
         /*<![CDATA[*/
-        var unitPrice = /*[[${productDetail.price}]]*/ 'productDetail.price'; // 상품 가격 선언
-        var salePercentage = /*[[${productDetail.salePercentage}]]*/ 'productDetail.salePercentage';
-        unitPrice = salePercentage ? unitPrice * (1 - salePercentage / 100) : unitPrice;
-        function numberWithCommas(x) { // 천 단위마다 콤마를 추가하는 함수
-          return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        function decrement() {
+          var countElement = document.getElementById('product-count');
+          var count = parseInt(countElement.value);
+          var buyButton = document.querySelector('.buy-btn');
+          count = Math.max(parseInt(count) - 1, 1);
+          countElement.value = count;
+          buyButton.innerHTML = `<i class="fa-regular fa-credit-card"></i> ${count}개 구매하기`;
+        }
+
+        function increment() {
+          var countElement = document.getElementById('product-count');
+          var count = parseInt(countElement.value);
+          var buyButton = document.querySelector('.buy-btn');
+          count = parseInt(count) + 1;
+          countElement.value = count;
+          buyButton.innerHTML = `<i class="fa-regular fa-credit-card"></i> ${count}개 구매하기`;
         }
         function updateTotalPrice() {
           var quantity = document.getElementById('product-count').value; // 증가 개수 선언
-          var totalPrice = unitPrice * quantity; // 총가격 계산 선언
-          document.getElementById('total-price').textContent = numberWithCommas(totalPrice.toFixed(0)); //결과값 출력
+          var buyButton = document.querySelector('.buy-btn');
+          buyButton.innerHTML = `<i class="fa-regular fa-credit-card"></i> ${quantity}개 구매하기`;
         }
         /*]]>*/
         /*[@ thymeleaf variable to JavaScript variable]*/
@@ -167,15 +158,12 @@
       <form id="choiceCart" th:action="@{/pay/cart/{memberId}/{productId}(memberId='guest', productId=${productDetail.productId})}" method="post">
         <div class="row product-options">
           <div class="columns col-6">
-            <label for="product-count" class="product-count">
-              <span class="label-text">개수:</span>
-              <!-- <input type="text" value="1" id="product-quantity" /> -->
-              <input type="number" name="count" value="0" id="product-count" min="0" oninput="updateTotalPrice()"/>
-            </label>
+            <div class="number-input">
+              <button type="button" onclick="decrement()" class="minus"><i class="fa-solid fa-minus"></i></button>
+              <input type="text" class="product-count-text" id="product-count" name="count" value="1" oninput="updateTotalPrice()"/>
+              <button type="button"  onclick="increment()" class="plus"><i class="fa-solid fa-plus"></i></button>
+            </div>
             &nbsp
-            <label for="total-price" class="total-price">
-              <h1 class="label-text" id="total-price" th:text="0"></h1>
-            </label>
           </div>
           <div class="columns col-6">
             <button type="submit" onclick="return memberType()" class="cart-btn">
@@ -183,8 +171,8 @@
             </button>
           </div>
           <div class="columns col-6"> <!-- 추가 된 부분 -->
-            <button type="button" onclick="return buyNow()" class="cart-btn" >
-              <i class="fa-regular fa-credit-card"></i> 바로 구매하기
+            <button type="button" onclick="return buyNow()" class="buy-btn" >
+              <i class="fa-regular fa-credit-card"></i> 구매하기
             </button>
           </div>
         </div>
@@ -211,19 +199,21 @@
   </header>
 
   <div class="row max-inner sortable-grid">
+    <!-- 카테고리 슬라이드 -->
+    <div class="category-slide">
+      <div class="slideTab"  id="categoryTab">
+        <div class="tab-item" th:each="product : ${products}">
+          <a th:href="@{/product/product/{productId}(productId=${product.productId})}"><img th:src="${product.mainImage}" /></a>
+          <br><br>
+          <h2>
+          <span class="tab-maker" th:text="${product.maker}"></span><hr style="width: 100%; top: 188px;"/>
 
-    <!-- start: grid item -->
-    <div class="columns col-3 grid-item" th:each="product : ${products}">
-      <div class="grid-item-media"><a th:href="@{/product/product/{productId}(productId=${product.productId})}"><img th:src="${product.mainImage}" /></a></div>
-      <div class="grid-item-desc">
-        <h2>
-          <a class="grid-item-link" th:href="@{/product/product/{productId}(productId=${product.productId})}">
-            <span class="grid-item-meta" th:text="${product.maker}"></span><hr />
-            <span style="color: black" class="product-name" th:text="${product.name}"></span>
-            <span class="product-rating">
+          <span class="tab-name"><a class="tab-name" th:href="@{/product/product/{productId}(productId=${product.productId})}" th:text="${product.name}"></a></span>
+          </h2>
+          <span class="product-rating">
             <span class="product-rate">
               <div class="rating-list" style="display: flex;">
-                <div class="rateView" style="text-align: center;">
+                <div class="rateView" style="text-align: left;">
                   <span th:with="ratingAvgView=${product.rating * 10}"
                         th:style="'width:' + ${ratingAvgView} + '%'">
                   </span>
@@ -237,19 +227,20 @@
               </div>
               </span>
             </span>
-            <span style="color: #282828" class="grid-item-price" th:if="${product.salePercentage == null or product.salePercentage == 0}" th:text="'₩ ' + ${#numbers.formatInteger(product.price, 1, 'COMMA')}"></span>
-            <span class="grid-item-price" th:unless="${product.salePercentage == null or product.salePercentage == 0}">
+          <span style="color: #282828" class="grid-item-price" th:if="${product.salePercentage == null or product.salePercentage == 0}" th:text="'₩ ' + ${#numbers.formatInteger(product.price, 1, 'COMMA')}"></span>
+          <span class="grid-item-price" th:unless="${product.salePercentage == null or product.salePercentage == 0}">
               <s th:text="'₩ ' + ${#numbers.formatInteger(product.price, 1, 'COMMA')}"></s>
-              <span style="color: fuchsia;" th:text="${product.salePercentage} + '%'"></span>
               <span th:with="discountedPrice=${product.price * (1 - product.salePercentage / 100.0)}"
                     style="color: red;" th:text="'₩ ' + ${#numbers.formatInteger(discountedPrice.intValue(), 0, 'COMMA')}"></span>
             </span>
-
-          </a>
-        </h2>
+        </div>
+      </div>
+      <div class="bar-container">
+        <div id="bar"></div>
       </div>
     </div>
-    <!-- end: grid item -->
+    <!-- 카테고리 슬라이드 끝 -->
+
   </div>
 </section>
 <!--end: recommand product-->
@@ -350,7 +341,10 @@
   </section>
 </section>
 
+
 <!-- end: review content-->
+<script src="/static/js/product-slide.js"></script>
+<script src="/static/js/pagechange.js"></script>
 
 <!-- start: footer -->
 <th:block th:replace="/fragments/footer"></th:block>

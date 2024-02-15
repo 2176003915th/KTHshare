@@ -1,0 +1,185 @@
+/* sidebar */
+.sidebar {
+    width:20%;
+    height:700px;
+    text-align: left;
+    float:left;
+    font-size:18px;
+}
+
+.sidebar-header {
+    width:100%;
+    height:10%;
+    color:green;
+    font-weight: bold;
+    font-size: 28px;
+    text-align: left;
+}
+
+.main-header {
+    width:100%;
+    height:100px;
+    color:green;
+    font-weight: bold;
+    font-size: 28px;
+    text-align: left;
+}
+
+.sidebar-component {
+    width:100%;
+    height:60%;
+}
+
+.sidebar-title {
+    font-size:20px;
+    font-weight: bold;
+}
+
+/* main */
+.main {
+    width:80%;
+    height:1600px;
+    float: left;
+    font-size: 17px;
+    text-align: left;
+}
+
+.main-info {
+    width:100%;
+    height:100%;
+    float:left;
+}
+
+.main-info label {
+    display:inline-block;
+    width:22%;
+}
+
+.main-info img {
+    width: 600px;
+    height: 400px;
+}
+
+.input-field {
+    width: 40%;
+    padding: 10px 0;
+    margin: 5px 0;
+    border: none;
+    border-bottom: 1px solid #999;
+    outline: none;
+    background: transparent;
+}
+
+
+.main-info button {
+    background-color: green;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+/* 주문 내역 페이지 */
+.main > .main-info > h3 {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    color: #008000;
+    font-weight: bold;
+}
+
+.main > .main-info > table {
+    width: 80%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    /*border: 2px solid #000;*/
+    box-shadow: #6e6e6e;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.main > .main-info > table tr {
+    border-bottom: 1px solid #d3d3d3;
+}
+
+.main > .main-info > table tr  > th {
+    padding: 12px 0;
+    background: #fff;
+    color: #383838;
+    font-size: 0.95em;
+    text-align: center;
+    letter-spacing: -0.1em;
+}
+
+.main > .main-info > table tr  > th:last-child {
+    width: 160px;
+}
+
+.main > .main-info > table tr > td {
+    text-align: center;
+    font-size: 12px;
+}
+
+.main > .main-info > table tr > td:last-child{
+    color: #ff006c;
+    font-weight: bold;
+    text-align: center;
+}
+
+.main > .main-info > table tr > td > article {
+    overflow: hidden;
+    padding: 6px;
+}
+
+.main > .main-info > table tr > td img {
+    float: left;
+    width: 80px;
+    height: 80px;
+}
+
+.main > .main-info > table tr > td div {
+    float: left;
+    margin-left: 10px;
+    text-align: left;
+}
+
+.main > .main-info > table tr > td div > p {
+    font-size: 12px;
+    text-align: left;
+    color: #777;
+    margin-top: 4px;
+}
+.main > .main-info .total > td{
+    text-align: right;
+    width: 80px;
+    padding: 5px;
+}
+
+.main > .main-info .total  > td > table {
+    border: none;
+    color: #777;
+    font-size: 12px;
+    float: right;
+}
+
+.main > .main-info .total > td > table tr {
+    border: none;
+}
+
+.main > .main-info .total > td > table td {
+    text-align: right;
+    color: #111;
+    background: #f2f2f2;
+    font-weight: normal;
+    border-bottom: none;
+    padding: 5px;
+    box-sizing: border-box;
+
+}
+
+.main > .main-info .total > td > table tr:last-child span {
+    font-weight: bold;
+    color: #ff006c;
+}

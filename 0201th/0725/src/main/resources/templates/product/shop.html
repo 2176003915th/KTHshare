@@ -66,17 +66,12 @@
         <span class="dropbtn_icon" th:if="${mainMaterialDetail != null and mainCategoryDetail != null and SubCategoryDetail != null}" th:text="${mainMaterialDetail.name}"></span>
       </button>
       <div class="dropdown-content">
-        <ul th:if="${mainCategoryDetail == null}" class="main-category" th:each="mainMaterial : ${mainMaterials}">
-          <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainMaterialId=${mainMaterial.mainMaterialId})}" th:text="${mainMaterial.name}"></a></li>
-          <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainMaterialId=${mainMaterial.mainMaterialId}, eventId=${eventDTO.eventId})}" th:text="${mainMaterial.name}"></a></li>
-        </ul>
-        <ul th:if="${mainCategoryDetail != null and subCategoryDetail == null}" class="main-category" th:each="mainMaterial : ${mainMaterials}">
-          <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},mainMaterialId=${mainMaterial.mainMaterialId})}" th:text="${mainMaterial.name}"></a></li>
-          <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},mainMaterialId=${mainMaterial.mainMaterialId} ,eventId=${eventDTO.eventId})}" th:text="${mainMaterial.name}"></a></li>
-        </ul>
-        <ul th:if="${mainCategoryDetail != null and subCategoryDetail !=null}" class="main-category" th:each="mainMaterial : ${mainMaterials}">
-          <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},mainMaterialId=${mainMaterial.mainMaterialId})}" th:text="${mainMaterial.name}"></a></li>
-          <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},mainMaterialId=${mainMaterial.mainMaterialId} ,eventId=${eventDTO.eventId})}" th:text="${mainMaterial.name}"></a></li>
+        <ul class="main-category" th:each="mainMaterial : ${mainMaterials}">
+          <li><a th:href="'/product/shop?mainMaterialId=' + ${mainMaterial.mainMaterialId}
+           + (${mainCategoryDetail != null && mainCategoryDetail.mainCategoryId != null ? '&mainCategoryId=' + mainCategoryDetail.mainCategoryId : ''})
+           + (${subCategoryDetail != null && subCategoryDetail.subCategoryId != null ? '&subCategoryId=' + subCategoryDetail.subCategoryId : ''})
+           + (${eventDTO != null && eventDTO.eventId != null ? '&eventId=' + eventDTO.eventId: ''})"
+                 th:text="${mainMaterial.name}"></a></li>
         </ul>
       </div>
     </div>
@@ -89,77 +84,32 @@
       </button>
       <div class="dropdown-content">
         <ul class="main-category">
-          <ul th:if="${mainCategoryDetail == null and subCategoryDetail == null and mainMaterialDetail == null}" class="default-arrange">
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(arName='name')}">이름 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(arName='new')}">신상품 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(arName='rating')}">평점 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(arName='aprice')}">가격: 가격 낮은 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(arName='dprice')}">가격: 가격 높은 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(eventId=${eventDTO.eventId},arName='name')}">이름 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(eventId=${eventDTO.eventId},arName='new')}">신상품 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(eventId=${eventDTO.eventId},arName='rating')}">평점 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(eventId=${eventDTO.eventId},arName='aprice')}">가격: 가격 낮은 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(eventId=${eventDTO.eventId},arName='dprice')}">가격: 가격 높은 순</a></li>
-          </ul>
-          <ul th:if="${mainCategoryDetail != null and subCategoryDetail == null and mainMaterialDetail == null}" class="mainCategory-arrange">
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId}, arName='name')}">이름 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId}, arName='new')}">신상품 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId}, arName='rating')}">평점 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId}, arName='aprice')}">가격: 가격 낮은 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId}, arName='dprice')}">가격: 가격 높은 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId}, eventId=${eventDTO.eventId},arName='name')}">이름 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId}, eventId=${eventDTO.eventId},arName='new')}">신상품 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId}, eventId=${eventDTO.eventId},arName='rating')}">평점 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId}, eventId=${eventDTO.eventId},arName='aprice')}">가격: 가격 낮은 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId}, eventId=${eventDTO.eventId},arName='dprice')}">가격: 가격 높은 순</a></li>
-          </ul>
-          <ul th:if="${mainCategoryDetail != null and subCategoryDetail !=null and mainMaterialDetail == null}" class="sub-category-arrange">
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId}, arName='name')}">이름 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId}, arName='new')}">신상품 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId}, arName='rating')}">평점 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId}, arName='aprice')}">가격: 가격 낮은 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId}, arName='dprice')}">가격: 가격 높은 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId}, eventId=${eventDTO.eventId},arName='name')}">이름 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId}, eventId=${eventDTO.eventId},arName='new')}">신상품 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId}, eventId=${eventDTO.eventId},arName='rating')}">평점 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId}, eventId=${eventDTO.eventId},arName='aprice')}">가격: 가격 낮은 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId}, eventId=${eventDTO.eventId},arName='dprice')}">가격: 가격 높은 순</a></li>
-          </ul>
-          <ul th:if="${mainCategoryDetail == null and subCategoryDetail == null and mainMaterialDetail != null}" class="material-arrange">
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainMaterialId=${mainMaterialDetail.mainMaterialId}, arName='name')}">이름 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainMaterialId=${mainMaterialDetail.mainMaterialId}, arName='new')}">신상품 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainMaterialId=${mainMaterialDetail.mainMaterialId}, arName='rating')}">평점 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainMaterialId=${mainMaterialDetail.mainMaterialId}, arName='aprice')}">가격: 가격 낮은 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainMaterialId=${mainMaterialDetail.mainMaterialId}, arName='dprice')}">가격: 가격 높은 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainMaterialId=${mainMaterialDetail.mainMaterialId}, eventId=${eventDTO.eventId},arName='name')}">이름 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainMaterialId=${mainMaterialDetail.mainMaterialId}, eventId=${eventDTO.eventId},arName='new')}">신상품 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainMaterialId=${mainMaterialDetail.mainMaterialId}, eventId=${eventDTO.eventId},arName='rating')}">평점 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainMaterialId=${mainMaterialDetail.mainMaterialId}, eventId=${eventDTO.eventId},arName='aprice')}">가격: 가격 낮은 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainMaterialId=${mainMaterialDetail.mainMaterialId}, eventId=${eventDTO.eventId},arName='dprice')}">가격: 가격 높은 순</a></li>
-          </ul>
-          <ul th:if="${mainCategoryDetail != null and subCategoryDetail == null and mainMaterialDetail != null}" class="mainCategory-material-arrange">
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},mainMaterialId=${mainMaterialDetail.mainMaterialId}, arName='name')}">이름 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},mainMaterialId=${mainMaterialDetail.mainMaterialId}, arName='new')}">신상품 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},mainMaterialId=${mainMaterialDetail.mainMaterialId}, arName='rating')}">평점 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},mainMaterialId=${mainMaterialDetail.mainMaterialId}, arName='aprice')}">가격: 가격 낮은 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},mainMaterialId=${mainMaterialDetail.mainMaterialId}, arName='dprice')}">가격: 가격 높은 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},mainMaterialId=${mainMaterialDetail.mainMaterialId}, eventId=${eventDTO.eventId},arName='name')}">이름 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},mainMaterialId=${mainMaterialDetail.mainMaterialId}, eventId=${eventDTO.eventId},arName='new')}">신상품 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},mainMaterialId=${mainMaterialDetail.mainMaterialId}, eventId=${eventDTO.eventId},arName='rating')}">평점 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},mainMaterialId=${mainMaterialDetail.mainMaterialId}, eventId=${eventDTO.eventId},arName='aprice')}">가격: 가격 낮은 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},mainMaterialId=${mainMaterialDetail.mainMaterialId}, eventId=${eventDTO.eventId},arName='dprice')}">가격: 가격 높은 순</a></li>
-          </ul>
-          <ul th:if="${mainCategoryDetail != null and subCategoryDetail !=null and mainMaterialDetail != null}" class="subCategory-material">
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},mainMaterialId=${mainMaterialDetail.mainMaterialId}, arName='name')}">이름 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},mainMaterialId=${mainMaterialDetail.mainMaterialId}, arName='new')}">신상품 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},mainMaterialId=${mainMaterialDetail.mainMaterialId}, arName='rating')}">평점 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},mainMaterialId=${mainMaterialDetail.mainMaterialId}, arName='aprice')}">가격: 가격 낮은 순</a></li>
-            <li th:if="${eventDTO == null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},mainMaterialId=${mainMaterialDetail.mainMaterialId}, arName='dprice')}">가격: 가격 높은 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},mainMaterialId=${mainMaterialDetail.mainMaterialId}, eventId=${eventDTO.eventId},arName='name')}">이름 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},mainMaterialId=${mainMaterialDetail.mainMaterialId}, eventId=${eventDTO.eventId},arName='new')}">신상품 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},mainMaterialId=${mainMaterialDetail.mainMaterialId}, eventId=${eventDTO.eventId},arName='rating')}">평점 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},mainMaterialId=${mainMaterialDetail.mainMaterialId}, eventId=${eventDTO.eventId},arName='aprice')}">가격: 가격 낮은 순</a></li>
-            <li th:if="${eventDTO != null}"><a th:href="@{/product/shop(mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},mainMaterialId=${mainMaterialDetail.mainMaterialId}, eventId=${eventDTO.eventId},arName='dprice')}">가격: 가격 높은 순</a></li>
+          <ul class="arrange-menu">
+            <li><a th:href="'/product/shop?arName=name' + (${mainCategoryDetail != null && mainCategoryDetail.mainCategoryId != null ? '&mainCategoryId=' + mainCategoryDetail.mainCategoryId : ''})
+             + (${subCategoryDetail != null && subCategoryDetail.subCategoryId != null ? '&subCategoryId=' + subCategoryDetail.subCategoryId : ''})
+             + (${mainMaterialDetail != null && mainMaterialDetail.mainMaterialId != null ? '&mainMaterialId=' + mainMaterialDetail.mainMaterialId : ''})
+             + (${eventDTO != null && eventDTO.eventId != null ? '&eventId=' + eventDTO.eventId: ''})
+             + (${searchType != null && searchValue != null ? '&searchType=' + searchType + '&searchValue=' + searchValue : ''})">이름 순</a></li>
+            <li><a th:href="'/product/shop?arName=new' + (${mainCategoryDetail != null && mainCategoryDetail.mainCategoryId != null ? '&mainCategoryId=' + mainCategoryDetail.mainCategoryId : ''})
+             + (${subCategoryDetail != null && subCategoryDetail.subCategoryId != null ? '&subCategoryId=' + subCategoryDetail.subCategoryId : ''})
+             + (${mainMaterialDetail != null && mainMaterialDetail.mainMaterialId != null ? '&mainMaterialId=' + mainMaterialDetail.mainMaterialId : ''})
+             + (${eventDTO != null && eventDTO.eventId != null ? '&eventId=' + eventDTO.eventId: ''})
+             + (${searchType != null && searchValue != null ? '&searchType=' + searchType + '&searchValue=' + searchValue : ''})">신상품 순</a></li>
+            <li><a th:href="'/product/shop?arName=rating' + (${mainCategoryDetail != null && mainCategoryDetail.mainCategoryId != null ? '&mainCategoryId=' + mainCategoryDetail.mainCategoryId : ''})
+             + (${subCategoryDetail != null && subCategoryDetail.subCategoryId != null ? '&subCategoryId=' + subCategoryDetail.subCategoryId : ''})
+             + (${mainMaterialDetail != null && mainMaterialDetail.mainMaterialId != null ? '&mainMaterialId=' + mainMaterialDetail.mainMaterialId : ''})
+             + (${eventDTO != null && eventDTO.eventId != null ? '&eventId=' + eventDTO.eventId: ''})
+             + (${searchType != null && searchValue != null ? '&searchType=' + searchType + '&searchValue=' + searchValue : ''})">평점 순</a></li>
+            <li><a th:href="'/product/shop?arName=aprice' + (${mainCategoryDetail != null && mainCategoryDetail.mainCategoryId != null ? '&mainCategoryId=' + mainCategoryDetail.mainCategoryId : ''})
+             + (${subCategoryDetail != null && subCategoryDetail.subCategoryId != null ? '&subCategoryId=' + subCategoryDetail.subCategoryId : ''})
+             + (${mainMaterialDetail != null && mainMaterialDetail.mainMaterialId != null ? '&mainMaterialId=' + mainMaterialDetail.mainMaterialId : ''})
+             + (${eventDTO != null && eventDTO.eventId != null ? '&eventId=' + eventDTO.eventId: ''})
+             + (${searchType != null && searchValue != null ? '&searchType=' + searchType + '&searchValue=' + searchValue : ''})">가격: 가격 낮은 순</a></li>
+            <li><a th:href="'/product/shop?arName=dprice' + (${mainCategoryDetail != null && mainCategoryDetail.mainCategoryId != null ? '&mainCategoryId=' + mainCategoryDetail.mainCategoryId : ''})
+             + (${subCategoryDetail != null && subCategoryDetail.subCategoryId != null ? '&subCategoryId=' + subCategoryDetail.subCategoryId : ''})
+             + (${mainMaterialDetail != null && mainMaterialDetail.mainMaterialId != null ? '&mainMaterialId=' + mainMaterialDetail.mainMaterialId : ''})
+             + (${eventDTO != null && eventDTO.eventId != null ? '&eventId=' + eventDTO.eventId: ''})
+             + (${searchType != null && searchValue != null ? '&searchType=' + searchType + '&searchValue=' + searchValue : ''})">가격: 가격 높은 순</a></li>
           </ul>
         </ul>
       </div>
@@ -224,61 +174,51 @@
 
 
 <!-- start: bottom pagination -->
-<section th:if="${mainCategoryDetail == null and subCategoryDetail == null and mainMaterialDetail == null}" class="product-pagination">
+<section class="product-pagination">
   <div class="row max-inner" style="justify-content: center; align-items: center;">
     <div class="columns col-12">
       <ul class="paging-list">
-        <li><a th:href="@{/product/shop(arName=${arPage}, p=1)}">처음으로</a></li>
+        <li><a th:href="'/product/shop?arName=' + ${arPage} +
+        (${mainCategoryDetail != null && mainCategoryDetail.mainCategoryId != null ? '&mainCategoryId=' + mainCategoryDetail.mainCategoryId : ''}) +
+        (${subCategoryDetail != null && subCategoryDetail.subCategoryId != null ? '&subCategoryId=' + subCategoryDetail.subCategoryId : ''}) +
+        (${mainMaterialDetail != null && mainMaterialDetail.mainMaterialId != null ? '&mainMaterialId=' +  mainMaterialDetail.mainMaterialId : ''}) +
+        (${eventDTO != null && eventDTO.eventId != null ? '&eventId=' + eventDTO.eventId : ''}) +
+        (${searchType != null && searchValue != null ? '&searchType=' + searchType + '&searchValue=' + searchValue : ''}) +
+        '&p=1'">처음으로</a></li>
         <li>
-          <a th:class="${products.first} ? 'disabled'" th:href="@{/product/shop(arName=${arPage} ,p=${products.number})}"><i class="fa fa-caret-left"></i></a>
+          <a th:class="${products.first} ? 'disabled'" th:href="'/product/shop?arName=' + ${arPage} +
+        (${mainCategoryDetail != null && mainCategoryDetail.mainCategoryId != null ? '&mainCategoryId=' + mainCategoryDetail.mainCategoryId : ''}) +
+        (${subCategoryDetail != null && subCategoryDetail.subCategoryId != null ? '&subCategoryId=' + subCategoryDetail.subCategoryId : ''}) +
+        (${mainMaterialDetail != null && mainMaterialDetail.mainMaterialId != null ? '&mainMaterialId=' +  mainMaterialDetail.mainMaterialId : ''}) +
+        (${eventDTO != null && eventDTO.eventId != null ? '&eventId=' + eventDTO.eventId : ''}) +
+        (${searchType != null && searchValue != null ? '&searchType=' + searchType + '&searchValue=' + searchValue : ''}) +
+        '&p=' + ${products.number}"><i class="fa fa-caret-left"></i></a>
         </li>
         <li th:each="page : ${#numbers.sequence(startPage, endPage)}">
-          <a th:href="@{/product/shop(arName=${arPage},p=${page})}" th:class="${page == currentPage ? 'current-prod-page':''}" th:text="${page}"></a>
+          <a th:href="'/product/shop?arName=' + ${arPage} +
+        (${mainCategoryDetail != null && mainCategoryDetail.mainCategoryId != null ? '&mainCategoryId=' + mainCategoryDetail.mainCategoryId : ''}) +
+        (${subCategoryDetail != null && subCategoryDetail.subCategoryId != null ? '&subCategoryId=' + subCategoryDetail.subCategoryId : ''}) +
+        (${mainMaterialDetail != null && mainMaterialDetail.mainMaterialId != null ? '&mainMaterialId=' +  mainMaterialDetail.mainMaterialId : ''}) +
+        (${eventDTO != null && eventDTO.eventId != null ? '&eventId=' + eventDTO.eventId : ''}) +
+        (${searchType != null && searchValue != null ? '&searchType=' + searchType + '&searchValue=' + searchValue : ''}) +
+        '&p=' + ${page}" th:class="${page == currentPage ? 'current-prod-page':''}" th:text="${page}"></a>
         </li>
         <li>
-          <a th:class="${products.last} ? 'disabled'" th:href="@{/product/shop(arName=${arPage},p=${products.number + 2})}"><i class="fa fa-caret-right"></i></a>
+          <a th:class="${products.last} ? 'disabled'" th:href="'/product/shop?arName=' + ${arPage} +
+        (${mainCategoryDetail != null && mainCategoryDetail.mainCategoryId != null ? '&mainCategoryId=' + mainCategoryDetail.mainCategoryId : ''}) +
+        (${subCategoryDetail != null && subCategoryDetail.subCategoryId != null ? '&subCategoryId=' + subCategoryDetail.subCategoryId : ''}) +
+        (${mainMaterialDetail != null && mainMaterialDetail.mainMaterialId != null ? '&mainMaterialId=' +  mainMaterialDetail.mainMaterialId : ''}) +
+        (${eventDTO != null && eventDTO.eventId != null ? '&eventId=' + eventDTO.eventId : ''}) +
+        (${searchType != null && searchValue != null ? '&searchType=' + searchType + '&searchValue=' + searchValue : ''}) +
+        '&p=' + ${products.number + 2} "><i class="fa fa-caret-right"></i></a>
         </li>
-        <li><a th:href="@{/product/shop(arName=${arPage},p=${products.totalPages})}">마지막으로</a></li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section th:if="${mainCategoryDetail != null and subCategoryDetail == null and mainMaterialDetail == null}" class="product-pagination">
-  <div class="row max-inner" style="justify-content: center; align-items: center;">
-    <div class="columns col-12">
-      <ul class="paging-list">
-        <li><a th:href="@{/product/shop(arName=${arPage},mainCategoryId=${mainCategoryDetail.mainCategoryId},p=1)}">처음으로</a></li>
-        <li>
-          <a th:class="${products.first} ? 'disabled'" th:href="@{/product/shop(arName=${arPage},mainCategoryId=${mainCategoryDetail.mainCategoryId},p=${products.number})}"><i class="fa fa-caret-left"></i></a>
-        </li>
-        <li th:each="page : ${#numbers.sequence(startPage, endPage)}">
-          <a th:href="@{/product/shop(arName=${arPage},mainCategoryId=${mainCategoryDetail.mainCategoryId},p=${page})}" th:class="${page == currentPage ? 'current-prod-page':''}" th:text="${page}"></a>
-        </li>
-        <li>
-          <a th:class="${products.last} ? 'disabled'" th:href="@{/product/shop(arName=${arPage},mainCategoryId=${mainCategoryDetail.mainCategoryId},p=${products.number + 2})}"><i class="fa fa-caret-right"></i></a>
-        </li>
-        <li><a th:href="@{/product/shop(arName=${arPage},mainCategoryId=${mainCategoryDetail.mainCategoryId},p=${products.totalPages})}">마지막으로</a></li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section th:if="${mainCategoryDetail != null and subCategoryDetail != null and mainMaterialDetail == null}" class="product-pagination">
-  <div class="row max-inner" style="justify-content: center; align-items: center;">
-    <div class="columns col-12">
-      <ul class="paging-list">
-        <li><a th:href="@{/product/shop(arName=${arPage},mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},p=1)}">처음으로</a></li>
-        <li>
-          <a th:class="${products.first} ? 'disabled'" th:href="@{/product/shop(arName=${arPage},mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId}, arName="" p=${products.number})}"><i class="fa fa-caret-left"></i></a>
-        </li>
-        <li th:each="page : ${#numbers.sequence(startPage, endPage)}">
-          <a th:href="@{/product/shop(arName=${arPage},mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},p=${page})}" th:class="${page == currentPage ? 'current-prod-page':''}" th:text="${page}"></a>
-        </li>
-        <li>
-          <a th:class="${products.last} ? 'disabled'" th:href="@{/product/shop(arName=${arPage},mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},p=${products.number + 2})}"><i class="fa fa-caret-right"></i></a>
-        </li>
-        <li><a th:href="@{/product/shop(arName=${arPage},mainCategoryId=${mainCategoryDetail.mainCategoryId},subCategoryId=${subCategoryDetail.subCategoryId},p=${products.totalPages})}">마지막으로</a></li>
+        <li><a th:href="'/product/shop?arName=' + ${arPage} +
+        (${mainCategoryDetail != null && mainCategoryDetail.mainCategoryId != null ? '&mainCategoryId=' + mainCategoryDetail.mainCategoryId : ''}) +
+        (${subCategoryDetail != null && subCategoryDetail.subCategoryId != null ? '&subCategoryId=' + subCategoryDetail.subCategoryId : ''}) +
+        (${mainMaterialDetail != null && mainMaterialDetail.mainMaterialId != null ? '&mainMaterialId=' +  mainMaterialDetail.mainMaterialId : ''}) +
+        (${eventDTO != null && eventDTO.eventId != null ? '&eventId=' + eventDTO.eventId : ''}) +
+        (${searchType != null && searchValue != null ? '&searchType=' + searchType + '&searchValue=' + searchValue : ''}) +
+        '&p=' + ${products.totalPages}">마지막으로</a></li>
       </ul>
     </div>
   </div>

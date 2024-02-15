@@ -7,3 +7,7 @@ function controlHeader(state){
         searchBox.style.display='none';
     }
 }
+
+function enterCheck(){
+    addEventListener("keydown", enter)
+}
