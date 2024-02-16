@@ -113,6 +113,8 @@ public class ProductController {
             }
             if(products == null || products.isEmpty()) {//검색결과가 없을 경우
                 request.setAttribute("message", "검색 결과가 없습니다");
+                request.setAttribute("mainCategoryList", mainCategoryService.viewAllMainCategory());
+                request.setAttribute("eventList", eventService.getAll());
                 return "/main/index";
             } else {
                 loadProductPage(products, request);

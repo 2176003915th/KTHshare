@@ -12,7 +12,7 @@
     font-weight: normal;
     font-style: normal; }
 
-.tab-item span.tab-maker{
+.product-tab-item span.tab-maker{
     background: #fff;
     font-size: 12px;
     display: table;
@@ -25,7 +25,7 @@
     box-sizing: border-box;
 }
 
-.tab-item hr{
+.product-tab-item hr{
     border-color: #dfdfdf;
     position: absolute;
     right: 0;
@@ -45,7 +45,7 @@
     margin-inline-end: auto;
     overflow: hidden;
 }
-.tab-item span.tab-name{
+.product-tab-item span.tab-name{
     padding-top: 5px;
 }
  a.tab-name{
@@ -53,37 +53,27 @@
     color: black;
      font-family: 'novecento_sans_widemedium';
 }
-.slide{
-    width:1170px;
-    height:500px;
-    margin:auto;
-    overflow: hidden;
-}
-.slideTab{
+.product-slideTab{
     will-change: tranform;
     width:5000px;
     height:100%;
 }
-.photoFrame{
-    width:1170px;
-    height:100%;
-    float:left;
-}
-.slideTab img{
+
+.product-slideTab img{
     width:1170px;
     margin-left: 0%;
     height:500px;
     object-fit: cover;
     float:left;
 }
-.category-slide{
+.product-category-slide{
     position:relative;
     width:1170px;
     height:300px;
     margin:auto;
     overflow: hidden;
 }
-.tab-item{
+.product-tab-item{
     width:263px;
     height:200px;
     font-size:15px;
@@ -94,11 +84,11 @@
     margin-right:1rem;
     position: relative;
 }
-.tab-item img{
+.product-tab-item img{
     width:263px;
     height:175px;
 }
-.bar-container{
+.product-bar-container{
     top:280px;
     height: 4px;
     position: relative;
@@ -111,13 +101,10 @@
     align-items: center;
     cursor: pointer;
 }
-#eventTab{
-    width:5000px;
-}
-#categoryTab{
+#productTab{
     position: absolute;
 }
-#bar{
+#product-bar{
     will-change: transform;
     height:100%;
     width:300px;

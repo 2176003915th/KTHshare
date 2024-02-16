@@ -1,7 +1,5 @@
-let x=1;//슬라이드의 이동거리를 결정하는 변수
-let width=1170;//이미지의 가로길이
-let categoryTab=document.getElementById("categoryTab");
-let bar = document.getElementById('bar');//슬라이드를 제어하는 바 모양의 div
+let productTab=document.getElementById("productTab");
+let productBar = document.getElementById('product-bar');//슬라이드를 제어하는 바 모양의 div
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -14,12 +12,12 @@ document.addEventListener('DOMContentLoaded', function () {
         // 누른 마우스 위치값을 가져와 저장
         x = e.clientX;
 
-        if(bar.offsetLeft>870){
-            bar.style.left = `870px`;
-            categoryTab.style.left= `-1300px`;
-        }else if(bar.offsetLeft<0){
-            bar.style.left = `0px`;
-            categoryTab.style.left= `0px`;
+        if(productBar.offsetLeft>870){
+            productBar.style.left = `870px`;
+            productTab.style.left= `-1300px`;
+        }else if(productBar.offsetLeft<0){
+            productBar.style.left = `0px`;
+            productTab.style.left= `0px`;
         }
         // 마우스 이동 및 해제 이벤트를 등록
         document.addEventListener('mousemove', mouseMoveHandler);
@@ -31,13 +29,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const dx = e.clientX - x;
 
         // 마우스 이동 거리 만큼 Element의 left 위치값에 반영
-        bar.style.left = `${bar.offsetLeft + dx}px`;
-        categoryTab.style.left = `${categoryTab.offsetLeft - dx*1.5}px`;
+        productBar.style.left = `${productBar.offsetLeft + dx}px`;
+        productTab.style.left = `${productTab.offsetLeft - dx*1.5}px`;
 
         // 기준 위치 값을 현재 마우스 위치로 update
         x = e.clientX;
 
-        if(bar.offsetLeft>870 || bar.offsetLeft<0){
+        if(productBar.offsetLeft>870 || productBar.offsetLeft<0){
             document.removeEventListener('mousemove', mouseMoveHandler);
             document.removeEventListener('mouseup', mouseUpHandler);
         }
@@ -49,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.removeEventListener('mouseup', mouseUpHandler);
     };
 
-    bar.addEventListener('mousedown', mouseDownHandler);
+    productBar.addEventListener('mousedown', mouseDownHandler);
 });
 
 

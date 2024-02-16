@@ -14,6 +14,7 @@ import java.util.List;
 
 public interface ProductService { //ProductService 구현도
     List<ProductDTO> viewAllproduct();
+    List<ProductDTO> viewProductsBySale(); //메인페이지에서 보여줄 할인 상품리스트
     List<ProductDTO> productDetailByMainCategory(Long mainCategoryId); //상품상세페이지 안에서 추천상품
     Page<ProductDTO> viewProducts(int pageNo, String arName); // 기본에서 정렬
     Page<ProductDTO> viewProductsByMainCategory(int pageNo, MainCategoryDTO mainCategoryDTO, String arName); // 메인카테고리 선택후에 정렬

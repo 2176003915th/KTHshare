@@ -46,4 +46,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
     @Query("select p from Product p order by RAND() limit 8")
     List<Product> findRandomProducts();
 
+    @Query("select p from Product p where p.salePercentage > 0 order by RAND() limit 8")
+    List<Product> findRandomProductsBySalePercentage();
+
 }

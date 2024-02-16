@@ -199,10 +199,10 @@
   </header>
 
   <div class="row max-inner sortable-grid">
-    <!-- 카테고리 슬라이드 -->
-    <div class="category-slide">
-      <div class="slideTab"  id="categoryTab">
-        <div class="tab-item" th:each="product : ${products}">
+    <!-- 상품 슬라이드 -->
+    <div class="product-category-slide">
+      <div class="product-slideTab"  id="productTab">
+        <div class="product-tab-item" th:each="product : ${products}">
           <a th:href="@{/product/product/{productId}(productId=${product.productId})}"><img th:src="${product.mainImage}" /></a>
           <br><br>
           <h2>
@@ -235,11 +235,11 @@
             </span>
         </div>
       </div>
-      <div class="bar-container">
-        <div id="bar"></div>
+      <div class="product-bar-container">
+        <div id="product-bar"></div>
       </div>
     </div>
-    <!-- 카테고리 슬라이드 끝 -->
+    <!-- 상품 슬라이드 끝 -->
 
   </div>
 </section>
