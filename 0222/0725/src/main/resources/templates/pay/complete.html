@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
+<th:block th:replace="/fragments/header"></th:block>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Indigo - A clean, responsive ecommerce HTML template</title>
+
+    <meta name="description" content="Indigo - A clean, responsive ecommerce HTML template">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <link rel="stylesheet" href="../../static/css/common.css">
+    <link rel="stylesheet" href="../../static/css/complete.css">
+
+
+    <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+</head>
+<body>
+
+<!-- start: breadcrumbs -->
+<section class="row breadcrumbs max-inner">
+    <div class="columns col-12">
+        <ul class="breadcrumb-list">
+            <li><a href="../main/index.html">Home</a></li>
+            <li>Cart</li>
+            <li>Buy</li>
+            <li>Complete</li>
+        </ul>
+    </div>
+</section>
+<!-- end: breadcrumbs -->
+
+
+<main id="product">
+    <section class="complete">
+        <nav>
+            <h1>주문완료</h1>
+            <p>
+                HOME > CART > ORDER >
+                <strong>COMPLETE</strong>
+            </p>
+        </nav>
+        <article class="message">
+            <h2>
+                고객님의 주문이 정상적으로 완료되었습니다.
+                <i class="far fa-smile" aria-hidden="true"></i>
+            </h2>
+            <p>
+                즐거운 쇼핑이 되셨습니까? 항상 고객님을 최우선으로 생각하는 Leafton이 되겠습니다.
+            </p>
+        </article>
+        <article class="info">
+            <h1>상품정보</h1>
+            <table border="0">
+                <tr>
+                    <th>상품명</th>
+                    <th>수량</th>
+                    <th>판매가</th>
+                    <th>할인금액</th>
+                    <th>최종금액</th>
+                </tr>
+                <tr th:each="orderItem : ${orderItems}">
+                    <td><article>
+                        <a th:href="@{/product/product/{productId}(productId=${orderItem.getProductDTO().getProductId})}">
+                             <img th:src="${orderItem.getProductDTO().getMainImage()}" alt="x">
+                            <!-- <img src="	https://via.placeholder.com/80x80" alt="1"> -->
+                         </a>
+                         <div>
+                             <h2 th:text="${orderItem.getProductDTO().getName()}"><a href="#">상품명</a></h2>
+                             <p th:text="${orderItem.getProductDTO().getContent()}">상품설명</p>
+                         </div>
+                     </article></td>
+                     <td th:text="${orderItem.getCount()}"></td>
+                     <td th:text="'₩' + ${#numbers.formatInteger(orderItem.getProductDTO().getPrice(), 0, 'COMMA')}">판매가</td>
+                     <td th:if="${orderItem.getProductDTO().getSalePercentage() == 0}" th:text="'적용된 할인 없음'">할인금액</td>
+                     <td th:unless="${orderItem.getProductDTO().getSalePercentage() == 0}">
+                             <span th:with="discountedPrice=${orderItem.getProductDTO().getPrice() *
+                             (1 - orderItem.getProductDTO().getSalePercentage()/100.0)}" th:text="'-₩' + ${#numbers.formatInteger(orderItem.getProductDTO().getPrice() - discountedPrice.intValue(), 0, 'COMMA')}"></span>
+                     </td>
+                     <td th:if="${orderItem.getProductDTO().getSalePercentage() == 0}" th:text="'₩' + ${#numbers.formatInteger(orderItem.getProductDTO().getPrice() * orderItem.getCount(), 1, 'COMMA')}"></td>
+                     <td th:unless="${orderItem.getProductDTO().getSalePercentage() == 0}">
+                              <span th:with="discountedTotalPrice=${orderItem.getProductDTO().getPrice() *
+                              (1 - orderItem.getProductDTO().getSalePercentage()/100.0) * orderItem.getCount()}" th:text="'₩' + ${#numbers.formatInteger(discountedTotalPrice.intValue(), 0, 'COMMA')}"></span>
+                     </td>
+                 <tr class="total">
+                     <td colspan="4"></td>
+                     <td>
+                         <table>
+                             <tr>
+                                 <td>총 상품금액</td>
+                                 <td>
+                                     <span th:text="'₩' + ${#numbers.formatInteger(totalPrice, 0, 'COMMA')}">34,000원</span>
+                                 </td>
+                             </tr>
+                             <tr>
+                                 <td>배송비</td>
+                                 <td>
+                                     <span th:text="'₩' + ${#numbers.formatInteger(order.getDeliveryFee(), 0, 'COMMA')}">3,000원</span>
+                                 </td>
+                             </tr>
+                             <tr>
+                                 <td>총 결제금액</td>
+                                 <td>
+                                     <span th:text="'₩' + ${#numbers.formatInteger(totalPrice + order.getDeliveryFee(), 0, 'COMMA')}">35,000</span>
+                                 </td>
+                             </tr>
+                         </table>
+                     </td>
+                 </tr>
+             </table>
+         </article>
+         <!-- 주문정보 -->
+        <article class="order">
+            <h1 th:text="'주문정보(' + ${order.getOrderDate()} + ')' ">주문정보</h1>
+            <table border="0">
+                <tr>
+                    <td>주문번호</td>
+                    <td th:text="${formattedDate} + ${order.getOrderId()}">200810130001</td>
+                    <td rowspan="3">총 결제금액</td>
+                    <td rowspan="3">
+                        <span th:text="'₩' + ${#numbers.formatInteger(totalPrice + order.getDeliveryFee(), 0, 'COMMA')}">35,000</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>결제방법</td>
+                    <td th:switch="${order.getPaymentMethod()}">
+                        <span th:case="1">신용카드 결제</span>
+                        <span th:case="2">체크카드 결제</span>
+                        <span th:case="3">실시간 계좌이체</span>
+                        <span th:case="4">무통장 입금</span>
+                        <span th:case="5">휴대폰 결제</span>
+                        <span th:case="6">카카오페이</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>주문자/연락처</td>
+                    <td th:text="${order.getMemberDTO().getName()} + '/' + ${order.getPhone().substring(0,3)} + '-' + ${order.getPhone().substring(3,7)} + '-' + ${order.getPhone().substring(7,11)}">홍길동/010-1234-1234</td>
+                </tr>
+            </table>
+        </article>
+        <!-- 배송정보 -->
+        <article class="delivery">
+            <h1>배송정보</h1>
+            <table border="0">
+                <tr>
+                    <td>수취인</td>
+                    <td th:text="${order.getMemberDTO().getName()}">홍길동</td>
+                    <td>주문자 정보</td>
+                </tr>
+                <tr>
+                    <td>연락처</td>
+                    <td th:text="${order.getPhone().substring(0,3)} + '-' + ${order.getPhone().substring(3,7)} + '-' + ${order.getPhone().substring(7,11)}">010-1234-1234</td>
+                    <td rowspan="4" th:text="${order.getMemberDTO().getName()}">
+                        홍길동
+                        <br th:text="${order.getPhone().substring(0,3)} + '-' + ${order.getPhone().substring(3,7)} + '-' + ${order.getPhone().substring(7,11)}"> 010-1234-1234
+                    </td>
+                </tr>
+                <tr>
+                    <td>배송지 주소</td>
+                    <td th:text="'(' + ${order.getZipcode()} + ')' + ${order.getAddress()}">(1234)서울 노원구</td>
+                </tr>
+                <tr>
+                    <td>고객 요청사항</td>
+                    <td th:text="${order.getCustomerRequest()}"></td>
+                </tr>
+                <tr>
+                    <td>도착일</td>
+                    <td th:text="${order.getDeliveryPeriod()}"></td>
+                </tr>
+            </table>
+        </article>
+        <!-- 꼭 알아두세요 -->
+        <article class="alert">
+            <h1>꼭 알아두세요.</h1>
+            <ul>
+                <li>
+                    <span>
+                        Leafton은 통신판매중개자이며 통신판매의 당사자가 아닙니다. 따라서 케이마켓은 상품, 거래정보 및 거래에 대하여 책임을 지지 않습니다.
+                    </span>
+                </li>
+                <li>
+                    <span>
+                        구매주문내역, 배송상태 확인, 구매영수증 출력, 구매취소/반품/교환은 사이트 상단의 주문/배송조회에서 확인 할 수 있습니다.
+                    </span>
+                </li>
+                <li>
+                    <span>
+                        고객님의 주문이 체결된 후 상품품절 및 단종 등에 의해 배송이 불가능할 경우, 전자상거래등에서의 소비자 보호에 관한 법률 제15조 2항에 의거하여 3영업일(공휴일 제외) 이내에 자동으로 취소될 수 있으며, 이 경우 취소 안내 메일이 고객님께 발송되오니 양지 바랍니다.
+                    </span>
+                </li>
+                <li>
+                    <span>
+                        극히 일부 상품에 대해 수량 부족, 카드결제승인 오류 등의 사례가 간혹 있을 수 있으니 `나의쇼핑정보`에서 다시 한번 확인해 주세요.
+                    </span>
+                </li>
+                <li>
+                    <span>
+                        현금 잔고로 구매하셨을 경우, 나의 쇼핑정보에서 입금확인이 되었는지를 다시 한번 확인해 주세요.
+                    </span>
+                </li>
+                <li>
+                    <span>
+                        배송 주소를 추가하거나 변경, 삭제 등의 관리는 `나의쇼핑정보 > 나의정보`에서 가능합니다.
+                    </span>
+                </li>
+            </ul>
+        </article>
+    </section>
+</main>
+<th:block th:replace="/fragments/footer"></th:block>
+</body>
+</html>
