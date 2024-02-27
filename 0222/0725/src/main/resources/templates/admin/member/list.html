@@ -22,7 +22,7 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">MainMaterial List</h1>
+                        <h1 class="mt-4">User List</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                             <li class="breadcrumb-item active">Tables</li>
@@ -30,26 +30,38 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                MainMaterial Table
+                                User Table
                             </div>
                             <div class="card-body">
                                 <table id="datatablesSimple">
                                     <thead>
                                         <tr>
                                             <th>Name</th>
-                                            <th>option</th>
+                                            <th>E-mail</th>
+                                            <th>Address</th>
+                                            <th>Age</th>
+                                            <th>Style</th>
+                                            <th>Phone-number</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
                                             <th>Name</th>
-                                            <th>option</th>
+                                            <th>Position</th>
+                                            <th>Office</th>
+                                            <th>Age</th>
+                                            <th>Start date</th>
+                                            <th>Salary</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        <tr th:each="mainMaterial : ${mainMaterials}">
-                                            <td th:text="${mainMaterial.name}"></td>
-                                            <td><a class="list-a" th:href="'/admin/property/main-material/edit?mainMaterialId=' + ${mainMaterial.mainMaterialId}">Edit</a></td>
+                                        <tr th:each="member : ${memberList}">
+                                            <td th:text="${member.name}"></td>
+                                            <td th:text="${member.email}"></td>
+                                            <td th:text="${member.address}"></td>
+                                            <td th:text="${member.age}"></td>
+                                            <td th:text="${member.StyleDTO.name}"></td>
+                                            <td th:text="${member.phone}">$320,800</td>
                                         </tr>
                                     </tbody>
                                 </table>

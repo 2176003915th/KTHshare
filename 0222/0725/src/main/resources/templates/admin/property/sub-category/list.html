@@ -52,7 +52,7 @@
                                         <tr th:each="subCategory : ${subCategoryList}">
                                             <td th:text="${subCategory.name}"></td>
                                             <td th:text="${subCategory.MainCategoryDTO.name}"></td>
-                                            <td><a th:href="'/admin/property/sub-category/edit?subCategoryId=' + ${subCategory.subCategoryId}">Edit</a></td>
+                                            <td><a class="list-a" th:href="'/admin/property/sub-category/edit?subCategoryId=' + ${subCategory.subCategoryId}">Edit</a></td>
                                         </tr>
                                     </tbody>
                                 </table>

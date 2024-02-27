@@ -1,6 +1,7 @@
 package idusw.leafton.controller;
 
 import idusw.leafton.model.DTO.*;
+import idusw.leafton.model.FileSave;
 import idusw.leafton.model.service.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -8,8 +9,10 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,6 +28,7 @@ public class ProductController {
     private final MainMaterialService mainMaterialService;
     private final EventService eventService;
     private final PostService postService;
+    private final FileSave fileSave;
 
     String viewName = null;
     String arPage = null;
@@ -321,12 +325,7 @@ public class ProductController {
 
     /*---admin start---*/
 
-    @GetMapping(value="/admin/member/user-tables")
-    public String goUserTable(HttpServletRequest request){
-        List<MemberDTO> memberList = memberService.viewAllMembers();
-        request.setAttribute("memberList", memberList);
-        return "admin/member/user-tables";
-    }
+
 
     @GetMapping(value="/admin/property/main-category/list")
     public String goMainCategoryTable(HttpServletRequest request){
@@ -383,13 +382,17 @@ public class ProductController {
         return "admin/property/main-material/edit";
     }
 
+    String mcSaveLocation = "C:\\indukproject\\KTHshare\\0222\\0725\\src\\main\\resources\\static\\images\\main_category\\"; //저장 위치 (윈도우 저장 위치)
+    String mcDBLocation = "/static/images/main_category/"; //DB에 입력하는 값 (불러오는 위치)
 
-    @GetMapping(value="/admin/insert")
-    public String insert(@RequestParam(value = "type", required = false) String type, HttpServletRequest request){
+    @PostMapping(value="/admin/insert")
+    public String insert(@RequestParam(value = "type", required = false) String type,
+                         @RequestParam("mc-image") MultipartFile image, HttpServletRequest request) throws IOException {
         if("mainCategory".equals(type)){
+            String mcFilename = fileSave.saveFileAndRename(image, mcSaveLocation);
             MainCategoryDTO mainCategoryDTO = new MainCategoryDTO();
             mainCategoryDTO.setName(request.getParameter("mc-name"));
-            mainCategoryDTO.setImage(request.getParameter("mc-image"));
+            mainCategoryDTO.setImage(mcDBLocation + mcFilename);
 
             mainCategoryService.insertAndUpdateMainCategory(mainCategoryDTO);
             return "redirect:/admin/property/main-category/list";
@@ -411,21 +414,25 @@ public class ProductController {
             return "redirect:/admin/property/main-material/list";
         }
     }
-    @GetMapping(value="/admin/update")
-    private String update(@RequestParam(value = "type", required = false) String type , HttpServletRequest request ){
+    @PostMapping(value="/admin/update")
+    private String update(@RequestParam(value = "type", required = false) String type ,
+                          @RequestParam("mc-image") MultipartFile image, HttpServletRequest request ) throws IOException {
         if("mainCategory".equals(type)){
-            MainCategoryDTO mainCategoryDTO = new MainCategoryDTO();
-            mainCategoryDTO.setMainCategoryId(Long.valueOf(request.getParameter("mc-id")));
+            Long id = Long.valueOf(request.getParameter("mc-id"));
+            MainCategoryDTO mainCategoryDTO = mainCategoryService.getMainCategoryById(id);
             mainCategoryDTO.setName(request.getParameter("mc-name"));
-            mainCategoryDTO.setImage(request.getParameter("mc-image"));
+            if (!image.isEmpty()) {
+                String mcFilename = fileSave.saveFileAndRename(image, mcSaveLocation);
+                mainCategoryDTO.setImage(mcDBLocation + mcFilename); // 파일의 저장된 이름을 설정
+            }
 
             mainCategoryService.insertAndUpdateMainCategory(mainCategoryDTO);
             return "redirect:/admin/property/main-category/list";
         }
         else if("subCategory".equals(type)){
-            SubCategoryDTO subCategoryDTO = new SubCategoryDTO();
+            Long id = Long.valueOf(request.getParameter("sc-id"));
+            SubCategoryDTO subCategoryDTO = subCategoryService.getSubCategoryById(id);
             mainCategoryDTO = mainCategoryService.getMainCategoryById(Long.valueOf(request.getParameter("mainCategoryId")));
-            subCategoryDTO.setSubCategoryId(Long.valueOf(request.getParameter("sc-id")));
             subCategoryDTO.setMainCategoryDTO(mainCategoryDTO);
             subCategoryDTO.setName(request.getParameter("sc-name"));
 
@@ -433,8 +440,8 @@ public class ProductController {
             return "redirect:/admin/property/sub-category/list";
         }
         else {
-            MainMaterialDTO mainMaterialDTO = new MainMaterialDTO();
-            mainMaterialDTO.setMainMaterialId(Long.valueOf(request.getParameter("mm-id")));
+            Long id = Long.valueOf(request.getParameter("mm-id"));
+            MainMaterialDTO mainMaterialDTO = mainMaterialService.getMainMaterialById(id);
             mainMaterialDTO.setName(request.getParameter("mm-name"));
 
             mainMaterialService.insertAndUpdateMainMaterial(mainMaterialDTO);

@@ -49,7 +49,7 @@
                                     <tbody>
                                         <tr th:each="mainCategory : ${mainCategories}">
                                             <td th:text="${mainCategory.name}"></td>
-                                            <td><a th:href="'/admin/property/main-category/edit?mainCategoryId=' + ${mainCategory.mainCategoryId}">Edit</a></td>
+                                            <td><a class="list-a" th:href="'/admin/property/main-category/edit?mainCategoryId=' + ${mainCategory.mainCategoryId}">Edit</a></td>
                                         </tr>
                                     </tbody>
                                 </table>
