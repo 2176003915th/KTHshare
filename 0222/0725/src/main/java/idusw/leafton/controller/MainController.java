@@ -2,6 +2,7 @@ package idusw.leafton.controller;
 
 import idusw.leafton.model.service.EventService;
 import idusw.leafton.model.service.MainCategoryService;
+import idusw.leafton.model.service.OrderService;
 import idusw.leafton.model.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ public class MainController {
     MainCategoryService mainCategoryService;
     @Autowired
     ProductService productService;
+    @Autowired
+    OrderService orderService;
 
     @GetMapping(value="/main/index")
     public String goIndex(HttpServletRequest request) {
@@ -32,5 +35,8 @@ public class MainController {
     }
 
     @GetMapping(value = "/admin/main/index")
-    public String goAdminIndex() { return "/admin/main/index"; }
+    public String goAdminIndex(HttpServletRequest request) {
+        request.setAttribute("orderList", orderService.findAll());
+        return "/admin/main/index";
+    }
 }

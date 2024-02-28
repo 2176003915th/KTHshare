@@ -65,4 +65,16 @@ public class SubCategoryServiceImpl implements SubCategoryService{
         SubCategory result = subCategoryRepository.save(subCategory); // 레파지토리에서 save(insert)한 결과
         return SubCategoryDTO.toSubCategoryDTO(result); //결과를 dto에 저장
     }
+
+    @Override
+    public List<SubCategoryDTO> getAll(){
+        List<SubCategory> subCategoryList = subCategoryRepository.findAll();
+        List<SubCategoryDTO> result = new ArrayList<>();
+
+        for(SubCategory subCategory : subCategoryList) {
+            result.add(SubCategoryDTO.toSubCategoryDTO(subCategory));
+        }
+
+        return result;
+    }
 }

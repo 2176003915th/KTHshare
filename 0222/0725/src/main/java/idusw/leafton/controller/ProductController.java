@@ -1,5 +1,6 @@
 package idusw.leafton.controller;
 
+
 import idusw.leafton.model.DTO.*;
 import idusw.leafton.model.FileSave;
 import idusw.leafton.model.service.*;
@@ -26,6 +27,7 @@ public class ProductController {
     private final MainCategoryService mainCategoryService;
     private final SubCategoryService subCategoryService;
     private final MainMaterialService mainMaterialService;
+    private final StyleService styleService;
     private final EventService eventService;
     private final PostService postService;
     private final FileSave fileSave;
@@ -325,6 +327,12 @@ public class ProductController {
 
     /*---admin start---*/
 
+    @GetMapping(value = "/admin/product/list")
+    public String goAdminList(HttpServletRequest request) {
+        request.setAttribute("products", productService.viewAllproduct());
+        return "/admin/product/list";
+    }
+
 
 
     @GetMapping(value="/admin/property/main-category/list")
@@ -382,7 +390,7 @@ public class ProductController {
         return "admin/property/main-material/edit";
     }
 
-    String mcSaveLocation = "C:\\indukproject\\KTHshare\\0222\\0725\\src\\main\\resources\\static\\images\\main_category\\"; //저장 위치 (윈도우 저장 위치)
+    String mcSaveLocation = "C:\\indukproject\\KTHshare\\0222\\0725\\src\\main\\resources\\static\\images\\main_category\\"; //저장 위치
     String mcDBLocation = "/static/images/main_category/"; //DB에 입력하는 값 (불러오는 위치)
 
     @PostMapping(value="/admin/insert")
@@ -447,6 +455,58 @@ public class ProductController {
             mainMaterialService.insertAndUpdateMainMaterial(mainMaterialDTO);
             return "redirect:/admin/property/main-material/list";
         }
+    }
+
+    @GetMapping(value = "/admin/product/register")
+    public String goAdminProductRegister(@RequestParam(required = false) String mainCategoryId,
+                                         @RequestParam(required = false) String subCategoryId,
+                                         @RequestParam(required = false) String mainMaterialId,
+                                         @RequestParam(required = false) String styleId,
+                                         @RequestParam(required = false) String eventId,
+                                         HttpServletRequest request) {
+        request.setAttribute("mainCategories", mainCategoryService.viewAllMainCategory());
+        request.setAttribute("subCategories", subCategoryService.getAll());
+        request.setAttribute("mainCategoryNumber", "1");
+        request.setAttribute("mainMaterials", mainMaterialService.viewAllMainMaterial());
+        request.setAttribute("styles", styleService.getAll());
+        request.setAttribute("events", eventService.getAll());
+
+        if(mainCategoryId != null) {//메인 카테고리 selectBox 변경했을 경우 변경된 나머지 selectBox의 데이터를 다시 request에 저장
+            request.setAttribute("mainCategoryNumber", mainCategoryId);
+            if(subCategoryId != null) request.setAttribute("subCategoryNumber", subCategoryId);
+            if(mainMaterialId != null) request.setAttribute("mainMaterialNumber", mainMaterialId);
+            if(styleId != null) request.setAttribute("styleNumber", styleId);
+            if(eventId != null) request.setAttribute("eventNumber", eventId);
+        }
+
+        return "/admin/product/register";
+    }
+
+    @GetMapping(value = "/admin/product/edit")
+    public String goAdminProductEdit(@RequestParam(required = false) String mainCategoryId,
+                                     @RequestParam(required = false) String subCategoryId,
+                                     @RequestParam(required = false) String mainMaterialId,
+                                     @RequestParam(required = false) String styleId,
+                                     @RequestParam(required = false) String eventId,
+                                     HttpServletRequest request) {
+        request.setAttribute("mainCategories", mainCategoryService.viewAllMainCategory());
+        request.setAttribute("subCategories", subCategoryService.getAll());
+        request.setAttribute("mainCategoryNumber", "1");
+        request.setAttribute("mainMaterials", mainMaterialService.viewAllMainMaterial());
+        request.setAttribute("styles", styleService.getAll());
+        request.setAttribute("events", eventService.getAll());
+
+        if(mainCategoryId != null) {//메인 카테고리 selectBox 변경했을 경우 변경된 나머지 selectBox의 데이터를 다시 request에 저장
+            request.setAttribute("mainCategoryNumber", mainCategoryId);
+            if(subCategoryId != null) request.setAttribute("subCategoryNumber", subCategoryId);
+            if(mainMaterialId != null) request.setAttribute("mainMaterialNumber", mainMaterialId);
+            if(styleId != null) request.setAttribute("styleNumber", styleId);
+            if(eventId != null) request.setAttribute("eventNumber", eventId);
+        }
+        Long productId = Long.valueOf(request.getParameter("productId"));
+        request.setAttribute("product", productService.getProductById(productId));
+
+        return "/admin/product/edit";
     }
 
 

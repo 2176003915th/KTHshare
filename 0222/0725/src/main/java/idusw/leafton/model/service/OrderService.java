@@ -20,4 +20,6 @@ public interface OrderService {
     List<OrderItemDTO> allUserOrderView(OrderDTO userOrders);
 
     Page<OrderDTO> findMemberOrder(Long memberId, Pageable pageable);
+
+    List<OrderDTO> findAll();
 }

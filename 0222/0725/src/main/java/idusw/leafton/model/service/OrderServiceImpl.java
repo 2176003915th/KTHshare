@@ -98,4 +98,16 @@ public class OrderServiceImpl implements OrderService {
         return new PageImpl<>(userOrder, pageable, orderPage.getTotalElements());
     }
 
+    //주문 리스트 가져오기
+    @Override
+    public List<OrderDTO> findAll() {
+        List<Order> orderList = orderRepository.findAll();
+        List<OrderDTO> result = new ArrayList<>();
+
+        for(Order order : orderList) {
+            result.add(OrderDTO.toOrderDTO(order));
+        }
+
+        return result;
+    }
 }
