@@ -1,25 +1,26 @@
 package idusw.leafton.controller;
 
-
 import idusw.leafton.model.DTO.*;
-import idusw.leafton.model.FileSave;
+import idusw.leafton.model.entity.Event;
+import idusw.leafton.model.entity.MainMaterial;
 import idusw.leafton.model.service.*;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.web.multipart.MultipartFile;
 
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+
 
 @Controller
 @RequiredArgsConstructor // 이 어노테이션은 final이나 @NonNull이 붙은 필드에 대한 생성자를 자동으로 생성해주는 Lombok의 어노테이션
-public class ProductController {
+public class testController {
     //product page mapping
     private final ProductService productService; //priavte final을 작성해줘야 @RequiredArgsConstructor 어노테이션 의존성 주입이됨
     private final ReviewService reviewService;
@@ -27,10 +28,8 @@ public class ProductController {
     private final MainCategoryService mainCategoryService;
     private final SubCategoryService subCategoryService;
     private final MainMaterialService mainMaterialService;
-    private final StyleService styleService;
     private final EventService eventService;
     private final PostService postService;
-    private final FileSave fileSave;
 
     String viewName = null;
     String arPage = null;
@@ -40,7 +39,7 @@ public class ProductController {
     MainMaterialDTO mainMaterialDTO = null;
     EventDTO eventDTO = null;
 
-    @GetMapping (value="/product/product/{productId}") //상품 상세 페이지
+    @GetMapping (value="/product/{productId}") //상품 상세 페이지
     public String goProduct(@PathVariable Long productId,
                             @RequestParam(required = false, defaultValue = "1", value = "p") int pageNo,
                             @RequestParam(required = false, defaultValue = "registDate", value = "criteria") String criteria,
@@ -81,64 +80,29 @@ public class ProductController {
 
 
     //shop page mapping
-    @GetMapping(value="/product/shop") // 상품 리스트 처음 시작
-    public String goShop(@RequestParam(value = "arName", required = false) String arName,
-                         @RequestParam(value = "mainCategoryId", required = false) Long mainCategoryId,
-                         @RequestParam(value = "subCategoryId", required = false) Long subCategoryId,
-                         @RequestParam(value = "mainMaterialId", required = false) Long mainMaterialId,
-                         @RequestParam(value = "eventId", required = false) Long eventId,
-                         @RequestParam(value = "searchType", required = false) String searchType,
-                         @RequestParam(value = "searchValue", required = false) String searchValue,
-                         @RequestParam(required = false, defaultValue = "0", value = "p") int pageNo,
-                         Pageable pageable,HttpServletRequest request){
-        mainCategoryList(request); //메인카테고리 메뉴 조회
-        materialList(request);//메인 재료 메뉴 조회
+    @GetMapping(value="/product/productList")
+    public String goShop(@RequestParam(required = false, defaultValue = "0", value = "p") int pageNo,HttpServletRequest request){
         pageNo = (pageNo == 0) ? 0 : (pageNo - 1);
+        Page<ProductDTO> products = productService.viewAllProducts(pageNo);
+        int currentPage = products.getNumber() + 1; //현재페이지 페이지는 0으로시작하기때문에 현재페이지와 맞추기위해 + 1을 설정함
+        // 아래 startPage에서 사용자에게 1로 시작하는것을 보여주기위해 +1을 해줫기때문에 그페이지와 현재페이지를 맞추기위해서 + 1을함
+        int blockLimit = 2; //페이지 생성되는 리스트 개수
+        int startPage = (((int) Math.ceil(((double) (currentPage) / blockLimit))) - 1) * blockLimit + 1;
+        int endPage = Math.min((startPage + blockLimit - 1), products.getTotalPages());
+        System.out.println(products.getTotalPages());
+        request.setAttribute("products",products);
+        request.setAttribute("startPage",startPage);
+        request.setAttribute("endPage",endPage);
+        request.setAttribute("currentPage",currentPage);
 
-        if(searchType != null) {
-            Page<ProductDTO> products = null;
-            //검색 분류에 따른 productList 가져오기
-            switch (searchType) {
-                case "category":
-                    products = productService.searchBySubCategoryName(pageNo, searchValue ,arName);
-                    if(products.isEmpty()) {
-                        products = productService.searchByMainCategoryName(pageNo, searchValue, arName);
-                    }
-                    break;
-                case "productName":
-                    products = productService.searchByProductName(pageNo, searchValue, arName);
-                    break;
-                case "material":
-                    products = productService.searchByMainMaterialName(pageNo, searchValue, arName);
-                    break;
-            }
-            if(products == null || products.isEmpty()) {//검색결과가 없을 경우
-                request.setAttribute("message", "검색 결과가 없습니다");
-                request.setAttribute("mainCategoryList", mainCategoryService.viewAllMainCategory());
-                request.setAttribute("eventList", eventService.getAll());
-                return "/main/index";
-            } else {
-                loadProductPage(products, request);
-                arrangeC(arName, request);
-                request.setAttribute("searchType",searchType);
-                request.setAttribute("searchValue",searchValue);
-            }
-
-        } else if(eventId != null){
-            goEvent(pageNo, eventId, mainCategoryId, subCategoryId, mainMaterialId, arName, request);
-        }
-        else { //디폴트 기본값
-            goDefault(pageNo, mainCategoryId, subCategoryId, mainMaterialId, arName, pageable, request);
-        }
-
-        return "product/shop";
+        return "product/testproduct";
     }
 
     void loadProductPage(Page<ProductDTO> products, HttpServletRequest request){ //product 페이지한것과 시작 페이지와 끝페이지를 매핑시키기위함
         int currentPage = products.getNumber() + 1; //현재페이지 페이지는 0으로시작하기때문에 현재페이지와 맞추기위해 + 1을 설정함
         // 아래 startPage에서 사용자에게 1로 시작하는것을 보여주기위해 +1을 해줫기때문에 그페이지와 현재페이지를 맞추기위해서 + 1을함
         int blockLimit = 2;
-        int startPage = (((int) Math.ceil(((double) (currentPage) / blockLimit))) - 1) * blockLimit + 1;
+        int startPage = (((int) Math.ceil(((double) (products.getNumber() + 1) / blockLimit))) - 1) * blockLimit + 1;
         int endPage = Math.min((startPage + blockLimit - 1), products.getTotalPages());
         request.setAttribute("products",products);
         request.setAttribute("startPage",startPage);
@@ -206,7 +170,7 @@ public class ProductController {
 
 
     public void goDefault(int pageNo, Long mainCategoryId, Long subCategoryId, Long mainMaterialId, String arName, Pageable pageable, HttpServletRequest request) {
-        Page<ProductDTO> products = null;
+            Page<ProductDTO> products = null;
         if (mainCategoryId == null && subCategoryId == null && mainMaterialId == null){ // 아무것도 선택되지않음
             products = productService.viewProducts(pageNo, arName);
         }
@@ -304,11 +268,11 @@ public class ProductController {
 
 
 
-    @PostMapping(value="/product/review") //리뷰작성
+    @PostMapping(value="/review") //리뷰작성
     public String goReview(HttpServletRequest request){
         ReviewDTO reviewDTO = new ReviewDTO();
         MemberDTO memberDTO = memberService.getMemberById(Long.valueOf(request.getParameter("memberId")));
-        productDTO = productService.getProductById(Long.valueOf(request.getParameter("productId")));
+        ProductDTO productDTO = productService.getProductById(Long.valueOf(request.getParameter("productId")));
 
         reviewDTO.setMemberDTO(memberDTO);
         reviewDTO.setProductDTO(productDTO);
@@ -319,199 +283,9 @@ public class ProductController {
         reviewService.insertReview(reviewDTO);
         return "redirect:/product/product/" + Long.valueOf(request.getParameter("productId"));
     }
-    @GetMapping(value="/product/review/delete") //리뷰삭제
+    @GetMapping(value="/review/delete") //리뷰작성
     public String deleteReview(@RequestParam("reviewId") Long reviewId ,@RequestParam("productId") Long productId ,HttpServletRequest request){
         reviewService.deleteReview(reviewId);
         return "redirect:/product/product/" + productId;
     }
-
-    /*---admin start---*/
-
-    @GetMapping(value = "/admin/product/list")
-    public String goAdminList(HttpServletRequest request) {
-        request.setAttribute("products", productService.viewAllproduct());
-        return "/admin/product/list";
-    }
-
-
-
-    @GetMapping(value="/admin/property/main-category/list")
-    public String goMainCategoryTable(HttpServletRequest request){
-        mainCategoryList(request);
-        return "admin/property/main-category/list";
-    }
-    @GetMapping(value="/admin/property/sub-category/list")
-    public String goSubCategoryTable(HttpServletRequest request){
-        List<SubCategoryDTO> subCategoryList = subCategoryService.viewAllSubCategory();
-        request.setAttribute("subCategoryList", subCategoryList);
-        return "admin/property/sub-category/list";
-    }
-    @GetMapping(value="/admin/property/main-material/list")
-    public String goMainMaterialTable(HttpServletRequest request){
-        materialList(request);
-        return "admin/property/main-material/list";
-    }
-
-
-    @GetMapping(value="/admin/property/main-category/register")
-    private String mainCategoryRegister(){
-        return "admin/property/main-category/register";
-    }
-    @GetMapping(value="/admin/property/sub-category/register")
-    public String subCategoryRegister(HttpServletRequest request){
-        mainCategoryList(request);
-        return "admin/property/sub-category/register";
-    }
-    @GetMapping(value="/admin/property/main-material/register")
-    public String mainMaterialRegister(){
-        return "admin/property/main-material/register";
-    }
-
-
-    @GetMapping(value="/admin/property/main-category/edit")
-    public String mainCategoryEdit(@RequestParam(value = "mainCategoryId", required = false) Long mainCategoryId, HttpServletRequest request){
-        MainCategoryDTO mainCategoryDTO = mainCategoryService.getMainCategoryById(mainCategoryId);
-        mainCategoryDetail(mainCategoryId, request);
-        request.setAttribute("mainCategoryDTO",mainCategoryDTO);
-        return "admin/property/main-category/edit";
-    }
-
-    @GetMapping(value="/admin/property/sub-category/edit")
-    public String subCategoryEdit(@RequestParam(value = "subCategoryId", required = false) Long subCategoryId,HttpServletRequest request){
-        subCategoryDetail(subCategoryId, request);
-        mainCategoryList(request);
-        return "admin/property/sub-category/edit";
-    }
-
-    @GetMapping(value="/admin/property/main-material/edit")
-    public String mainMaterialEdit(@RequestParam(value = "mainMaterialId", required = false) Long mainMaterialId, HttpServletRequest request){
-        materialDetail(mainMaterialId, request);
-        return "admin/property/main-material/edit";
-    }
-
-    String mcSaveLocation = "C:\\indukproject\\KTHshare\\0222\\0725\\src\\main\\resources\\static\\images\\main_category\\"; //저장 위치
-    String mcDBLocation = "/static/images/main_category/"; //DB에 입력하는 값 (불러오는 위치)
-
-    @PostMapping(value="/admin/insert")
-    public String insert(@RequestParam(value = "type", required = false) String type,
-                         @RequestParam("mc-image") MultipartFile image, HttpServletRequest request) throws IOException {
-        if("mainCategory".equals(type)){
-            String mcFilename = fileSave.saveFileAndRename(image, mcSaveLocation);
-            MainCategoryDTO mainCategoryDTO = new MainCategoryDTO();
-            mainCategoryDTO.setName(request.getParameter("mc-name"));
-            mainCategoryDTO.setImage(mcDBLocation + mcFilename);
-
-            mainCategoryService.insertAndUpdateMainCategory(mainCategoryDTO);
-            return "redirect:/admin/property/main-category/list";
-        }
-        else if("subCategory".equals(type)){
-            SubCategoryDTO subCategoryDTO = new SubCategoryDTO();
-            mainCategoryDTO = mainCategoryService.getMainCategoryById(Long.valueOf(request.getParameter("mainCategoryId")));
-            subCategoryDTO.setMainCategoryDTO(mainCategoryDTO);
-            subCategoryDTO.setName(request.getParameter("sc-name"));
-
-            subCategoryService.insertAndUpdateSubCategory(subCategoryDTO);
-            return "redirect:/admin/property/sub-category/list";
-        }
-        else {
-            MainMaterialDTO mainMaterialDTO = new MainMaterialDTO();
-            mainMaterialDTO.setName(request.getParameter("mm-name"));
-
-            mainMaterialService.insertAndUpdateMainMaterial(mainMaterialDTO);
-            return "redirect:/admin/property/main-material/list";
-        }
-    }
-    @PostMapping(value="/admin/update")
-    private String update(@RequestParam(value = "type", required = false) String type ,
-                          @RequestParam("mc-image") MultipartFile image, HttpServletRequest request ) throws IOException {
-        if("mainCategory".equals(type)){
-            Long id = Long.valueOf(request.getParameter("mc-id"));
-            MainCategoryDTO mainCategoryDTO = mainCategoryService.getMainCategoryById(id);
-            mainCategoryDTO.setName(request.getParameter("mc-name"));
-            if (!image.isEmpty()) {
-                String mcFilename = fileSave.saveFileAndRename(image, mcSaveLocation);
-                mainCategoryDTO.setImage(mcDBLocation + mcFilename); // 파일의 저장된 이름을 설정
-            }
-
-            mainCategoryService.insertAndUpdateMainCategory(mainCategoryDTO);
-            return "redirect:/admin/property/main-category/list";
-        }
-        else if("subCategory".equals(type)){
-            Long id = Long.valueOf(request.getParameter("sc-id"));
-            SubCategoryDTO subCategoryDTO = subCategoryService.getSubCategoryById(id);
-            mainCategoryDTO = mainCategoryService.getMainCategoryById(Long.valueOf(request.getParameter("mainCategoryId")));
-            subCategoryDTO.setMainCategoryDTO(mainCategoryDTO);
-            subCategoryDTO.setName(request.getParameter("sc-name"));
-
-            subCategoryService.insertAndUpdateSubCategory(subCategoryDTO);
-            return "redirect:/admin/property/sub-category/list";
-        }
-        else {
-            Long id = Long.valueOf(request.getParameter("mm-id"));
-            MainMaterialDTO mainMaterialDTO = mainMaterialService.getMainMaterialById(id);
-            mainMaterialDTO.setName(request.getParameter("mm-name"));
-
-            mainMaterialService.insertAndUpdateMainMaterial(mainMaterialDTO);
-            return "redirect:/admin/property/main-material/list";
-        }
-    }
-
-    @GetMapping(value = "/admin/product/register")
-    public String goAdminProductRegister(@RequestParam(required = false) String mainCategoryId,
-                                         @RequestParam(required = false) String subCategoryId,
-                                         @RequestParam(required = false) String mainMaterialId,
-                                         @RequestParam(required = false) String styleId,
-                                         @RequestParam(required = false) String eventId,
-                                         HttpServletRequest request) {
-        request.setAttribute("mainCategories", mainCategoryService.viewAllMainCategory());
-        request.setAttribute("subCategories", subCategoryService.getAll());
-        request.setAttribute("mainCategoryNumber", "1");
-        request.setAttribute("mainMaterials", mainMaterialService.viewAllMainMaterial());
-        request.setAttribute("styles", styleService.getAll());
-        request.setAttribute("events", eventService.getAll());
-
-        if(mainCategoryId != null) {//메인 카테고리 selectBox 변경했을 경우 변경된 나머지 selectBox의 데이터를 다시 request에 저장
-            request.setAttribute("mainCategoryNumber", mainCategoryId);
-            if(subCategoryId != null) request.setAttribute("subCategoryNumber", subCategoryId);
-            if(mainMaterialId != null) request.setAttribute("mainMaterialNumber", mainMaterialId);
-            if(styleId != null) request.setAttribute("styleNumber", styleId);
-            if(eventId != null) request.setAttribute("eventNumber", eventId);
-        }
-
-        return "/admin/product/register";
-    }
-
-    @GetMapping(value = "/admin/product/edit")
-    public String goAdminProductEdit(@RequestParam(required = false) String mainCategoryId,
-                                     @RequestParam(required = false) String subCategoryId,
-                                     @RequestParam(required = false) String mainMaterialId,
-                                     @RequestParam(required = false) String styleId,
-                                     @RequestParam(required = false) String eventId,
-                                     HttpServletRequest request) {
-        request.setAttribute("mainCategories", mainCategoryService.viewAllMainCategory());
-        request.setAttribute("subCategories", subCategoryService.getAll());
-        request.setAttribute("mainCategoryNumber", "1");
-        request.setAttribute("mainMaterials", mainMaterialService.viewAllMainMaterial());
-        request.setAttribute("styles", styleService.getAll());
-        request.setAttribute("events", eventService.getAll());
-
-        if(mainCategoryId != null) {//메인 카테고리 selectBox 변경했을 경우 변경된 나머지 selectBox의 데이터를 다시 request에 저장
-            request.setAttribute("mainCategoryNumber", mainCategoryId);
-            if(subCategoryId != null) request.setAttribute("subCategoryNumber", subCategoryId);
-            if(mainMaterialId != null) request.setAttribute("mainMaterialNumber", mainMaterialId);
-            if(styleId != null) request.setAttribute("styleNumber", styleId);
-            if(eventId != null) request.setAttribute("eventNumber", eventId);
-        }
-        Long productId = Long.valueOf(request.getParameter("productId"));
-        request.setAttribute("product", productService.getProductById(productId));
-
-        return "/admin/product/edit";
-    }
-
-
-
-
-
-
-    /*---admin end---*/
 }

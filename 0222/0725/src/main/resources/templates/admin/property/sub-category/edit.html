@@ -46,8 +46,9 @@
                                             Main Category
                                             <div class="form-floating mb-3 mb-md-0">
                                                 <select name="mainCategory" class="select">
-                                                    <option disabled selected th:value="subCategoryDetail.MainCategoryDTO.mainCategoryId" th:text="${subCategoryDetail.MainCategoryDTO.name}"></option>
-                                                    <option th:each="mainCategory : ${mainCategories}" th:value="${mainCategory.mainCategoryId}" th:text="${mainCategory.name}"></option>
+                                                    <option  th:each="mainCategory : ${mainCategories}"
+                                                             th:selected="${mainCategory.mainCategoryId == subCategoryDetail.MainCategoryDTO.mainCategoryId}"
+                                                             th:value="${mainCategory.mainCategoryId}" th:text="${mainCategory.name}"></option>
                                                 </select>
                                             </div>
                                         </div>

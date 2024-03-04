@@ -100,6 +100,15 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
 
 
     @Override
+    public Page<ProductDTO> viewAllProducts(int pageNo){
+        Page<Product> productList = null;
+        Pageable pageable = PageRequest.of(pageNo, 4, Sort.by(Sort.Direction.ASC, "name")); //페이지 객체 만듬
+        productList = productRepository.findAll(pageable); //DB에 있는 상품을 가져옴
+        Page<ProductDTO> productDTOList = productList.map(ProductDTO::toProductDTO); //Entity -> DTO
+        return productDTOList;
+    }
+
+    @Override
     public Page<ProductDTO> viewProducts(int pageNo, String arName){
         Page<Product> productList = null;
         Pageable pageable = arrangeService(arName, pageNo);
@@ -108,6 +117,7 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
         Page<ProductDTO> productDTOList = productList.map(ProductDTO::toProductDTO); //productDTO 객체안에 DTO 데이터 넣음
         return productDTOList;
     }
+
 
     @Override
     public Page<ProductDTO> viewProductsByMainCategory(int pageNo, MainCategoryDTO mainCategoryDTO, String arName){

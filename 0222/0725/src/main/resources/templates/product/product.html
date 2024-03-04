@@ -309,7 +309,7 @@
           <span th:if="${review.rating == 10}" style="width: 100%"></span>
         </div>
         <br />
-        <h5 id="reviewEmail" th:text="${review.memberDTO.name} + ' 님'"></h5>
+        <h5 id="reviewEmail" th:text="${#strings.substring(review.memberDTO.name, 0, 1)} + '*' + ${#strings.substring(review.memberDTO.name, 2, review.memberDTO.name.length)} + ' 님'"></h5>
         <span th:text="${review.registDate}"></span>
       </div>
       <h3></h3>

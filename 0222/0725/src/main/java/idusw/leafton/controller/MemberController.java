@@ -227,6 +227,7 @@ public class MemberController {
         MemberDTO adminCheck = new MemberDTO();
         if("admin".equals(adminId) && "123".equals(adminPw)){
             HttpSession session = request.getSession(); //session 객체 생성
+            request.setAttribute("orderList",orderService.findAll());
             session.setAttribute("adminCheck",adminCheck);
             return "admin/main/index";
         } else {
