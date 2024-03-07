@@ -1,15 +1,7 @@
 package idusw.leafton.model.service;
 
 import idusw.leafton.model.DTO.*;
-import idusw.leafton.model.entity.Event;
-import idusw.leafton.model.entity.MainCategory;
-import idusw.leafton.model.entity.MainMaterial;
-import idusw.leafton.model.entity.Product;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-
-
 import java.util.List;
 
 public interface ProductService { //ProductService 구현도

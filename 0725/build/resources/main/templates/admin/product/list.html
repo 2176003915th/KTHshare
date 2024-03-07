@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>Tables - SB Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+  <link href="/static/css/admin/admin-styles.css" rel="stylesheet" />
+  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+<body class="sb-nav-fixed">
+<!-- top bar -->
+<th:block th:replace="/admin/fragments/sidebar :: topFragment"></th:block>
+<!-- top bar 끝 -->
+<div id="layoutSidenav">
+  <!-- sidebar -->
+  <th:block th:replace="/admin/fragments/sidebar :: sidebarFragment"></th:block>
+  <!-- sidebar 끝 -->
+  <!-- main contents -->
+  <div id="layoutSidenav_content">
+    <main>
+      <div class="container-fluid px-4">
+        <h1 class="mt-4">상품 목록</h1>
+        <ol class="breadcrumb mb-4">
+          <li class="breadcrumb-item"><a href="main/index.html">product</a></li>
+          <li class="breadcrumb-item active">list</li>
+        </ol>
+        <div class="card mb-4">
+          <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            product list
+          </div>
+          <div class="card-body">
+            <table id="datatablesSimple">
+              <thead>
+              <tr>
+                <th>메인 카테고리</th>
+                <th>상품명</th>
+                <th>제조사</th>
+                <th>가격</th>
+                <th>현 재고</th>
+                <th>등록일</th>
+                <th>평균 평점</th>
+                <th>수정</th>
+              </tr>
+              </thead>
+              <tfoot>
+              <tr>
+                <th>메인 카테고리</th>
+                <th>상품명</th>
+                <th>제조사</th>
+                <th>가격</th>
+                <th>현 재고</th>
+                <th>등록일</th>
+                <th>평균 평점</th>
+                <th>수정</th>
+              </tr>
+              </tfoot>
+              <tbody>
+              <tr th:each="product : ${products}">
+                <td th:text="${product.mainCategoryDTO.name}"></td>
+                <td th:text="${product.name}"></td>
+                <td th:text="${product.maker}"></td>
+                <td th:text="'₩ ' + ${#numbers.formatInteger(product.price, 1, 'COMMA')}"></td>
+                <td th:text="${product.amount}"></td>
+                <td th:text="${product.registDate}"></td>
+                <td th:text="${product.rating}"></td>
+                <td>
+                  <a th:href="'/admin/product/edit?productId=' + ${product.productId}">Edit</a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="py-4 bg-light mt-auto">
+      <div class="container-fluid px-4">
+        <div class="d-flex align-items-center justify-content-between small">
+          <div class="text-muted">Copyright &copy; Your Website 2023</div>
+          <div>
+            <a href="#">Privacy Policy</a>
+            &middot;
+            <a href="#">Terms &amp; Conditions</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="/static/js/admin/scripts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script src="/static/js/admin/datatables-simple-demo.js"></script>
+</body>
+</html>

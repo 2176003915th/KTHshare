@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{fragments/header :: headerFragment}"></th:block>
+<head>
+  <link rel="stylesheet" href="../css/event-slide.css"/>
+  <link rel="stylesheet" href="../css/product-slide.css"/>
+  <link rel="stylesheet" href="../css/ratingList.css">
+</head>
+<body>
+<!-- 카테고리 슬라이드 -->
+<div class="category-slide">
+  <div class="slideTab" id="categoryTab">
+    <div class="tab-item" th:each="category : ${mainCategoryList}">
+      <img th:src="${category.image}" th:onclick="|location.href='@{/product/shop(mainCategoryId=${category.mainCategoryId})}'|"/>
+      <br><br>
+      <a th:href="@{/product/shop(mainCategoryId=${category.mainCategoryId})}" th:text="${category.name}"></a>
+    </div>
+  </div>
+  <div class="bar-container">
+    <div id="bar"></div>
+  </div>
+</div>
+<!-- 카테고리 슬라이드 끝 -->
+<br><br>
+<!-- 현재 이벤트 슬라이드 -->
+<div class="slide">
+  <div class="slideTab" id="eventTab">
+    <div class="photoFrame" th:each="event : ${eventList}">
+      <img class="eventImage" th:src="${event.mainImage}" th:onclick="|location.href='@{/product/shop(eventId=${event.eventId})}'|"/>
+    </div>
+  </div>
+</div>
+<!-- 현재 이벤트 슬라이드 끝 -->
+<br>
+<!-- 할인 중인 상품 탭 -->
+<section class="product-grid">
+  <header class="row section-header max-inner">
+    <div class="columns-12 col-centered">
+      <h2>New Products</h2><hr/>
+    </div>
+  </header>
+
+  <!-- 상품 슬라이드 -->
+  <div class="product-category-slide">
+    <div class="product-slideTab"  id="productTab">
+      <div class="product-tab-item" th:each="product : ${products}">
+        <a th:href="@{/product/product/{productId}(productId=${product.productId})}"><img th:src="${product.mainImage}" /></a>
+        <br><br>
+        <h2>
+          <span class="tab-maker" th:text="${product.maker}"></span><hr style="width: 100%; top: 188px;"/>
+
+          <span class="tab-name"><a class="tab-name" th:href="@{/product/product/{productId}(productId=${product.productId})}" th:text="${product.name}"></a></span>
+        </h2>
+        <span class="product-rating">
+            <span class="product-rate">
+              <div class="rating-list" style="display: flex;">
+                <div class="rateView" style="text-align: left;">
+                  <span th:with="ratingAvgView=${product.rating * 10}"
+                        th:style="'width:' + ${ratingAvgView} + '%'">
+                  </span>
+                </div>
+                 &nbsp
+                <div class="rateText">
+                    <span class="rateText" style="color: black;" th:with="alterFive=${#numbers.formatDecimal(product.rating / 2.0 , 3 , 5 )}"
+                          th:text="${#numbers.formatDecimal(alterFive, 1, 1)} + '/5'">
+                    </span>
+                </div>
+              </div>
+              </span>
+            </span>
+        <span style="color: #282828" class="grid-item-price" th:if="${product.salePercentage == null or product.salePercentage == 0}" th:text="'₩ ' + ${#numbers.formatInteger(product.price, 1, 'COMMA')}"></span>
+        <span class="grid-item-price" th:unless="${product.salePercentage == null or product.salePercentage == 0}">
+              <s th:text="'₩ ' + ${#numbers.formatInteger(product.price, 1, 'COMMA')}"></s>
+              <span th:with="discountedPrice=${product.price * (1 - product.salePercentage / 100.0)}"
+                    style="color: red;" th:text="'₩ ' + ${#numbers.formatInteger(discountedPrice.intValue(), 0, 'COMMA')}"></span>
+            </span>
+      </div>
+    </div>
+    <div class="product-bar-container">
+      <div id="product-bar"></div>
+    </div>
+  </div>
+  <!-- 상품 슬라이드 끝 -->
+
+</section>
+
+
+
+<!-- 할인 중인 상품 탭 끝 -->
+<!-- footer -->
+<th:block th:replace="~{fragments/footer :: footerFragment}"></th:block>
+<!-- footer 끝 -->
+<script src="../js/product-slide.js"></script>
+<script src="../js/slide.js"></script>
+<script src="../js/event-slide.js"></script>
+<script th:inline="javascript">
+  let message = [[${message}]]; //controller에서 날린 request 객체에 담긴 메세지
+
+  if(message!=null){
+    alert(message);
+  }
+</script>
+</body>
+</html>

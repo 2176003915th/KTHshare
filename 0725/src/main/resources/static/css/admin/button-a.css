@@ -1,0 +1,36 @@
+button.form-button {
+    background-color: green;
+    color: white;
+    width: 100px;
+    height: 50px;
+    border-radius: 3px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition-duration: 0.4s;
+    border: none;
+
+}
+
+button.form-button:hover {
+    background-color: darkgreen;
+    color: white;
+}
+
+a.list-a{
+    background-color: green;
+    color: white;
+    width: 40px;
+    height: 20px;
+    border-radius: 3px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition-duration: 0.4s;
+    border: none;
+}
+
+a.list-a:hover {
+    background-color: darkgreen;
+    color: white;
+}

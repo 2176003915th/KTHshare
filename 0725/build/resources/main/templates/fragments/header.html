@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--head 공통 부분과 상단 카테고리를 포함하는 fragment-->
+<th:block th:fragment="headerFragment">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <meta name="description" content="Leafton - 가구 쇼핑몰">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+
+    <link rel="stylesheet" href="../css/normalize-and-boilerplate.css" />
+    <link rel="stylesheet" href="../css/font-awesome.css" />
+    <link rel="stylesheet" href="../css/flexslider.css" />
+    <link rel="stylesheet" href="../css/main.css"/>
+    <link rel="stylesheet" href="../css/searchbar.css"/>
+  </head>
+  <body>
+  <header class="header">
+    <div class="row max-inner">
+      <!--메인 Logo-->
+      <div class="columns col-2">
+        <a href="/main/index" title="메인으로 이동" class="mainLogo">Leafton</a>
+      </div>
+      <!--메인 Logo 끝-->
+      <!--페이지 이동 탭-->
+      <div class="columns col-5">
+        <a href="#" class="toggle-nav">
+          <i class="fa fa-bars"></i> Menu
+        </a>
+        <nav class="main-nav">
+          <ul>
+            <li><a href="/product/shop">All</a></li>
+            <li><a href="/event/index">Event</a></li>
+            <li><a href="/unity">VirtualRoom</a></li>
+          </ul>
+        </nav>
+      </div>
+      <!--페이지 이동 탭 끝-->
+      <!--버튼/검색 메뉴-->
+      <div class="columns col-5">
+        <ul class="header-controls">
+          <!--검색 바 버튼-->
+          <li class="header-actions">
+            <a onclick="controlHeader('open')">
+              <span class="fa fa-search"></span> search
+            </a>
+          </li>
+          <!--검색 바 버튼 끝-->
+          <!--myPage 이동 버튼-->
+          <li class="header-actions" th:if="${session.memberDTO!=null}">
+            <a href="/member/info?type=info" title="view myPage">
+              <span class="fa fa-user"></span> myPage
+            </a>
+          </li>
+          <!--myPage 이동 버튼 끝-->
+          <!--cart 이동 버튼-->
+          <li class="header-cart" th:if="${session.memberDTO!=null}">
+            <a th:href="@{/pay/cart/{memberId}(memberId=${session.memberDTO.memberId})}" title="view cart">
+              <span class="fa fa-shopping-cart"></span>
+              <span class="cart-count">cart</span>
+            </a>
+          </li>
+          <!--cart 이동 버튼 끝-->
+          <!--로그인/로그아웃 버튼-->
+          <li class="header-actions" th:if="${session.memberDTO!=null}">
+            <a href="/member/logout" title="Login"><span class="fa fa-lock"></span> Log out</a>
+          </li>
+          <li class="header-actions" th:if="${session.memberDTO==null}">
+            <a th:href="@{/member/login(type='login')}" title="Login"><span class="fa fa-lock"></span> Login</a>
+          </li>
+          <li class="header-actions" th:if="${session.memberDTO==null}">
+            <a th:href="@{/member/login(type='register')}" title="Login"><span class="fa fa-sign-in"></span> Register</a>
+          </li>
+          <!--로그인/로그아웃 버튼 끝-->
+        </ul>
+      </div>
+      <!--버튼/검색 메뉴 끝-->
+      <!--검색 창-->
+      <div id="searchBox">
+        <form action="/product/shop" method="get">
+          <select class="select-box" name="searchType">
+            <option value="category" checked>카테고리 검색</option>
+            <option value="material">재료 검색</option>
+            <option value="productName">상품명 검색</option>
+          </select>
+          <div class="blank-box"></div>
+          <input type="search" class="searchbar" placeholder="검색어 입력" name="searchValue" />
+          <button type="submit" class="search-button"><span class="fa fa-search"></span></button>&nbsp;&nbsp;
+          <button type="button" class="close-button" onclick="controlHeader('close')">닫기</button>
+        </form>
+      </div>
+      <!--검색 창 끝-->
+    </div>
+  </header>
+  <script src="../js/header.js"></script>
+  </body>
+</th:block>
+</html>
