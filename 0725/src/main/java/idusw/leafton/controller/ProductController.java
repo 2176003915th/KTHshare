@@ -40,8 +40,8 @@ public class ProductController {
     MainMaterialDTO mainMaterialDTO = null;
     EventDTO eventDTO = null;
 
-    @GetMapping (value="product/product/{productId}") //상품 상세 페이지
-    public String goProduct(@PathVariable Long productId,
+    @GetMapping (value="product/product") //상품 상세 페이지
+    public String goProduct(@RequestParam(required = false, value = "productId") Long productId,
                             @RequestParam(required = false, defaultValue = "1", value = "p") int pageNo,
                             @RequestParam(required = false, defaultValue = "registDate", value = "criteria") String criteria,
                             HttpServletRequest request, HttpSession session) {
@@ -317,12 +317,12 @@ public class ProductController {
         reviewDTO.setRegistDate(LocalDate.now());
 
         reviewService.insertReview(reviewDTO);
-        return "redirect:product/product/" + Long.valueOf(request.getParameter("productId"));
+        return "redirect:/product/product/" + Long.valueOf(request.getParameter("productId"));
     }
-    @GetMapping(value="product/review/delete") //리뷰삭제
+    @PostMapping(value="product/review/delete") //리뷰삭제
     public String deleteReview(@RequestParam("reviewId") Long reviewId ,@RequestParam("productId") Long productId ,HttpServletRequest request){
         reviewService.deleteReview(reviewId);
-        return "redirect:product/product/" + productId;
+        return "redirect:/product/product/" + productId;
     }
 
     /*---admin start---*/

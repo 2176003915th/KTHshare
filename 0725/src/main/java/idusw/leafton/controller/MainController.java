@@ -29,14 +29,14 @@ public class MainController {
         return "main/index";
     }
 
-    @GetMapping(value="/main/location")
+    @GetMapping(value="main/location")
     public String goLocation() {
-        return "/main/location";
+        return "main/location";
     }
 
-    @GetMapping(value = "/admin/main/index")
+    @GetMapping(value = "admin/main/index")
     public String goAdminIndex(HttpServletRequest request) {
         request.setAttribute("orderList", orderService.findAll());
-        return "/admin/main/index";
+        return "admin/main/index";
     }
 }

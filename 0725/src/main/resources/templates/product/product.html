@@ -1,30 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<th:block th:replace="~{fragments/header :: headerFragment}"></th:block>
 <!-- start: breadcrumbs -->
 
-
 <head>
-  <link rel="stylesheet" href="../css/reviewr.css" />
-  <link rel="stylesheet" href="../css/productview.css" />
-  <link rel="stylesheet" href="../css/rating.css" />
-  <link rel="stylesheet" href="../css/ratingView.css" />
-  <link rel="stylesheet" href="../css/qpc.css" />
-  <link rel="stylesheet" href="../css/ratingList.css" />
-  <link rel="stylesheet" href="../css/productPageBtn.css">
-  <link rel="stylesheet" href="../css/payForm.css">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/btndisabled.css">
-  <link rel="stylesheet" href="../css/product-slide.css"/>
-  <link rel="stylesheet" href="../css/product-count.css">
+  <link rel="stylesheet" href="/static/css/reviewr.css">
+  <link rel="stylesheet" href="/static/css/productview.css">
+  <link rel="stylesheet" href="/static/css/rating.css">
+  <link rel="stylesheet" href="/static/css/ratingView.css">
+  <link rel="stylesheet" href="/static/css/qpc.css">
+  <link rel="stylesheet" href="/static/css/ratingList.css">
+  <link rel="stylesheet" href="/static/css/productPageBtn.css">
+  <link rel="stylesheet" href="/static/css/payForm.css">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/btndisabled.css">
+  <link rel="stylesheet" href="/static/css/product-slide.css"/>
+  <link rel="stylesheet" href="/static/css/product-count.css">
+
 
 
   <script src="https://kit.fontawesome.com/c0890a4f25.js" crossorigin="anonymous"></script>
-  <script src="../..//static/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+  <script src="../js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 
 
 </head>
-
+<th:block th:replace="~{fragments/header :: headerFragment}"></th:block>
 <body onload = "changefun()">
 <section class="row breadcrumbs max-inner">
   <div class="columns col-12">
@@ -203,7 +202,7 @@
     <div class="product-category-slide">
       <div class="product-slideTab"  id="productTab">
         <div class="product-tab-item" th:each="product : ${products}">
-          <a th:href="@{/product/product/{productId}(productId=${product.productId})}"><img th:src="${product.mainImage}" /></a>
+          <a th:href="@{/product/product(productId=${product.productId})}"><img th:src="${product.mainImage}" /></a>
           <br><br>
           <h2>
             <span class="tab-maker" th:text="${product.maker}"></span><hr style="width: 100%; top: 188px;"/>
@@ -316,7 +315,9 @@
       <p th:text="${review.content}">
       </p>
       <div th:if="${session.memberDTO!=null and session.memberDTO.memberId == review.memberDTO.memberId}">
-        <button class="delete-btn" th:onclick="'window.location.href=\'/product/review/delete?reviewId=' + ${review.reviewId} + '&productId=' + ${productDetail.productId} + '\''">삭제</button>
+        <form method="post" th:action="'/product/review/delete?reviewId=' + ${review.reviewId} + '&productId=' + ${productDetail.productId}">
+          <button type="submit" class="delete-btn">삭제</button>
+        </form>
       </div>
     </li>
   </ul>
@@ -343,8 +344,8 @@
 
 
 <!-- end: review content-->
-<script src="../js/product-slide.js"></script>
-<script src="../js/pagechange.js"></script>
+<script src="/static/js/product-slide.js"></script>
+<script src="/static/js/pagechange.js"></script>
 
 <!-- start: footer -->
 <th:block th:replace="~{fragments/footer :: footerFragment}"></th:block>

@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{fragments/header :: headerFragment}"></th:block>
 <!-- start: breadcrumbs -->
-<link rel="stylesheet" href="../css/ratingList.css" />
-<link rel="stylesheet" href="../css/dropdown.css" />
-<link rel="stylesheet" href="../css/btndisabled.css">
+<link rel="stylesheet" href="/static/css/ratingList.css" />
+<link rel="stylesheet" href="/static/css/dropdown.css" />
+<link rel="stylesheet" href="/static/css/btndisabled.css">
 <!-- end: header -->
 
 <!-- start: breadcrumbs -->
@@ -128,10 +128,10 @@
 
     <!-- start: grid item -->
     <div class="columns col-3 grid-item" th:each="product : ${products}">
-      <div class="grid-item-media"><a th:href="@{/product/product/{productId}(productId=${product.productId})}"><img th:src="${product.mainImage}"/></a></div>
+      <div class="grid-item-media"><a th:href="@{/product/product(productId=${product.productId})}"><img th:src="${product.mainImage}"/></a></div>
       <div class="grid-item-desc">
         <h2>
-          <a class="grid-item-link" th:href="@{/product/product/{productId}(productId=${product.productId})}">
+          <a class="grid-item-link" th:href="@{/product/product(productId=${product.productId})}">
             <span class="grid-item-meta" th:text="${product.maker}"></span><hr />
             <span style="color: black" class="product-name" th:text="${product.name}"></span>
             <span class="product-rating">

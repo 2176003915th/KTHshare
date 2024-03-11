@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{fragments/header :: headerFragment}"></th:block>
 <head>
-  <link rel="stylesheet" href="../css/event-slide.css"/>
-  <link rel="stylesheet" href="../css/product-slide.css"/>
-  <link rel="stylesheet" href="../css/ratingList.css">
+  <link rel="stylesheet" href="/static/css/event-slide.css"/>
+  <link rel="stylesheet" href="/static/css/product-slide.css"/>
+  <link rel="stylesheet" href="/static/css/ratingList.css">
 </head>
 <body>
 <!-- 카테고리 슬라이드 -->
@@ -90,9 +90,9 @@
 <!-- footer -->
 <th:block th:replace="~{fragments/footer :: footerFragment}"></th:block>
 <!-- footer 끝 -->
-<script src="../js/product-slide.js"></script>
-<script src="../js/slide.js"></script>
-<script src="../js/event-slide.js"></script>
+<script src="/static/js/product-slide.js"></script>
+<script src="/static/js/slide.js"></script>
+<script src="/static/js/event-slide.js"></script>
 <script th:inline="javascript">
   let message = [[${message}]]; //controller에서 날린 request 객체에 담긴 메세지
 

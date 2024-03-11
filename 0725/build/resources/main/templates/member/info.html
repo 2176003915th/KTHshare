@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>내 정보</title>
-  <th:block th:replace="/fragments/header :: headerFragment"></th:block>
+  <th:block th:replace="~{fragments/header :: headerFragment}"></th:block>
   <link rel="stylesheet" href="/static/css/myPage.css"/>
 </head>
 <body>
 <div class="row max-inner">
   <!--sidebar-->
-  <th:block th:replace="/member/sidebar :: sidebarFragment"></th:block>
+  <th:block th:replace="~{sidebar :: sidebarFragment}"></th:block>
   <!--sidebar 끝-->
 
   <!-- 내 정보 -->
@@ -167,7 +167,7 @@
   <!-- 주문 내역 끝 -->
 </div>
 <!-- footer -->
-<th:block th:replace="/fragments/footer :: footerFragment"></th:block>
+<th:block th:replace="~{fragments/footer :: footerFragment}"></th:block>
 <!-- footer 끝 -->
 <script src="/static/js/info.js"></script>
 <script th:inline="javascript">

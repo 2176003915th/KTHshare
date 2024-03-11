@@ -32,14 +32,14 @@ public class MemberController {
     MainCategoryService mainCategoryService;
 
     //로그인 페이지로 이동
-    @GetMapping(value = "/member/login")
+    @GetMapping(value = "member/login")
     private String goLogin(HttpServletRequest request) {
         request.setAttribute("type", request.getParameter("type"));
         request.setAttribute("styleList", styleService.getAll());
-        return "/member/login";
+        return "member/login";
     }
     //마이 페이지로 이동
-    @GetMapping(value="/member/info")
+    @GetMapping(value="member/info")
     private String goMyPage(HttpServletRequest request, @RequestParam(required = false, defaultValue = "0") int page,
                             @RequestParam(required = false, defaultValue = "3") int size, @RequestParam String type,
                             HttpSession session, Model model) {
@@ -83,10 +83,10 @@ public class MemberController {
             model.addAttribute("page", page); // 현재 페이지 번호를 뷰에 전달
 
         }
-        return "/member/info";
+        return "member/info";
     }
     //로그아웃 요청을 처리하는 메서드
-    @GetMapping(value="/member/logout")
+    @GetMapping(value="member/logout")
     private String logout(HttpServletRequest request){
         HttpSession session = request.getSession();
         session.invalidate();//세션 회수
@@ -94,13 +94,13 @@ public class MemberController {
         request.setAttribute("mainCategoryList", mainCategoryService.viewAllMainCategory());
         request.setAttribute("eventList", eventService.getAll());
 
-        return "/main/index";
+        return "main/index";
     }
 
 
 
     //로그인 요청을 처리하는 메서드
-    @PostMapping(value="/member/login")
+    @PostMapping(value="member/login")
     private String login(@ModelAttribute MemberDTO memberDTO, HttpServletRequest request){
         //view에서 넘어온 email과 password를 이용하여 select
         MemberDTO memberResult = memberService.loginCheck(memberDTO);
@@ -111,23 +111,23 @@ public class MemberController {
             session.setAttribute("memberDTO", memberResult); //session에 DTO 주입
             request.setAttribute("mainCategoryList", mainCategoryService.viewAllMainCategory());
             request.setAttribute("eventList", eventService.getAll());
-            return "/main/index";
+            return "main/index";
         } else { //로그인 실패 시
             //request에 message 주입 후 다시 로그인 페이지로 이동
             request.setAttribute("message", "아이디나 비밀번호가 일치하지 않습니다");
             request.setAttribute("styleList", styleService.getAll());
-            return "/member/login";
+            return "member/login";
         }
     }
 
     //회원가입을 처리하는 메서드
-    @PostMapping(value="/member/register/{styleId}")
+    @PostMapping(value="member/register/{styleId}")
     private String register(@PathVariable("styleId") Long styleId, @ModelAttribute MemberDTO memberDTO, HttpServletRequest request){
         //이메일 중복체크 후 중복이 아닐 경우 가입 로직으로 진행
         if (memberService.emailCheck(memberDTO.getEmail()) != null) {
             request.setAttribute("message", "이미 사용 중인 이메일입니다");
             request.setAttribute("styleList", styleService.getAll());
-            return "/member/login";
+            return "member/login";
         } else {
             //memberDTO에 넣을 styleDTO 생성하여 pathVariable로 받은 styleId 주입
             StyleDTO styleDTO = new StyleDTO();
@@ -141,11 +141,11 @@ public class MemberController {
         request.setAttribute("mainCategoryList", mainCategoryService.viewAllMainCategory());
         request.setAttribute("eventList", eventService.getAll());
 
-        return "redirect:/main/index";
+        return "redirect:main/index";
     }
 
     //회원 정보 수정 요청을 처리하는 메서드
-    @PostMapping(value="/member/edit")
+    @PostMapping(value="member/edit")
     private String edit(HttpServletRequest request, @RequestParam String type, @ModelAttribute MemberDTO memberDTO){
         HttpSession session = request.getSession();
         StyleDTO styleDTO = null;
@@ -165,7 +165,7 @@ public class MemberController {
                 request.setAttribute("type", "info");
                 request.setAttribute("message", "회원 정보 수정이 완료되었습니다");
 
-                return "/member/info";
+                return "member/info";
             case "delete":
                 CartDTO cartDTO = cartService.findMemberCart(Long.valueOf(request.getParameter("memberId")));
                 cartService.deleteCart(cartDTO.getCartId());
@@ -177,7 +177,7 @@ public class MemberController {
                 request.setAttribute("eventList", eventService.getAll());
                 request.setAttribute("mainCategoryList", mainCategoryService.viewAllMainCategory());
 
-                return "/main/index";
+                return "main/index";
             case "changePw":
                 memberDTO = memberService.getMemberById(Long.valueOf(request.getParameter("memberId")));
                 //사용자가 입력한 현재 비밀번호가 데이터베이스와 일치할 경우
@@ -195,7 +195,7 @@ public class MemberController {
                     request.setAttribute("type", "info");
                     request.setAttribute("message", "현재 비밀번호가 일치하지 않습니다");
                 }
-                return "/member/info";
+                return "member/info";
             case "changeSt":
                 memberDTO = memberService.getMemberById(Long.valueOf(request.getParameter("memberId")));
                 styleDTO = new StyleDTO();
@@ -209,7 +209,7 @@ public class MemberController {
                 request.setAttribute("type", "info");
                 request.setAttribute("message", "선호 스타일이 성공적으로 변경되었습니다");
 
-                return "/member/info";
+                return "member/info";
             default: return null;
         }
     }
@@ -220,7 +220,7 @@ public class MemberController {
     public String goLogin(){
         return "admin/login/login";
     }
-    @PostMapping(value="/admin/adminLogin")
+    @PostMapping(value="admin/adminLogin")
     private String adminLogin(HttpServletRequest request){
         String adminId = request.getParameter("admin-id");
         String adminPw = request.getParameter("admin-pw");
@@ -235,7 +235,7 @@ public class MemberController {
         }
     }
 
-    @GetMapping(value="/admin/logout")
+    @GetMapping(value="admin/logout")
     private String adminLogout(HttpServletRequest request){
         HttpSession session = request.getSession();
         session.invalidate();//세션 회수
@@ -243,7 +243,7 @@ public class MemberController {
         return "admin/login/login";
     }
 
-    @GetMapping(value="/admin/member/list")
+    @GetMapping(value="admin/member/list")
     public String goUserTable(HttpServletRequest request){
         List<MemberDTO> memberList = memberService.viewAllMembers();
         request.setAttribute("memberList", memberList);
