@@ -17,11 +17,9 @@ public class FileSave {
         if (multipartFile.isEmpty()){
             return null;
         }
-
         String originalFilename = multipartFile.getOriginalFilename(); // 받은 이미지 파일 원본 이름
         String storeFileName = createStoreFileName(originalFilename); // 서버내부에서 파일이름을 다르게하기위해 메서드적용
-        String fullPath = location + storeFileName;
-        File file = new File(fullPath);   //resource.getFile 메소드 사용시
+        File file = new File(location, storeFileName);   //resource.getFile 메소드 사용시
         multipartFile.transferTo(file); //파일저장
         return storeFileName;
     }
