@@ -78,6 +78,8 @@ public class Product {
         product.setEvent(Event.toEventEntity(productDTO.getEventDTO()));
         product.setStyle(Style.toStyleEntity(productDTO.getStyleDTO()));
         product.setName(productDTO.getName());
+        product.setContent(product.getContent());
+        product.setMaker(product.getMaker());
         product.setRating(productDTO.getRating());
         product.setColor(productDTO.getColor());
         product.setSize(productDTO.getSize());
@@ -89,8 +91,8 @@ public class Product {
         product.setAmount(productDTO.getAmount());
         product.setIsAssemble(productDTO.getIsAssemble());
         product.setMainImage(productDTO.getMainImage());
-        product.setSubImage(product.getSubImage());
-        product.setThumbImage(product.getThumbImage());
+        product.setSubImage(productDTO.getSubImage());
+        product.setThumbImage(productDTO.getThumbImage());
 
         return product;
     }

@@ -1,6 +1,7 @@
 package idusw.leafton.model.service;
 
 import idusw.leafton.model.DTO.*;
+import idusw.leafton.model.FileSave;
 import idusw.leafton.model.entity.*;
 import idusw.leafton.model.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +9,9 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import idusw.leafton.model.repository.ProductRepository;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -17,6 +20,7 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
 
     private final ProductRepository productRepository; //객체의 상태를 저장하고, 해당 상태를 클래스 내의 여러 메서드에서 공유하거나 조작하기 위해 필드 선언
     private final ReviewRepository reviewRepository;
+    private final FileSave fileSave;
 
     public Pageable arrangeService(String arName , int pageNo) { //정렬
         Sort sort = null;
@@ -68,7 +72,7 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
     }
 
     @Override
-    public List<ProductDTO> viewAllproduct(){
+    public List<ProductDTO> view8product(){
         List<Product> productList = productRepository.findRandomProducts();
         List<ProductDTO> productDTOList = new ArrayList<>();
         for(Product product: productList) {
@@ -287,6 +291,36 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
         combineRating(productList);
         Page<ProductDTO> productDTOList = productList.map(ProductDTO::toProductDTO); //productDTO 객체안에 DTO 데이터 넣음
         return productDTOList;
+    }
+
+    @Override
+    public void saveProduct(ProductDTO productDTO, MultipartFile main, MultipartFile thumb, MultipartFile sub)
+            throws IOException {
+        //저장할 파일 경로 지정
+        String mainPath = fileSave.getDefaultPath() + "product/main/";
+        String subPath = fileSave.getDefaultPath() + "product/sub/";
+        String thumbPath = fileSave.getDefaultPath() + "product/thumb/";
+
+        //파일이 있을 경우 파일 저장 후 DB에 저장할 경로 지정 후 DTO에 경로 주입
+        if(!main.isEmpty()) {
+            String mainFileName = fileSave.saveFileAndRename(main, mainPath);
+            productDTO.setMainImage("/home/passion/images/product/main/"+mainFileName);
+            System.out.println("나메인 저장");
+        }
+
+        if(!sub.isEmpty()) {
+            String subFileName = fileSave.saveFileAndRename(sub, subPath);
+            productDTO.setSubImage("/home/passion/images/product/sub/"+subFileName);
+            System.out.println("나 서브 저장");;
+        }
+
+        if(!thumb.isEmpty()) {
+            String thumbFileName = fileSave.saveFileAndRename(thumb, thumbPath);
+            productDTO.setThumbImage("/home/passion/images/product/thumb/"+thumbFileName);
+            System.out.println("나텀브 저장");
+        }
+
+        productRepository.save(Product.toProductEntity(productDTO));
     }
 
 }

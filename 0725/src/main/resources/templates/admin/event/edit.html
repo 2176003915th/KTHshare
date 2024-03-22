@@ -28,8 +28,8 @@
                 </ol>
                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                     <div class="card-body">
-                        <form action="/admin/event/edit" method="post">
-                            <input type="hidden" th:value="${event.eventId}">
+                        <form action="/admin/event/edit" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="eventId" th:value="${event.eventId}">
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3 mb-md-0">
@@ -62,18 +62,21 @@
                                 <div class="col-md-4">
                                     현재 메인 이미지
                                     <div class="form-floating mb-3 mb-md-0">
+                                        <input type="hidden" name="mainImage" th:value="${event.mainImage}">
                                         <img th:src="${event.mainImage}" style="width:100%;height:500px;" />
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     현재 서브 이미지
                                     <div class="form-floating mb-3 mb-md-0">
+                                        <input type="hidden" name="subImage" th:value="${event.subImage}">
                                         <img th:src="${event.subImage}" style="width:100%;height:500px;" />
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     현재 썸네일 이미지
                                     <div class="form-floating mb-3 mb-md-0">
+                                        <input type="hidden" name="thumbImage" th:value="${event.thumbImage}">
                                         <img th:src="${event.thumbImage}" style="width:100%;height:500px;" />
                                     </div>
                                 </div>
@@ -83,28 +86,27 @@
                                     <div class="form-floating mb-3 mb-md-0">
                                         <label>수정할 메인 이미지 파일 선택</label>
                                         <br>
-                                        <input class="form-control" id="inputMainImage" type="file" />
+                                        <input class="form-control" id="inputMainImage" name="event-main-image" type="file" />
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-floating mb-3 mb-md-0">
                                         <label>수정할 서브 이미지 파일 선택</label>
                                         <br>
-                                        <input class="form-control" id="inputSubImage" type="file" />
+                                        <input class="form-control" id="inputSubImage" name="event-sub-image" type="file" />
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-floating mb-3 mb-md-0">
                                         <label>수정할 썸네일 이미지 파일 선택</label>
                                         <br>
-                                        <input class="form-control" id="inputThumbImage" type="file" />
+                                        <input class="form-control" id="inputThumbImage" name="event-thumb-image" type="file" />
                                     </div>
                                 </div>
                             </div>
                             <div class="row mb-1">
                                 파일 선택 후 'Edit Event' 버튼 클릭 시 해당 이미지로 변경됩니다.
                             </div>
-                        </form>
                     </div>
                     <div class="card-footer text-center py-3">
                         <div class="mt-4 mb-0">
@@ -113,6 +115,7 @@
                             </div>
                         </div>
                     </div>
+                    </form>
                 </div>
             </div>
         </main>

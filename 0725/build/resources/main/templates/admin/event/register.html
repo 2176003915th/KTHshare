@@ -28,11 +28,11 @@
         </ol>
         <div class="card shadow-lg border-0 rounded-lg mt-5">
           <div class="card-body">
-            <form action="/admin/event/register" method="post"  >
+            <form action="/admin/event/register" method="post" enctype="multipart/form-data">
               <div class="row mb-3">
                 <div class="col-md-6">
                   <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" id="inputTitle" type="text" placeholder="Enter your first name" />
+                    <input class="form-control" id="inputTitle" type="text" name="title" placeholder="Enter your first name" />
                     <label for="inputTitle">Title</label>
                   </div>
                 </div>
@@ -40,19 +40,19 @@
                 </div>
               </div>
               <div class="form-floating mb-3">
-                <input class="form-control" id="inputContent" type="text" placeholder="name@example.com" />
+                <input class="form-control" id="inputContent" type="text" name="content" placeholder="name@example.com" />
                 <label for="inputContent">Content</label>
               </div>
               <div class="row mb-3">
                 <div class="col-md-6">
                   <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" id="inputStartDate" type="datetime-local" placeholder="Create a password" />
+                    <input class="form-control" id="inputStartDate" name="registDate" type="datetime-local" placeholder="Create a password" />
                     <label for="inputStartDate">Start Date</label>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" id="inputEndDate" type="datetime-local" placeholder="Create a password" />
+                    <input class="form-control" id="inputEndDate" name="endDate" type="datetime-local" placeholder="Create a password" />
                     <label for="inputEndDate">End Date</label>
                   </div>
                 </div>
@@ -60,24 +60,23 @@
               <div class="row mb-3">
                 <div class="col-md-4">
                   <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" id="inputMainImage" type="file" placeholder="Create a password" />
+                    <input class="form-control" id="inputMainImage" name="event-main-image" type="file" placeholder="Create a password" />
                     <label for="inputMainImage">Main Image</label>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" id="inputSubImage" type="file" placeholder="Create a password" />
+                    <input class="form-control" id="inputSubImage" name="event-sub-image" type="file" placeholder="Create a password" />
                     <label for="inputSubImage">Sub Date</label>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" id="inputThumbImage" type="file" placeholder="Create a password" />
+                    <input class="form-control" id="inputThumbImage" name="event-thumb-image" type="file" placeholder="Create a password" />
                     <label for="inputThumbImage">Thumb Date</label>
                   </div>
                 </div>
               </div>
-            </form>
           </div>
           <div class="card-footer text-center py-3">
             <div class="mt-4 mb-0">
@@ -86,6 +85,7 @@
               </div>
             </div>
           </div>
+          </form>
         </div>
       </div>
     </main>

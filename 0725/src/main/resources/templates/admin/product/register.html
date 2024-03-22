@@ -31,7 +31,7 @@
         <!-- 페이지 분류 및 제목 끝 -->
         <!-- 입력 form -->
         <div class="card shadow-lg border-0 rounded-lg mt-5">
-          <form action="/admin/product/register" method="post">
+          <form action="/admin/product/register" method="post" th:object="${productDTO}" enctype="multipart/form-data">
             <div class="card-body">
               <!-- 첫번째 줄 -->
               <div class="row mb-3">
@@ -202,21 +202,21 @@
               <div class="row mb-3">
                 <div class="col-md-4">
                   <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" id="inputMainImage" name="mainImage"
+                    <input class="form-control" id="inputMainImage" name="main"
                            type="file" placeholder="Create a password" />
                     <label for="inputMainImage">Main Image</label>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" id="inputSubImage" name="subImage"
+                    <input class="form-control" id="inputSubImage" name="sub"
                            type="file" placeholder="Create a password" />
                     <label for="inputSubImage">Sub Image</label>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" id="inputThumbImage" name="thumbImage"
+                    <input class="form-control" id="inputThumbImage" name="thumb"
                            type="file" placeholder="Create a password" />
                     <label for="inputThumbImage">Thumb Image</label>
                   </div>

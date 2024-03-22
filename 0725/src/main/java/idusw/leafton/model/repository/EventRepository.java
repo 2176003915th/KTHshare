@@ -1,6 +1,7 @@
 package idusw.leafton.model.repository;
 
 import idusw.leafton.model.entity.Event;
+import idusw.leafton.model.entity.MainCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +14,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findAll();
 
     Optional<Event> findById(Long eventId);
+
+    @Override
+    <S extends Event> S save(S event);
 }

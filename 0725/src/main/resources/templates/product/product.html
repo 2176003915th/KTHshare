@@ -19,7 +19,6 @@
 
 
   <script src="https://kit.fontawesome.com/c0890a4f25.js" crossorigin="anonymous"></script>
-  <script src="../js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 
 
 </head>
@@ -47,8 +46,8 @@
       </div>
       <div id="subImages">
         <a href="javascript:void(0);"><img class="subI" th:src="${productDetail.mainImage}"></a>
-        <a href="javascript:void(0);"><img class="subI" src="../images/product/main/화이트소파.jpg"></a>
-        <a href="javascript:void(0);"><img class="subI" src="../images/product/main/흑소파.jpg"></a>
+        <a href="javascript:void(0);"><img class="subI" th:src="${productDetail.subImage}"></a>
+        <a href="javascript:void(0);"><img class="subI" th:src="${productDetail.thumbImage}"></a>
       </div>
     </div>
 
@@ -144,7 +143,6 @@
         /*[@ thymeleaf variable to JavaScript variable]*/
         var memberId = [[${session.memberDTO != null ? session.memberDTO.getMemberId() : 'guest'}]];
         var productId = [[${productDetail.productId}]];
-
         /* 추가된 내용 */
         let message = [[${message}]]; //controller에서 날린 request 객체에 담긴 메세지
 
@@ -152,8 +150,11 @@
           alert(message);
         }
       </script>
-      <script src="../js/members.js">
+      <script src="/static/js/members.js">
       </script>
+      <script src="/static/js/nonono.js">
+      </script>
+
       <form id="choiceCart" th:action="@{/pay/cart/{memberId}/{productId}(memberId='guest', productId=${productDetail.productId})}" method="post">
         <div class="row product-options">
           <div class="columns col-6">
@@ -207,7 +208,7 @@
           <h2>
             <span class="tab-maker" th:text="${product.maker}"></span><hr style="width: 100%; top: 188px;"/>
 
-            <span class="tab-name"><a class="tab-name" th:href="@{/product/product/{productId}(productId=${product.productId})}" th:text="${product.name}"></a></span>
+            <span class="tab-name"><a class="tab-name" th:href="@{/product/product(productId=${product.productId})}" th:text="${product.name}"></a></span>
           </h2>
           <span class="product-rating">
             <span class="product-rate">
@@ -283,7 +284,7 @@
       var memberId = [[${session.memberDTO != null ? session.memberDTO.getMemberId() : 'guest'}]];
       var reviewMemberId = [[${reviewDetail != null && reviewDetail.memberDTO != null ? reviewDetail.memberDTO.getMemberId() : 'guest'}]];
       if (memberId == reviewMemberId) {
-        alert('이미 댓글을 입력하셨습니다.');
+        alert("이미 댓글을 작성하셨습니다.");
         return false;
       }
       return true;
@@ -308,10 +309,11 @@
           <span th:if="${review.rating == 10}" style="width: 100%"></span>
         </div>
         <br />
-        <h5 id="reviewEmail" th:text="${review.memberDTO.name} + ' 님'"></h5>
+        <h5 id="reviewEmail" th:text="${#strings.substring(review.memberDTO.name,0,1)} + '*' + ${#strings.substring(review.memberDTO.name,2,#strings.length(review.memberDTO.name))}"></h5>
         <span th:text="${review.registDate}"></span>
       </div>
       <h3></h3>
+      <h1 th:text="whatthefuck"></h1>
       <p th:text="${review.content}">
       </p>
       <div th:if="${session.memberDTO!=null and session.memberDTO.memberId == review.memberDTO.memberId}">

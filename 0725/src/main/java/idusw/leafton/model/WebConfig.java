@@ -12,7 +12,10 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/main-category/**")
-                .addResourceLocations("file:/home/passion/images/main-category/");
+        registry.addResourceHandler("/home/passion/images/**").addResourceLocations("file:/home/passion/images/");
+
+//        registry.addResourceHandler("/images/**").addResourceLocations("file:C:\\images\\");
+        // 만약 위치가 c:\\images\\event\\main이라면 handler = db쪽은 /images/event/main으로 경로로찾아갈수있게해야함
+
     }
 }

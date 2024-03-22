@@ -57,7 +57,7 @@ public class ProductController {
         mainCategoryId = mainCategoryDTO.getMainCategoryId();
         ProductDTO productDetail = productService.viewDetailProduct(productId); //웹에 전달하기위해 객체생성 serviceimpl은 정보를 변한하기위해 사용됨
 //        List<ProductDTO> products = productService.productDetailByMainCategory(mainCategoryId); //추천상품
-        List<ProductDTO> products = productService.viewAllproduct();
+        List<ProductDTO> products = productService.view8product();
 
         pageNo = (pageNo == 0) ? 0 : (pageNo - 1);
         Page<ReviewDTO> reviewPageList = postService.getReviewPageList(pageNo, criteria, productDTO);
@@ -317,19 +317,19 @@ public class ProductController {
         reviewDTO.setRegistDate(LocalDate.now());
 
         reviewService.insertReview(reviewDTO);
-        return "redirect:/product/product/" + Long.valueOf(request.getParameter("productId"));
+        return "redirect:/product/product?productId=" + Long.valueOf(request.getParameter("productId"));
     }
     @PostMapping(value="product/review/delete") //리뷰삭제
     public String deleteReview(@RequestParam("reviewId") Long reviewId ,@RequestParam("productId") Long productId ,HttpServletRequest request){
         reviewService.deleteReview(reviewId);
-        return "redirect:/product/product/" + productId;
+        return "redirect:/product/product?productId=" + productId;
     }
 
     /*---admin start---*/
 
     @GetMapping(value = "admin/product/list")
     public String goAdminList(HttpServletRequest request) {
-        request.setAttribute("products", productService.viewAllproduct());
+        request.setAttribute("products", productService.view8product());
         return "admin/product/list";
     }
 
@@ -390,19 +390,15 @@ public class ProductController {
         return "admin/property/main-material/edit";
     }
 
-    String mcSaveLocation = "/home/passion/images/main-category/"; //실제 저장 위치
-    String mcDBLocation = "/main-category/"; //DB에 입력하는 값 핸들러
 
     @PostMapping(value="admin/insert")
     public String insert(@RequestParam(value = "type", required = false) String type,
                          @RequestParam("mc-image") MultipartFile image, HttpServletRequest request) throws IOException {
         if("mainCategory".equals(type)){
-            String mcFilename = fileSave.saveFileAndRename(image, mcSaveLocation);
             MainCategoryDTO mainCategoryDTO = new MainCategoryDTO();
             mainCategoryDTO.setName(request.getParameter("mc-name"));
-            mainCategoryDTO.setImage(mcDBLocation + mcFilename);
 
-            mainCategoryService.insertAndUpdateMainCategory(mainCategoryDTO);
+            mainCategoryService.insertAndUpdateMainCategory(mainCategoryDTO, image);
             return "redirect:/admin/property/main-category/list";
         }
         else if("subCategory".equals(type)){
@@ -425,17 +421,11 @@ public class ProductController {
     @PostMapping(value="admin/update")
     private String update(@RequestParam(value = "type", required = false) String type ,
                           @RequestParam("mc-image") MultipartFile image, HttpServletRequest request ) throws IOException {
-        if("mainCategory".equals(type)){;
-            System.out.println(System.getProperty("0725"));
+        if("mainCategory".equals(type)){
             Long id = Long.valueOf(request.getParameter("mc-id"));
             MainCategoryDTO mainCategoryDTO = mainCategoryService.getMainCategoryById(id);
             mainCategoryDTO.setName(request.getParameter("mc-name"));
-            if (!image.isEmpty()) {
-                String mcFilename = fileSave.saveFileAndRename(image,mcSaveLocation);
-                mainCategoryDTO.setImage(mcDBLocation + mcFilename); // 파일의 저장된 이름을 설정
-            }
-
-            mainCategoryService.insertAndUpdateMainCategory(mainCategoryDTO);
+            mainCategoryService.insertAndUpdateMainCategory(mainCategoryDTO, image);
             return "redirect:/admin/property/main-category/list";
         }
         else if("subCategory".equals(type)){
@@ -457,7 +447,6 @@ public class ProductController {
             return "redirect:/admin/property/main-material/list";
         }
     }
-
     @GetMapping(value = "admin/product/register")
     public String goAdminProductRegister(@RequestParam(required = false) String mainCategoryId,
                                          @RequestParam(required = false) String subCategoryId,
@@ -481,6 +470,38 @@ public class ProductController {
         }
 
         return "admin/product/register";
+    }
+
+    @PostMapping(value = "admin/product/register")
+    private String insertProduct(@ModelAttribute ProductDTO productDTO,
+                                 HttpServletRequest request,
+                                 @RequestParam("thumb") MultipartFile thumb,
+                                 @RequestParam("main") MultipartFile main,
+                                 @RequestParam("sub") MultipartFile sub) throws IOException {
+        StyleDTO styleDTO = styleService.getById(Long.valueOf(request.getParameter("style")));
+        SubCategoryDTO subCategoryDTO = subCategoryService.getSubCategoryDetail(Long.valueOf(request.getParameter("subCategory")));
+        MainCategoryDTO mainCategoryDTO = mainCategoryService.getMainCategoryById(Long.valueOf(request.getParameter("mainCategory")));
+        MainMaterialDTO mainMaterialDTO = mainMaterialService.getMainMaterialById(Long.valueOf(request.getParameter("mainMaterial")));
+        EventDTO eventDTO = eventService.getEventById(Long.valueOf(request.getParameter("event")));
+        String width = request.getParameter("width");
+        String height = request.getParameter("height");
+        String depth = request.getParameter("depth");
+        String size = width + "fm" + depth + "lm" + height;
+
+        productDTO.setStyleDTO(styleDTO);
+        productDTO.setSubCategoryDTO(subCategoryDTO);
+        productDTO.setMainCategoryDTO(mainCategoryDTO);
+        productDTO.setMainMaterialDTO(mainMaterialDTO);
+        productDTO.setEventDTO(eventDTO);
+        productDTO.setSize(size);
+        productDTO.setSalePercentage(0);
+        System.out.println(main.getOriginalFilename());
+        System.out.println(thumb.getOriginalFilename());
+        System.out.println(sub.getOriginalFilename());
+
+        productService.saveProduct(productDTO, main, thumb, sub);
+
+        return "redirect:/admin/product/list";
     }
 
     @GetMapping(value = "admin/product/edit")

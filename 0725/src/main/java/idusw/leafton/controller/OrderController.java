@@ -26,7 +26,7 @@ public class OrderController {
     private final OrderService orderService;
 
     // 주문 페이지로 이동
-    @GetMapping(value = "pay/buy/{memberId}")
+    @GetMapping(value = "/pay/buy/{memberId}")
     public String goBuy(@PathVariable("memberId") Long memberId, @RequestParam("checkedItems") String checkedItems, Model model, HttpSession session){
         MemberDTO member = memberService.getMemberById(memberId);
         if(member != null) {
@@ -54,12 +54,12 @@ public class OrderController {
 
             return "pay/buy";
         }else {
-            return "redirect:main/index";
+            return "redirect:/main/index";
         }
     }
 
     // 주문 처리
-    @PostMapping(value = "pay/order/{memberId}")
+    @PostMapping(value = "/pay/order/{memberId}")
     public String orderCheckout(@PathVariable("memberId") Long memberId, @ModelAttribute OrderDTO orderDTO, HttpSession session, Model model){
         MemberDTO member = memberService.getMemberById(memberId);
         if(member != null) {
@@ -73,7 +73,7 @@ public class OrderController {
                 CartItemDTO cartItemById = cartService.findCartItemById(Long.parseLong(itemId));
                 if(cartItemById.getProductDTO().getAmount() == 0 || cartItemById.getProductDTO().getAmount() < cartItemById.getCount()){
                     // 주문한 상품의 재고가 없거나 재고보다 주문한 상품의 수량이 더 많으면 메인페이지로 이동
-                    return "redirect:main/index";
+                    return "redirect:/main/index";
                 }
                 totalPrice += cartItemById.getCount() * cartItemById.getProductDTO().getPrice()
                         * (1 - cartItemById.getProductDTO().getSalePercentage()/100.0);
@@ -122,12 +122,12 @@ public class OrderController {
 
             return "pay/complete";
         }else{
-            return "redirect:main/index";
+            return "redirect:/main/index";
         }
     }
 
     // 바로 구매하기 버튼 클릭시 주문 페이지로 이동 처리
-    @GetMapping(value = "pay/buy/one")
+    @GetMapping(value = "/pay/buy/one")
     public String goBuyOne(@RequestParam("memberId") Long memberId, @RequestParam("cartOneItemId") Long cartOneItemId, Model model, HttpSession session){
         MemberDTO member = memberService.getMemberById(memberId);
 
@@ -135,7 +135,7 @@ public class OrderController {
             CartItemDTO cartOneItemById = cartService.findCartItemById(cartOneItemId);
 
             if(cartOneItemById.getProductDTO().getAmount() == 0 || cartOneItemById.getProductDTO().getAmount() < cartOneItemById.getCount()){
-                return "redirect:main/index";
+                return "redirect:/main/index";
             }
 
             // 상품 총합 계산 totalPrice 자료형 고민
@@ -163,9 +163,11 @@ public class OrderController {
     }
 
     //관리자 주문 내역 페이지
-    @GetMapping(value = "admin/order/list")
+    @GetMapping(value = "/admin/order/list")
     public String goAdminList(HttpServletRequest request) {
         request.setAttribute("orderList", orderService.findAll());
         return "admin/order/list";
     }
+
+
 }

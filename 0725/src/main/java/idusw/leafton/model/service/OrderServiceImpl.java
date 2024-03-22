@@ -1,5 +1,6 @@
 package idusw.leafton.model.service;
 
+import idusw.leafton.controller.ChartController;
 import idusw.leafton.model.DTO.OrderDTO;
 import idusw.leafton.model.DTO.OrderItemDTO;
 import idusw.leafton.model.DTO.ProductDTO;
@@ -15,8 +16,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -109,5 +112,42 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return result;
+    }
+
+    @Override
+    public List<OrderItemDTO> viewOrderItemListByMainCategory(Long mainCategoryId){
+        List<OrderItem> orderItemList = orderItemRepository.findAllByMainCategoryId(mainCategoryId);
+        List<OrderItemDTO> result = new ArrayList<>();
+
+        for(OrderItem orderItem : orderItemList){
+            result.add(OrderItemDTO.toOrderItemDTO(orderItem));
+        }
+        return result;
+    }
+
+    @Override
+    public List<ChartController.TotalPrice> findAllmonth(){
+        List<ChartController.TotalPrice> monthPriceList = new ArrayList<>();
+        LocalDate[][] periods = {
+                {LocalDate.parse("2024-01-01"), LocalDate.parse("2024-03-31")},
+                {LocalDate.parse("2024-04-01"), LocalDate.parse("2024-06-30")},
+                {LocalDate.parse("2024-07-01"), LocalDate.parse("2024-09-30")},
+                {LocalDate.parse("2024-10-01"), LocalDate.parse("2024-12-31")}
+        };
+        for (LocalDate[] period : periods) {
+            LocalDate start = period[0];
+            LocalDate end = period[1];
+            int price = 1;
+            Integer totalPrice = orderRepository.findPriceMonth(start, end);
+            if (totalPrice != null) {
+                price = totalPrice;
+            }
+            ChartController.TotalPrice monthPrice = new ChartController.TotalPrice();
+            monthPrice.setPrice(price);
+            monthPriceList.add(monthPrice);
+        }
+
+
+        return monthPriceList;
     }
 }
