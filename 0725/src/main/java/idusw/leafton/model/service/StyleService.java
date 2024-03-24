@@ -8,4 +8,6 @@ public interface StyleService {
     public StyleDTO getById(Long styleId);
 
     public List<StyleDTO> getAll();
+
+
 }

@@ -47,42 +47,30 @@ public class ChartController {
     public String goChart(HttpServletRequest request) {
         mainCategoryRevenue(request);
         monthRevenue(request);
+        styleRevenue(request);
         return "admin/charts";
     }
 
     void mainCategoryRevenue(HttpServletRequest request){
         List<MainCategoryDTO> mainCategoryList = mainCategoryService.viewAllMainCategory(); //매출보여줄 카테고리 이름 구함
-        List<TotalPrice> mcPriceList = new ArrayList<>(); // 총매출을 보여줄을 TotalPrice 클래스로 리스트를 만듬
-
-        for(MainCategoryDTO mainCategoryDTO : mainCategoryList) { //메인카테고리 개수 만큼 메인카테고리에 해당하는 주문리스트 들을 불러옴
-            int price = 0;
-            int totalPrice = 0;
-
-            List<OrderItemDTO> orderItemDTOList = orderService.viewOrderItemListByMainCategory(mainCategoryDTO.getMainCategoryId());
-            if (orderItemDTOList != null && !orderItemDTOList.isEmpty()) { // 해당 메인카테고리아이디에 해당하는 주문 리스트가 있으면 그리스트들의 총가격을 구함 없으면 0원
-                for (int i = 0; i < orderItemDTOList.size(); i++) {
-                    OrderItemDTO item = orderItemDTOList.get(i);
-                    price = item.getProductDTO().getPrice() * item.getCount();
-                    totalPrice = totalPrice + price;
-                }
-            }
-            TotalPrice mcPrice = new TotalPrice();
-            mcPrice.setPrice(totalPrice); // 총 매출을 TotalPrice 클래스 안에넣음
-            mcPriceList.add(mcPrice);
-        }
-        int maxprice = mcPriceList.stream()
-                .mapToInt(TotalPrice::getPrice) // TotalPrice 객체에서 price 값을 int로 변환
-                .max() // 스트림에서 최대값
-                .orElse(0);
+        List<TotalPrice> mcPriceList = orderService.getMainCategoryRevenue(mainCategoryList); //카테고리 매출 리스트
+        int maxprice = mcPriceList.stream().mapToInt(TotalPrice::getPrice).max().orElse(0);; // 매출중 최댓값
         request.setAttribute("mainCategoryList", mainCategoryList);
-        request.setAttribute("totalPrice", mcPriceList);
-        request.setAttribute("maxPirce",  maxprice);
+        request.setAttribute("McTotalPrice", mcPriceList);
+        request.setAttribute("McMaxPrice",  maxprice);
     }
 
     void monthRevenue(HttpServletRequest request){
-        List<TotalPrice> monthPrice = orderService.findAllmonth();
+        List<TotalPrice> monthPrice = orderService.getMonthRevenue();
         int maxprice = monthPrice.stream().mapToInt(TotalPrice::getPrice).max().orElse(0);
-        request.setAttribute("totalMonthPrice",monthPrice);
-        request.setAttribute("maxMonthPrice",maxprice);
+        request.setAttribute("MonthTotalPrice",monthPrice);
+        request.setAttribute("MonthMaxPrice",maxprice);
+    }
+
+    void styleRevenue(HttpServletRequest request){
+        List<StyleDTO> styleList = styleService.getAll();
+        List<TotalPrice> stylePriceList = orderService.getStyleRevenue(styleList);
+        request.setAttribute("styleList",styleList);
+        request.setAttribute("styleTotalPrice", stylePriceList);
     }
 }

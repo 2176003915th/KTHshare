@@ -1,9 +1,7 @@
 package idusw.leafton.model.service;
 
 import idusw.leafton.controller.ChartController;
-import idusw.leafton.model.DTO.OrderDTO;
-import idusw.leafton.model.DTO.OrderItemDTO;
-import idusw.leafton.model.DTO.ProductDTO;
+import idusw.leafton.model.DTO.*;
 import idusw.leafton.model.entity.Order;
 import idusw.leafton.model.entity.OrderItem;
 import idusw.leafton.model.entity.Product;
@@ -115,29 +113,26 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderItemDTO> viewOrderItemListByMainCategory(Long mainCategoryId){
-        List<OrderItem> orderItemList = orderItemRepository.findAllByMainCategoryId(mainCategoryId);
-        List<OrderItemDTO> result = new ArrayList<>();
-
-        for(OrderItem orderItem : orderItemList){
-            result.add(OrderItemDTO.toOrderItemDTO(orderItem));
-        }
-        return result;
-    }
-
-    @Override
-    public List<ChartController.TotalPrice> findAllmonth(){
+    public List<ChartController.TotalPrice> getMonthRevenue(){
         List<ChartController.TotalPrice> monthPriceList = new ArrayList<>();
         LocalDate[][] periods = {
-                {LocalDate.parse("2024-01-01"), LocalDate.parse("2024-03-31")},
-                {LocalDate.parse("2024-04-01"), LocalDate.parse("2024-06-30")},
-                {LocalDate.parse("2024-07-01"), LocalDate.parse("2024-09-30")},
-                {LocalDate.parse("2024-10-01"), LocalDate.parse("2024-12-31")}
+                {LocalDate.parse("2024-01-01"), LocalDate.parse("2024-01-31")},
+                {LocalDate.parse("2024-02-01"), LocalDate.parse("2024-02-29")},
+                {LocalDate.parse("2024-03-01"), LocalDate.parse("2024-03-31")},
+                {LocalDate.parse("2024-04-01"), LocalDate.parse("2024-04-30")},
+                {LocalDate.parse("2024-05-01"), LocalDate.parse("2024-05-31")},
+                {LocalDate.parse("2024-06-01"), LocalDate.parse("2024-06-30")},
+                {LocalDate.parse("2024-07-01"), LocalDate.parse("2024-07-31")},
+                {LocalDate.parse("2024-08-01"), LocalDate.parse("2024-08-31")},
+                {LocalDate.parse("2024-09-01"), LocalDate.parse("2024-09-30")},
+                {LocalDate.parse("2024-10-01"), LocalDate.parse("2024-10-31")},
+                {LocalDate.parse("2024-11-01"), LocalDate.parse("2024-11-30")},
+                {LocalDate.parse("2024-12-01"), LocalDate.parse("2024-12-31")}
         };
-        for (LocalDate[] period : periods) {
+        for (LocalDate[] period : periods) { // 날짜 일 개수 만큼 구함
             LocalDate start = period[0];
             LocalDate end = period[1];
-            int price = 1;
+            int price = 0;
             Integer totalPrice = orderRepository.findPriceMonth(start, end);
             if (totalPrice != null) {
                 price = totalPrice;
@@ -149,5 +144,38 @@ public class OrderServiceImpl implements OrderService {
 
 
         return monthPriceList;
+    }
+
+
+
+    @Override
+    public List<ChartController.TotalPrice> getMainCategoryRevenue(List<MainCategoryDTO> mainCategoryDTOList){
+        List<ChartController.TotalPrice> mcPriceList = new ArrayList<>();
+        for(MainCategoryDTO mainCategoryDTO : mainCategoryDTOList){ // 메인카테고리 개수 만큼 매출 리스트 구함
+            Integer price = orderItemRepository.findRevenueByMainCategory(mainCategoryDTO.getMainCategoryId()); //메인카테고리아이디로 조회된 주문 리스트들의 총가격을 구함
+            if (price == null) { // 카테고리 상품 매출이없으면 0가격
+                price = 0;
+            }
+            ChartController.TotalPrice mcPrice = new ChartController.TotalPrice();
+            mcPrice.setPrice(price); // 총가격 인스턴스에 넣음
+            mcPriceList.add(mcPrice); // 리스트에 다시 넣음
+        }
+
+        return mcPriceList;
+    }
+
+    @Override
+    public List<ChartController.TotalPrice> getStyleRevenue(List<StyleDTO> styleDTOList){
+        List<ChartController.TotalPrice> stylePriceList = new ArrayList<>();
+        for (StyleDTO styleDTO : styleDTOList){
+            Integer price = orderItemRepository.findRevenueByStyleId(styleDTO.getStyleId());
+            if (price == null) {
+                price = 0;
+            }
+            ChartController.TotalPrice stylePrice = new ChartController.TotalPrice();
+            stylePrice.setPrice(price);
+            stylePriceList.add(stylePrice);
+        }
+        return stylePriceList;
     }
 }

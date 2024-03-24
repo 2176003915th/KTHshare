@@ -22,4 +22,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT SUM(o.orderPrice) FROM Order o WHERE o.orderDate BETWEEN :startDate AND :endDate")
     Integer findPriceMonth(@Param("startDate") LocalDate star, @Param("endDate") LocalDate end);
 
+
 }

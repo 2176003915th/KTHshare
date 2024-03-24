@@ -174,22 +174,22 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 
 
-        <script src="../../static/js/admin/chart-pie-demo.js"></script>
+
     </body>
     <script th:inline="javascript">
         // Set new default font family and font color to mimic Bootstrap's default styling
         Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
         Chart.defaults.global.defaultFontColor = '#292b2c';
         // Area Chart Example
-        var monthPirce = [[${totalMonthPrice.![price]}]];
-        var maxMonthPrice = [[${maxMonthPrice}]];
+        var monthPirce = [[${MonthTotalPrice.![price]}]];
+        var maxMonthPrice = [[${MonthMaxPrice}]];
         var ctx = document.getElementById("myAreaChart");
         var myLineChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ["1분기","2분기","3분기","4분기"],
+                labels: ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
                 datasets: [{
-                    label: "Sessions",
+                    label: "매출",
                     lineTension: 0.3,
                     backgroundColor: "rgba(2,117,216,0.2)",
                     borderColor: "rgba(2,117,216,1)",
@@ -213,7 +213,7 @@
                             display: false
                         },
                         ticks: {
-                            maxTicksLimit: 7
+                            maxTicksLimit: 12
                         }
                     }],
                     yAxes: [{
@@ -238,9 +238,9 @@
         Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
         Chart.defaults.global.defaultFontColor = '#292b2c';
         // Bar Chart Example
-        var mcpirce = [[${totalPrice.![price]}]];
+        var mcpirce = [[${McTotalPrice.![price]}]];
         var mainCategoryNames = [[${mainCategoryList.![name]}]];
-        var maxpirce = [[${maxPirce}]];
+        var maxpirce = [[${McMaxPrice}]];
         var ctx = document.getElementById("myBarChart");
         var myLineChart = new Chart(ctx, {
             type: 'bar',
@@ -281,6 +281,28 @@
                     display: false
                 }
             }
+        });
+        var styleNames = [[${styleList.![name]}]];
+        var stylePrice =  [[${styleTotalPrice.![price]}]];
+    </script>
+    <script>
+        // Set new default font family and font color to mimic Bootstrap's default styling
+        Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+        Chart.defaults.global.defaultFontColor = '#292b2c';
+
+        // Pie Chart Example
+
+
+        var ctx = document.getElementById("myPieChart");
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: styleNames,
+                datasets: [{
+                    data: stylePrice,
+                    backgroundColor: ['#007bff', '#dc3545', '#ffc107'],
+                }],
+            },
         });
 
     </script>

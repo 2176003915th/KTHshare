@@ -39,4 +39,6 @@ public class StyleServiceImpl implements StyleService {
 
         return styleDTOList;
     }
+
+
 }
