@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -495,9 +496,7 @@ public class ProductController {
         productDTO.setEventDTO(eventDTO);
         productDTO.setSize(size);
         productDTO.setSalePercentage(0);
-        System.out.println(main.getOriginalFilename());
-        System.out.println(thumb.getOriginalFilename());
-        System.out.println(sub.getOriginalFilename());
+        productDTO.setRegistDate(LocalDateTime.now());
 
         productService.saveProduct(productDTO, main, thumb, sub);
 
@@ -505,33 +504,59 @@ public class ProductController {
     }
 
     @GetMapping(value = "admin/product/edit")
-    public String goAdminProductEdit(@RequestParam(required = false) String mainCategoryId,
-                                     @RequestParam(required = false) String subCategoryId,
-                                     @RequestParam(required = false) String mainMaterialId,
-                                     @RequestParam(required = false) String styleId,
-                                     @RequestParam(required = false) String eventId,
+    public String goAdminProductEdit(@RequestParam(value ="mainCategoryId", required = false) String mainCategoryId,
                                      HttpServletRequest request) {
         request.setAttribute("mainCategories", mainCategoryService.viewAllMainCategory());
         request.setAttribute("subCategories", subCategoryService.getAll());
-        request.setAttribute("mainCategoryNumber", "1");
-        request.setAttribute("mainMaterials", mainMaterialService.viewAllMainMaterial());
         request.setAttribute("styles", styleService.getAll());
         request.setAttribute("events", eventService.getAll());
+        request.setAttribute("mainMaterials", mainMaterialService.viewAllMainMaterial());
 
-        if(mainCategoryId != null) {//메인 카테고리 selectBox 변경했을 경우 변경된 나머지 selectBox의 데이터를 다시 request에 저장
-            request.setAttribute("mainCategoryNumber", mainCategoryId);
-            if(subCategoryId != null) request.setAttribute("subCategoryNumber", subCategoryId);
-            if(mainMaterialId != null) request.setAttribute("mainMaterialNumber", mainMaterialId);
-            if(styleId != null) request.setAttribute("styleNumber", styleId);
-            if(eventId != null) request.setAttribute("eventNumber", eventId);
-        }
         Long productId = Long.valueOf(request.getParameter("productId"));
-        request.setAttribute("product", productService.getProductById(productId));
+        ProductDTO productDTO = productService.getProductById(productId);
+        request.setAttribute("product", productDTO);
+
+        //메인 카테고리에 맞는 서브 카테고리
+        if(mainCategoryId != null) {
+            request.setAttribute("mainCategoryNumber", mainCategoryId);
+        }
 
         return "admin/product/edit";
     }
 
+    @PostMapping(value = "admin/product/edit")
+    private String updateProduct(@ModelAttribute ProductDTO productDTO,
+                                 HttpServletRequest request,
+                                 @RequestParam(value = "thumbFile", required = false) MultipartFile thumbFile,
+                                 @RequestParam(value = "mainFile", required = false) MultipartFile mainFile,
+                                 @RequestParam(value = "subFile", required = false) MultipartFile subFile) throws IOException {
+        StyleDTO styleDTO = styleService.getById(Long.valueOf(request.getParameter("style")));
+        SubCategoryDTO subCategoryDTO = subCategoryService.getSubCategoryDetail(Long.valueOf(request.getParameter("subCategory")));
+        MainCategoryDTO mainCategoryDTO = mainCategoryService.getMainCategoryById(Long.valueOf(request.getParameter("mainCategory")));
+        MainMaterialDTO mainMaterialDTO = mainMaterialService.getMainMaterialById(Long.valueOf(request.getParameter("mainMaterial")));
+        EventDTO eventDTO = eventService.getEventById(Long.valueOf(request.getParameter("event")));
+        String width = request.getParameter("width");
+        String height = request.getParameter("height");
+        String depth = request.getParameter("depth");
+        String size = width + "fm" + depth + "lm" + height;
 
+        System.out.println("상품 설명:"+productDTO.getContent());
+
+        productDTO.setStyleDTO(styleDTO);
+        productDTO.setSubCategoryDTO(subCategoryDTO);
+        productDTO.setMainCategoryDTO(mainCategoryDTO);
+        productDTO.setMainMaterialDTO(mainMaterialDTO);
+        productDTO.setEventDTO(eventDTO);
+        productDTO.setSize(size);
+        productDTO.setSalePercentage(0);
+        productDTO.setRegistDate(LocalDateTime.now());
+
+        System.out.println("현재 이벤트: "+productDTO.getEventDTO().getTitle());
+
+        productService.saveProduct(productDTO, mainFile, thumbFile, subFile);
+
+        return "redirect:/admin/product/list";
+    }
 
 
 

@@ -43,7 +43,7 @@ public class ChartController {
     private final StyleService styleService;
     private final OrderService orderService;
     private final MainCategoryService mainCategoryService;
-    @GetMapping(value="/chart")
+    @GetMapping(value="/admin/chart")
     public String goChart(HttpServletRequest request) {
         mainCategoryRevenue(request);
         monthRevenue(request);
@@ -51,7 +51,7 @@ public class ChartController {
         return "admin/charts";
     }
 
-    void mainCategoryRevenue(HttpServletRequest request){
+    public void mainCategoryRevenue(HttpServletRequest request){
         List<MainCategoryDTO> mainCategoryList = mainCategoryService.viewAllMainCategory(); //매출보여줄 카테고리 이름 구함
         List<TotalPrice> mcPriceList = orderService.getMainCategoryRevenue(mainCategoryList); //카테고리 매출 리스트
         int maxprice = mcPriceList.stream().mapToInt(TotalPrice::getPrice).max().orElse(0);; // 매출중 최댓값
@@ -60,14 +60,14 @@ public class ChartController {
         request.setAttribute("McMaxPrice",  maxprice);
     }
 
-    void monthRevenue(HttpServletRequest request){
+    public void monthRevenue(HttpServletRequest request){
         List<TotalPrice> monthPrice = orderService.getMonthRevenue();
         int maxprice = monthPrice.stream().mapToInt(TotalPrice::getPrice).max().orElse(0);
         request.setAttribute("MonthTotalPrice",monthPrice);
         request.setAttribute("MonthMaxPrice",maxprice);
     }
 
-    void styleRevenue(HttpServletRequest request){
+    public void styleRevenue(HttpServletRequest request){
         List<StyleDTO> styleList = styleService.getAll();
         List<TotalPrice> stylePriceList = orderService.getStyleRevenue(styleList);
         request.setAttribute("styleList",styleList);

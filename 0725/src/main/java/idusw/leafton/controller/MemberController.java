@@ -228,6 +228,8 @@ public class MemberController {
         if("admin".equals(adminId) && "123".equals(adminPw)){
             HttpSession session = request.getSession(); //session 객체 생성
             session.setAttribute("adminCheck",adminCheck);
+            request.setAttribute("orderList", orderService.findAll());
+
             return "admin/main/index";
         } else {
             request.setAttribute("message", "아이디나 비밀번호가 일치하지 않습니다");

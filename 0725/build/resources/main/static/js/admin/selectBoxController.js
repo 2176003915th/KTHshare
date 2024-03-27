@@ -24,5 +24,5 @@ function sendFromRegister(value){
 
 function sendFromEdit(value){
     let productId=document.getElementById("productId").value;
-    location.href="/admin/product/edit?productId="+productId+"&&mainCategoryId="+value+"&&subCategoryId="+subCategoryId+"&&mainMaterialId="+mainMaterialId+"&&styleId="+styleId;
+    location.href="/admin/product/edit?productId="+productId+"&&mainCategoryId="+value;
 }
