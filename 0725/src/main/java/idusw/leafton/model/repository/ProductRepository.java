@@ -40,7 +40,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
     Page<Product> findAllBySubCategoryNameContaining(Pageable pageable,String name);
     Page<Product> findAllByMainMaterialNameContaining(Pageable pageable,String name);
 
-    @Query("select p from Product p where p.mainCategory.mainCategoryId = :mainCategoryId order by RAND() limit 4")
+    @Query("select p from Product p where p.mainCategory.mainCategoryId = :mainCategoryId order by RAND() limit 8")
     List<Product> findRandomProductsByMainCategory(@Param("mainCategoryId") Long mainCategoryId);
 
     @Query("select p from Product p order by RAND() limit 8")

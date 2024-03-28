@@ -57,8 +57,8 @@ public class ProductController {
         mainCategoryDTO = productDTO.getMainCategoryDTO(); //추천상품 위해 메인카테고리
         mainCategoryId = mainCategoryDTO.getMainCategoryId();
         ProductDTO productDetail = productService.viewDetailProduct(productId); //웹에 전달하기위해 객체생성 serviceimpl은 정보를 변한하기위해 사용됨
-//        List<ProductDTO> products = productService.productDetailByMainCategory(mainCategoryId); //추천상품
-        List<ProductDTO> products = productService.view8product();
+        List<ProductDTO> products = productService.productDetailByMainCategory(mainCategoryId); //추천상품
+//        List<ProductDTO> products = productService.view8product();
 
         pageNo = (pageNo == 0) ? 0 : (pageNo - 1);
         Page<ReviewDTO> reviewPageList = postService.getReviewPageList(pageNo, criteria, productDTO);
@@ -330,7 +330,7 @@ public class ProductController {
 
     @GetMapping(value = "admin/product/list")
     public String goAdminList(HttpServletRequest request) {
-        request.setAttribute("products", productService.view8product());
+        request.setAttribute("products", productService.viewAllproduct());
         return "admin/product/list";
     }
 

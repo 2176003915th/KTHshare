@@ -227,9 +227,10 @@ public class MemberController {
         MemberDTO adminCheck = new MemberDTO();
         if("admin".equals(adminId) && "123".equals(adminPw)){
             HttpSession session = request.getSession(); //session 객체 생성
+            mainCategoryRevenue(request);
+            monthRevenue(request);
             session.setAttribute("adminCheck",adminCheck);
             request.setAttribute("orderList", orderService.findAll());
-
             return "admin/main/index";
         } else {
             request.setAttribute("message", "아이디나 비밀번호가 일치하지 않습니다");
@@ -253,4 +254,22 @@ public class MemberController {
     }
 
     /*---------------admin controller end------------------*/
+
+
+    public void mainCategoryRevenue(HttpServletRequest request){
+        List<MainCategoryDTO> mainCategoryList = mainCategoryService.viewAllMainCategory(); //매출보여줄 카테고리 이름 구함
+        List<Integer> mcPriceList = orderService.getMainCategoryRevenue(mainCategoryList); //카테고리 매출 리스트
+        int maxprice = Collections.max(mcPriceList);
+        request.setAttribute("mainCategoryList", mainCategoryList);
+        request.setAttribute("McTotalPrice", mcPriceList);
+        request.setAttribute("McMaxPrice",  maxprice);
+    }
+    public void monthRevenue(HttpServletRequest request){
+        List<Integer> monthPrice = orderService.getMonthRevenue();
+        int maxprice = Collections.max(monthPrice);
+        request.setAttribute("MonthTotalPrice",monthPrice);
+        request.setAttribute("MonthMaxPrice",maxprice);
+        System.out.println(maxprice);
+    }
+
 }

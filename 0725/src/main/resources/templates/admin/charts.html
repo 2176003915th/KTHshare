@@ -89,7 +89,7 @@
         Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
         Chart.defaults.global.defaultFontColor = '#292b2c';
         // Area Chart Example
-        var monthPirce = [[${MonthTotalPrice.![price]}]];
+        var monthPirce = [[${MonthTotalPrice}]];
         var maxMonthPrice = [[${MonthMaxPrice}]];
         var ctx = document.getElementById("myAreaChart");
         var myLineChart = new Chart(ctx, {
@@ -146,7 +146,7 @@
         Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
         Chart.defaults.global.defaultFontColor = '#292b2c';
         // Bar Chart Example
-        var mcpirce = [[${McTotalPrice.![price]}]];
+        var mcpirce = [[${McTotalPrice}]];
         var mainCategoryNames = [[${mainCategoryList.![name]}]];
         var maxpirce = [[${McMaxPrice}]];
         var ctx = document.getElementById("myBarChart");
@@ -191,7 +191,8 @@
             }
         });
         var styleNames = [[${styleList.![name]}]];
-        var stylePrice =  [[${styleTotalPrice.![price]}]];
+        var stylePrice =  [[${styleTotalPrice}]];
+
     </script>
     <script>
         // Set new default font family and font color to mimic Bootstrap's default styling
@@ -199,7 +200,6 @@
         Chart.defaults.global.defaultFontColor = '#292b2c';
 
         // Pie Chart Example
-
 
         var ctx = document.getElementById("myPieChart");
         var myPieChart = new Chart(ctx, {

@@ -29,13 +29,13 @@ public class FileSave {
 
     public String createStoreFileName(String originalFilename) {
         String ext = extractExt(originalFilename);
-        String uuid = UUID.randomUUID().toString();
+        String uuid = UUID.randomUUID().toString(); //랜덤 uid생성하여 toString으로 변환
         return uuid + "." + ext;
     }
 
     private String extractExt(String originalFilename) {
-        int pos = originalFilename.lastIndexOf(".");
-        return originalFilename.substring(pos + 1);
+        int pos = originalFilename.lastIndexOf("."); //파일 확장자 부분찾기 . 다음 인덱스 찾음
+        return originalFilename.substring(pos + 1); //찾은 pos 다음 위치부터 끝까지 잘라내어 반환함 만약 파일이름이 사진.png면 png반환
     }
 
 }

@@ -72,8 +72,8 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
     }
 
     @Override
-    public List<ProductDTO> view8product(){
-        List<Product> productList = productRepository.findRandomProducts();
+    public List<ProductDTO> viewAllproduct(){
+        List<Product> productList = productRepository.findAll();
         List<ProductDTO> productDTOList = new ArrayList<>();
         for(Product product: productList) {
             Optional<Double> opAvgRating = reviewRepository.getAverageRatingByProduct(product.getProductId()); //평균평점을 구함

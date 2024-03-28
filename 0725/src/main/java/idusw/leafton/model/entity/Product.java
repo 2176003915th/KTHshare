@@ -78,9 +78,9 @@ public class Product {
         product.setEvent(Event.toEventEntity(productDTO.getEventDTO()));
         product.setStyle(Style.toStyleEntity(productDTO.getStyleDTO()));
         product.setName(productDTO.getName());
-        product.setContent(product.getContent());
-        product.setMaker(product.getMaker());
+        product.setMaker(productDTO.getMaker());
         product.setRating(productDTO.getRating());
+        product.setContent(productDTO.getContent());
         product.setColor(productDTO.getColor());
         product.setSize(productDTO.getSize());
         product.setPrice(productDTO.getPrice());

@@ -113,8 +113,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<ChartController.TotalPrice> getMonthRevenue(){
-        List<ChartController.TotalPrice> monthPriceList = new ArrayList<>();
+    public List<Integer> getMonthRevenue(){
+        List<Integer> monthPriceList = new ArrayList<>();
         LocalDate[][] periods = {
                 {LocalDate.parse("2024-01-01"), LocalDate.parse("2024-01-31")},
                 {LocalDate.parse("2024-02-01"), LocalDate.parse("2024-02-29")},
@@ -133,13 +133,11 @@ public class OrderServiceImpl implements OrderService {
             LocalDate start = period[0];
             LocalDate end = period[1];
             int price = 0;
-            Integer totalPrice = orderRepository.findPriceMonth(start, end);
-            if (totalPrice != null) {
-                price = totalPrice;
+            Integer notNullPrice = orderRepository.findPriceMonth(start, end);
+            if (notNullPrice != null) {
+                price = notNullPrice;
             }
-            ChartController.TotalPrice monthPrice = new ChartController.TotalPrice();
-            monthPrice.setPrice(price);
-            monthPriceList.add(monthPrice);
+            monthPriceList.add(price);
         }
 
 
@@ -149,32 +147,29 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public List<ChartController.TotalPrice> getMainCategoryRevenue(List<MainCategoryDTO> mainCategoryDTOList){
-        List<ChartController.TotalPrice> mcPriceList = new ArrayList<>();
+    public List<Integer> getMainCategoryRevenue(List<MainCategoryDTO> mainCategoryDTOList){
+        List<Integer> mcPriceList = new ArrayList<>();
         for(MainCategoryDTO mainCategoryDTO : mainCategoryDTOList){ // 메인카테고리 개수 만큼 매출 리스트 구함
-            Integer price = orderItemRepository.findRevenueByMainCategory(mainCategoryDTO.getMainCategoryId()); //메인카테고리아이디로 조회된 주문 리스트들의 총가격을 구함
-            if (price == null) { // 카테고리 상품 매출이없으면 0가격
-                price = 0;
+            int price = 0;
+            Integer notNullPrice = orderItemRepository.findRevenueByMainCategory(mainCategoryDTO.getMainCategoryId()); //메인카테고리아이디로 조회된 주문 리스트들의 총가격을 구함
+            if (notNullPrice != null) { // 카테고리 상품 매출이없으면 0가격
+                price = notNullPrice;
             }
-            ChartController.TotalPrice mcPrice = new ChartController.TotalPrice();
-            mcPrice.setPrice(price); // 총가격 인스턴스에 넣음
-            mcPriceList.add(mcPrice); // 리스트에 다시 넣음
+            mcPriceList.add(price); // 리스트에 다시 넣음
         }
-
         return mcPriceList;
     }
 
     @Override
-    public List<ChartController.TotalPrice> getStyleRevenue(List<StyleDTO> styleDTOList){
-        List<ChartController.TotalPrice> stylePriceList = new ArrayList<>();
+    public List<Integer> getStyleRevenue(List<StyleDTO> styleDTOList){
+        List<Integer> stylePriceList = new ArrayList<>();
         for (StyleDTO styleDTO : styleDTOList){
-            Integer price = orderItemRepository.findRevenueByStyleId(styleDTO.getStyleId());
-            if (price == null) {
-                price = 0;
+            int price = 0;
+            Integer notNullPrice = orderItemRepository.findRevenueByStyleId(styleDTO.getStyleId());
+            if (notNullPrice != null) {
+                price = notNullPrice;
             }
-            ChartController.TotalPrice stylePrice = new ChartController.TotalPrice();
-            stylePrice.setPrice(price);
-            stylePriceList.add(stylePrice);
+            stylePriceList.add(price);
         }
         return stylePriceList;
     }

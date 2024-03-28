@@ -31,7 +31,7 @@
         <!-- 페이지 분류 및 제목 끝 -->
         <!-- 입력 form -->
         <div class="card shadow-lg border-0 rounded-lg mt-5">
-          <form action="/admin/product/edit" method="post" id="main-form">
+          <form action="/admin/product/edit" method="post" id="main-form" enctype="multipart/form-data">
             <input type="hidden" th:value="${product.productId}" name="productId" id="productId"/>
             <div class="card-body">
               <!-- 첫번째 줄 -->

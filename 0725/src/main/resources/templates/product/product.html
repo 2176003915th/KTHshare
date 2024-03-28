@@ -312,8 +312,6 @@
         <h5 id="reviewEmail" th:text="${#strings.substring(review.memberDTO.name,0,1)} + '*' + ${#strings.substring(review.memberDTO.name,2,#strings.length(review.memberDTO.name))}"></h5>
         <span th:text="${review.registDate}"></span>
       </div>
-      <h3></h3>
-      <h1 th:text="whatthefuck"></h1>
       <p th:text="${review.content}">
       </p>
       <div th:if="${session.memberDTO!=null and session.memberDTO.memberId == review.memberDTO.memberId}">

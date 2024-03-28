@@ -23,8 +23,7 @@ public interface OrderService {
     Page<OrderDTO> findMemberOrder(Long memberId, Pageable pageable);
 
     List<OrderDTO> findAll();
-    List<ChartController.TotalPrice> getMonthRevenue();
-    List<ChartController.TotalPrice> getMainCategoryRevenue(List<MainCategoryDTO>  mainCategoryDTOList);
-
-    List<ChartController.TotalPrice> getStyleRevenue(List<StyleDTO> styleDTOList);
+    List<Integer> getMonthRevenue();
+    List<Integer> getMainCategoryRevenue(List<MainCategoryDTO>  mainCategoryDTOList);
+    List<Integer> getStyleRevenue(List<StyleDTO> styleDTOList);
 }
