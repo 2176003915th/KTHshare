@@ -108,7 +108,7 @@
             <td>
               <article>
                 <a href="#">
-                  <img src="https://via.placeholder.com/80x80" alt="1">
+                  <img th:src="${orderItem.productDTO.mainImage}" alt="1">
                 </a>
                 <div>
                   <h2><a href="#" th:text="${orderItem.getProductDTO().getName()}">상품명</a></h2>

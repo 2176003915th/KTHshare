@@ -448,7 +448,7 @@ public class ProductController {
             return "redirect:/admin/property/main-material/list";
         }
     }
-    @GetMapping(value = "admin/product/register")
+    @GetMapping(value = "/admin/product/register")
     public String goAdminProductRegister(@RequestParam(required = false) String mainCategoryId,
                                          @RequestParam(required = false) String subCategoryId,
                                          @RequestParam(required = false) String mainMaterialId,
@@ -473,7 +473,7 @@ public class ProductController {
         return "admin/product/register";
     }
 
-    @PostMapping(value = "admin/product/register")
+    @PostMapping(value = "/admin/product/register")
     private String insertProduct(@ModelAttribute ProductDTO productDTO,
                                  HttpServletRequest request,
                                  @RequestParam(value = "type", required = false) String type,
@@ -509,7 +509,7 @@ public class ProductController {
             request.setAttribute("events", eventService.getAll());
             request.setAttribute("mainMaterials", mainMaterialService.viewAllMainMaterial());
 
-            return "/admin/product/register";
+            return "admin/product/register";
         } else {
             productService.saveProduct(productDTO, main, thumb, sub);
 
