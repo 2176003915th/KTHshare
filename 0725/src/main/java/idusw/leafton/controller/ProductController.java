@@ -476,6 +476,7 @@ public class ProductController {
     @PostMapping(value = "admin/product/register")
     private String insertProduct(@ModelAttribute ProductDTO productDTO,
                                  HttpServletRequest request,
+                                 @RequestParam(value = "type", required = false) String type,
                                  @RequestParam("thumb") MultipartFile thumb,
                                  @RequestParam("main") MultipartFile main,
                                  @RequestParam("sub") MultipartFile sub) throws IOException {
@@ -498,9 +499,22 @@ public class ProductController {
         productDTO.setSalePercentage(0);
         productDTO.setRegistDate(LocalDateTime.now());
 
-        productService.saveProduct(productDTO, main, thumb, sub);
+        System.out.println("type:"+productDTO.getMainCategoryDTO().getName());
 
-        return "redirect:/admin/product/list";
+        if(type != null) {
+            request.setAttribute("product", productDTO);
+            request.setAttribute("mainCategories", mainCategoryService.viewAllMainCategory());
+            request.setAttribute("subCategories", subCategoryService.getAll());
+            request.setAttribute("styles", styleService.getAll());
+            request.setAttribute("events", eventService.getAll());
+            request.setAttribute("mainMaterials", mainMaterialService.viewAllMainMaterial());
+
+            return "/admin/product/register";
+        } else {
+            productService.saveProduct(productDTO, main, thumb, sub);
+
+            return "redirect:/admin/product/list";
+        }
     }
 
     @GetMapping(value = "admin/product/edit")

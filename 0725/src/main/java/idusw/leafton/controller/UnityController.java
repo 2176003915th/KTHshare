@@ -47,32 +47,32 @@ public class UnityController {
     }
 
     //httpservlet 사용 시 타임리프때매 문제생기고 테스트 하기에 있어 제약이 많음(유니티 에디터 내에서 테스ㅡㅌ 안됨)
-    @PostMapping(value = "/unity", consumes = "application/json")
-    public @ResponseBody String handleUnityPostRequest(@RequestBody String jsonData) {
-
-        String decodeResult = URLDecoder.decode(jsonData, StandardCharsets.UTF_8);
-        System.out.println("Received JSON data: " + decodeResult);
-
-        if(decodeResult.equals("load"))
-        {
-            System.out.println(memberDTO.getUnity_data());
-
-            return memberDTO.getUnity_data();
-        }
-        else
-        {
-            if(memberDTO.getUnity_data() == null)
-            {
-                memberDTO.setUnity_data(decodeResult);
-                System.out.println("controller"+memberDTO.getUnity_data());
-                memberService.saveData(memberDTO);
-            }
-            else
-            {
-                memberDTO.setUnity_data(decodeResult);
-                memberService.saveData(memberDTO);
-            }
-            return "success recieve data";
-        }
-    }
+//    @PostMapping(value = "/unity", consumes = "application/json")
+//    public @ResponseBody String handleUnityPostRequest(@RequestBody String jsonData) {
+//
+//        String decodeResult = URLDecoder.decode(jsonData, StandardCharsets.UTF_8);
+//        System.out.println("Received JSON data: " + decodeResult);
+//
+//        if(decodeResult.equals("load"))
+//        {
+//            System.out.println(memberDTO.getUnity_data());
+//
+//            return memberDTO.getUnity_data();
+//        }
+//        else
+//        {
+//            if(memberDTO.getUnity_data() == null)
+//            {
+//                memberDTO.setUnity_data(decodeResult);
+//                System.out.println("controller"+memberDTO.getUnity_data());
+//                memberService.saveData(memberDTO);
+//            }
+//            else
+//            {
+//                memberDTO.setUnity_data(decodeResult);
+//                memberService.saveData(memberDTO);
+//            }
+//            return "success recieve data";
+//        }
+//    }
 }

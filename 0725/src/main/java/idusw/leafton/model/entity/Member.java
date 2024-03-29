@@ -43,8 +43,6 @@ public class Member {
     @Column
     private String phone;
 
-    @Column (columnDefinition = "LONGTEXT")
-    private String unity_data;
 
     //DTO 내의 정보를 현재 객체에 저장하는 메서드
     public static Member toMemberEntity(MemberDTO memberDTO){
@@ -57,7 +55,6 @@ public class Member {
         member.setGender(memberDTO.getGender());
         member.setName(memberDTO.getName());
         member.setPhone(memberDTO.getPhone());
-        member.setUnity_data(memberDTO.getUnity_data());
         member.setZipcode(memberDTO.getZipcode());
         member.setAddress(memberDTO.getAddress());
 
