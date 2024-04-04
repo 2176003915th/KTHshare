@@ -32,7 +32,7 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
                     sort = Sort.by(Sort.Direction.ASC, "name");
                     break;
                 case "new":
-                    sort = Sort.by(Sort.Direction.ASC, "registDate");
+                    sort = Sort.by(Sort.Direction.DESC, "registDate");
                     break;
                 case "rating":
                     sort = Sort.by(Sort.Direction.DESC, "rating");
@@ -44,7 +44,7 @@ public class ProductServiceImpl implements ProductService { //ProductService를 
                     sort = Sort.by(Sort.Direction.DESC, "calculatedPrice");
             };
         }
-        Pageable pageable = PageRequest.of(pageNo, 4, sort);
+        Pageable pageable = PageRequest.of(pageNo, 12, sort);
         return pageable;
     }
     void combineRating(Page<Product> productList){ // 평점 평균값을 product 테이블 필드 평점에 대입

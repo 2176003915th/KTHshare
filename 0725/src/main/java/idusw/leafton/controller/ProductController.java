@@ -138,7 +138,7 @@ public class ProductController {
     void loadProductPage(Page<ProductDTO> products, HttpServletRequest request){ //product 페이지한것과 시작 페이지와 끝페이지를 매핑시키기위함
         int currentPage = products.getNumber() + 1; //현재페이지 페이지는 0으로시작하기때문에 현재페이지와 맞추기위해 + 1을 설정함
         // 아래 startPage에서 사용자에게 1로 시작하는것을 보여주기위해 +1을 해줫기때문에 그페이지와 현재페이지를 맞추기위해서 + 1을함
-        int blockLimit = 2;
+        int blockLimit = 3;
         int startPage = (((int) Math.ceil(((double) (products.getNumber() + 1) / blockLimit))) - 1) * blockLimit + 1;
         int endPage = Math.min((startPage + blockLimit - 1), products.getTotalPages());
         request.setAttribute("products",products);
@@ -394,7 +394,7 @@ public class ProductController {
 
     @PostMapping(value="admin/insert")
     public String insert(@RequestParam(value = "type", required = false) String type,
-                         @RequestParam("mc-image") MultipartFile image, HttpServletRequest request) throws IOException {
+                         @RequestParam(value = "mc-image", required = false) MultipartFile image, HttpServletRequest request) throws IOException {
         if("mainCategory".equals(type)){
             MainCategoryDTO mainCategoryDTO = new MainCategoryDTO();
             mainCategoryDTO.setName(request.getParameter("mc-name"));
@@ -421,7 +421,7 @@ public class ProductController {
     }
     @PostMapping(value="admin/update")
     private String update(@RequestParam(value = "type", required = false) String type ,
-                          @RequestParam("mc-image") MultipartFile image, HttpServletRequest request ) throws IOException {
+                          @RequestParam(value = "mc-image" , required = false) MultipartFile image, HttpServletRequest request ) throws IOException {
         if("mainCategory".equals(type)){
             Long id = Long.valueOf(request.getParameter("mc-id"));
             MainCategoryDTO mainCategoryDTO = mainCategoryService.getMainCategoryById(id);
